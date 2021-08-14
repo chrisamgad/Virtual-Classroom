@@ -2,7 +2,7 @@
     padding-top:70px !important;
     padding-bottom: 70px !important;
     display:flex;
-    background: #c4d3ce;
+    background: #c4d3ce4d;
     justify-content:center
     
 }
@@ -17,4 +17,13 @@
 .form_styles p:first-child{
     font-weight: 600;
     font-size: 17px;
+}
+
+.form_styles p:last-child{
+    margin-top:16px;
+}
+
+.create_account{
+   text-decoration: none;
+    font-size: 15px;
 }

@@ -12,24 +12,20 @@
     color:black;
 }
 
-.login_signup_button{
-    margin-left:30px;
-    background-color: #31af36 !important;
-    border-color: white !important;
-    padding: 7px 35px !important;
-    transition: background-color 1s ease, border-color 1s ease !important;
-  
-}
-.login_signup_button:hover{
-    background-color: #0088ff !important;
-    border-color: white !important;
-}
 
 .LoginLink{
     text-decoration: none !important;
+    background-color: #31af36;
+    padding: 7px 35px !important;
+    border-radius: 10px;
     color: #ffffff;
     font-weight: 300 !important;
+    transition: background-color 1s ease, border-color 1s ease !important;
 }
 
-
+.LoginLink:hover{
+    background-color: #0088ff !important;
+    border-color: white !important;
+    color:white;
+}
 

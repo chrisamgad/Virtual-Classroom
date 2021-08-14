@@ -32,7 +32,7 @@ const MainNavigation = () =>{
             
         </Nav>
 
-        <Button className={styles.login_signup_button} ><Link className={styles.LoginLink} to="/login">LOG IN </Link> </Button>
+        <Link className={styles.LoginLink} to="/login">LOG IN </Link> 
         </Container>
       </Navbar>
     </div>

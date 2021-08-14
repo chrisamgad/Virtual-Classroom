@@ -1,4 +1,5 @@
-import { Form,Button,Container } from "react-bootstrap"
+import { Form,Button,Container} from "react-bootstrap"
+import {Link} from 'react-router-dom'
 import styles from './Login.module.css'
 
 const Login = ()=>{
@@ -27,7 +28,7 @@ const Login = ()=>{
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
-                    <p> Create Account</p>
+                   <p> <Link to="/createaccount" className={styles.create_account}>Create Account</Link></p>
                 </Form>
             </div>
             </Container>

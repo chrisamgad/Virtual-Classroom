@@ -5,8 +5,11 @@ import Home from './pages/Home/Home'
 import OurStory from './pages/OurStory/OurStory'
 import ContactUs from './pages/ContactUs/ContactUs'
 import Login from './pages/Login/Login'
+import SignUp from "./pages/SignUp/SignUp";
 
 import './App.css';
+
+
 function App() {
   return (
     <div>
@@ -20,6 +23,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/createaccount">
+            <SignUp />
           </Route>
           <Route path="/">
             <Home />
