@@ -3,6 +3,8 @@ import styles from'./MainNavigation.module.css'
 import './MainNavigation.css'
 
 import React from 'react'
+import {Link} from 'react-router-dom'
+
 const MainNavigation = () =>{
     
     return(
@@ -17,22 +19,22 @@ const MainNavigation = () =>{
         alt="Vimo Logo"
       />
       </Navbar.Brand>
-        <Nav className="me-auto" activeKey="/home">
+        <Nav className="me-auto">
             <Nav.Item>
-                <Nav.Link className={styles.navlinkstyle} href="/home">HOME</Nav.Link>
+                <Nav.Link className={styles.navlinkstyle} to="/">HOME</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link className={styles.navlinkstyle} eventKey="link-1">OUR STORY</Nav.Link>
+                <Nav.Link className={styles.navlinkstyle} eventKey="link-1" to="/ourstory">OUR STORY</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link className={styles.navlinkstyle} eventKey="link-2">CONTACT US </Nav.Link>
+                <Nav.Link className={styles.navlinkstyle} eventKey="link-2"  to="/contactus">CONTACT US </Nav.Link>
                 
             </Nav.Item>
             
         </Nav>
 
-        <Button className={styles.login_signup}>LOGIN / SIGN UP </Button>
-
+        <Button className={styles.login_signup}>LOGIN </Button>
+        <Button className={styles.login_signup}>SIGN UP </Button>
         </Container>
       </Navbar>
     </div>
