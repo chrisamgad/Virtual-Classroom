@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       <MainNavigation/>
-      <Button>Chris</Button>
+      
       
     </div>
   );
