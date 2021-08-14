@@ -1,9 +1,9 @@
 import {Navbar,Nav,Container,Button} from 'react-bootstrap'
 import styles from'./MainNavigation.module.css'
 import './MainNavigation.css'
-
-import React from 'react'
 import {Link} from 'react-router-dom'
+import React from 'react'
+
 
 const MainNavigation = () =>{
     
@@ -21,14 +21,13 @@ const MainNavigation = () =>{
       </Navbar.Brand>
         <Nav className="me-auto">
             <Nav.Item>
-                <Nav.Link className={styles.navlinkstyle} to="/">HOME</Nav.Link>
+                <Link className={styles.navlinkstyle} to="/" >HOME</Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link className={styles.navlinkstyle} eventKey="link-1" to="/ourstory">OUR STORY</Nav.Link>
+                <Link className={styles.navlinkstyle}  to="/ourstory">OUR STORY</Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link className={styles.navlinkstyle} eventKey="link-2"  to="/contactus">CONTACT US </Nav.Link>
-                
+                <Link className={styles.navlinkstyle}   to="/contactus">CONTACT US </Link>
             </Nav.Item>
             
         </Nav>
