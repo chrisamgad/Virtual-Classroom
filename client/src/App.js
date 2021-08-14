@@ -4,6 +4,7 @@ import {Switch,Route} from 'react-router-dom'
 import Home from './pages/Home/Home'
 import OurStory from './pages/OurStory/OurStory'
 import ContactUs from './pages/ContactUs/ContactUs'
+import Login from './pages/Login/Login'
 
 import './App.css';
 function App() {
@@ -16,6 +17,9 @@ function App() {
           </Route>
           <Route path="/contactus">
             <ContactUs />
+          </Route>
+          <Route path="/login">
+            <Login />
           </Route>
           <Route path="/">
             <Home />

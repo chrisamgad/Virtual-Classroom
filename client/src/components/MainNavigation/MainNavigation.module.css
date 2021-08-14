@@ -18,9 +18,9 @@
     border-color: white !important;
     font-family: 'Noto Sans KR', sans-serif !important;
     font-weight: 300 !important;
-    padding: 7px 25px !important;
-    transition: background-color 0.5s ease !important;
-    transition: border-color 0.5s ease !important;
+    padding: 7px 35px !important;
+    transition: background-color 1s ease, border-color 1s ease !important;
+  
 }
 
 .login_signup:hover{

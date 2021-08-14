@@ -1,0 +1,17 @@
+.form_container{
+    margin-top:30px !important;
+    display:flex;
+    justify-content:center
+    
+}
+
+.form_styles{
+    padding:40px 40px;
+    border-radius: 15px;
+    border: 1px solid gray;
+}
+
+.form_styles p:first-child{
+    font-weight: 600;
+    font-size: 17px;
+}

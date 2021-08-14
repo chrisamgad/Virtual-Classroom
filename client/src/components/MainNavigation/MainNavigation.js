@@ -32,8 +32,7 @@ const MainNavigation = () =>{
             
         </Nav>
 
-        <Button className={styles.login_signup}>LOGIN </Button>
-        <Button className={styles.login_signup}>SIGN UP </Button>
+        <Button className={styles.login_signup}>LOG IN </Button>
         </Container>
       </Navbar>
     </div>

@@ -12,7 +12,7 @@ const Slider = () =>{
                 alt="First slide"
                 />
                 <Carousel.Caption>
-                <h2 className={styles.headingstyle}>Learn</h2>
+                <h2 className={styles.headingstyle} >Learn</h2>
                 <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
                 </Carousel.Caption>
             </Carousel.Item>
@@ -24,8 +24,8 @@ const Slider = () =>{
                 />
 
                 <Carousel.Caption>
-                <h2 className={styles.headingstyle} style={{color: "black"}} >Online</h2>
-                <p style={{color: "black"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <h2 className={styles.headingstyle} style={{color: "white"}} >Online</h2>
+                <p style={{color: "white"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item interval={2000}> 
