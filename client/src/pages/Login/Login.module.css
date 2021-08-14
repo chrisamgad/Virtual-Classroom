@@ -1,6 +1,8 @@
 .form_container{
-    margin-top:30px !important;
+    padding-top:70px !important;
+    padding-bottom: 70px !important;
     display:flex;
+    background: #c4d3ce;
     justify-content:center
     
 }
@@ -8,6 +10,7 @@
 .form_styles{
     padding:40px 40px;
     border-radius: 15px;
+    background-color: #ffffff;
     border: 1px solid gray;
 }
 

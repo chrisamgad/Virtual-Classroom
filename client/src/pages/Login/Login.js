@@ -1,12 +1,12 @@
-import { Form,Button } from "react-bootstrap"
+import { Form,Button,Container } from "react-bootstrap"
 import styles from './Login.module.css'
 
 const Login = ()=>{
 
     return(
         <div>
-            <div className={styles.form_container}>
-                
+            <Container>
+            <div className={styles.form_container}> 
                 <Form className={styles.form_styles}>
                     <p>LOG IN NOW!</p>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -27,8 +27,10 @@ const Login = ()=>{
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
+                    <p> Create Account</p>
                 </Form>
             </div>
+            </Container>
         </div>
     )
 }
