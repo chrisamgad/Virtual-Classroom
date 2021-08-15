@@ -1,4 +1,4 @@
-import { Form, Button, Container,InputGroup,FormControl} from "react-bootstrap"
+import { Form, Button, Container,InputGroup,FormControl, Alert} from "react-bootstrap"
 import React ,{ useState } from "react"
 import styles from './SignUp.module.css'
 import validator from 'validator';
@@ -22,6 +22,11 @@ const SignUp = ()=>{
     const [CheckboxState,setCheckboxState] =useState(false)
 
     const setFullName = (e)=>{
+        setCredentialValidation({
+            validated:true,
+            error:""
+        })
+
         setCredentialDetails({
             ...CredentialDetails,
             fullname:e.target.value
@@ -29,6 +34,12 @@ const SignUp = ()=>{
     }
 
     const setEmail = (e)=>{
+
+        setCredentialValidation({
+            validated:true,
+            error:""
+        })
+
         setCredentialDetails({
             ...CredentialDetails,
             email:e.target.value
@@ -37,6 +48,11 @@ const SignUp = ()=>{
     }
 
     const setMobile = (e)=>{
+        setCredentialValidation({
+            validated:true,
+            error:""
+        })
+
         setCredentialDetails({
             ...CredentialDetails,
             mobilenumber:e.target.value
@@ -44,6 +60,12 @@ const SignUp = ()=>{
     }
 
     const setPasswordFirst = (e)=>{
+
+        setCredentialValidation({
+            validated:true,
+            error:""
+        })
+
         setCredentialDetails({
             ...CredentialDetails,
             password1:e.target.value
@@ -51,6 +73,12 @@ const SignUp = ()=>{
     }
 
     const setPasswordFinal = (e)=>{
+
+        setCredentialValidation({
+            validated:true,
+            error:""
+        })
+
         setCredentialDetails({
             ...CredentialDetails,
             password2:e.target.value
@@ -63,7 +91,7 @@ const SignUp = ()=>{
         if(validator.isEmpty(CredentialDetails.fullname, {ignore_whitespace:true}))
             return setCredentialValidation({
                 validated:false,
-                error:"Fullname can't be empty"
+                error:"Full Name can't be empty"
             })
         if(!validator.isEmail(CredentialDetails.email))
             {
@@ -89,12 +117,12 @@ const SignUp = ()=>{
         }))
             return setCredentialValidation({
                 validated:false,
-                error:'Password must contain atleast 8 characters,1 LowerCase, 1 UpperCase, 1 digit and 1 symbol'
+                error:'Password not strong enough'
             })
         if(!CheckboxState)
             return setCredentialValidation({
                 validated:false,
-                error:'Please tick the checkbox to accept terms and conditions'
+                error:'Please accept terms and conditions'
             })
 
         //If we reach this point, validation is succesfull because no false validation was returned
@@ -104,7 +132,7 @@ const SignUp = ()=>{
         })
     }
 
-    
+
     console.log(CredentialDetails)
     console.log(CredentialValidation)
 
@@ -125,7 +153,6 @@ const SignUp = ()=>{
                             We'll never share your email with anyone else.
                             </Form.Text>
                         </Form.Group>
-
 
                         <Form.Group className="mb-2" controlId="formBasicPhone">
                             <Form.Label>Mobile Number</Form.Label>
@@ -148,6 +175,7 @@ const SignUp = ()=>{
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
                             <Form.Check type="checkbox" defaultChecked={CheckboxState} onChange={()=>setCheckboxState(!CheckboxState)} label="I accept terms and conditions" />
                         </Form.Group>
+                        {CredentialValidation.validated ? null : <Alert variant='danger' className={styles.alertStyle}>{ CredentialValidation.error}</Alert>}
                         <Button variant="primary" type="submit" onClick={ (e) =>handleSubmit(e)}>
                             Create Account
                         </Button>

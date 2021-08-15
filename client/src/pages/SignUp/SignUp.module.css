@@ -14,3 +14,7 @@
     background-color: #ffffff;
     border: 1px solid gray;
 }
+
+.alertStyle{
+    padding: 10px 1rem !important;
+}
