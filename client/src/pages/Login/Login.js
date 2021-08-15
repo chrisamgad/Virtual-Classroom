@@ -1,18 +1,40 @@
 import { Form,Button,Container} from "react-bootstrap"
 import {Link} from 'react-router-dom'
 import styles from './Login.module.css'
+import { useState } from "react"
+
 
 const Login = ()=>{
 
+    const [CredentialDetails,setCredentialDetails]= useState({
+        email:'',
+        passsword:''
+    })
+
+    const setEmail = (e)=>{
+        setCredentialDetails({
+            ...CredentialDetails,
+            email:e.target.value
+        })
+    }
+
+    const setPassword = (e)=>{
+        setCredentialDetails({
+            ...CredentialDetails,
+            password:e.target.value
+        })
+    }
+
+    //console.log(CredentialDetails)
     return(
         <div>
             <Container>
             <div className={styles.form_container}> 
                 <Form className={styles.form_styles}>
-                    <p>LOG IN NOW!</p>
+                    <p>LOG IN</p>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Control type="email" placeholder="Enter email" onChange={(e)=>setEmail(e)} />
                         <Form.Text className="text-muted">
                         We'll never share your email with anyone else.
                         </Form.Text>
@@ -20,7 +42,7 @@ const Login = ()=>{
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" />
+                        <Form.Control type="password" placeholder="Password" onChange={(e)=>setPassword(e)} />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicCheckbox">
                         <Form.Check type="checkbox" label="Check me out" />
@@ -28,7 +50,7 @@ const Login = ()=>{
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
-                   <p> <Link to="/createaccount" className={styles.create_account}>Create Account</Link></p>
+                   <p> <Link to="/createaccount" className={styles.create_account}>Create Account for Students</Link></p>
                 </Form>
             </div>
             </Container>

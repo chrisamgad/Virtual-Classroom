@@ -16,8 +16,8 @@
 .LoginLink{
     text-decoration: none !important;
     background-color: #31af36;
-    padding: 7px 35px !important;
-    border-radius: 10px;
+    padding: 8px 40px !important;
+    border-radius: 5px;
     color: #ffffff;
     font-weight: 300 !important;
     transition: background-color 1s ease, border-color 1s ease !important;
