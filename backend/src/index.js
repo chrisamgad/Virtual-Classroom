@@ -5,7 +5,7 @@ const express = require('express')
 const app = express()
 const studentsRouter = require('./routes/student')
 const teachersRouter = require('./routes/teacher')
-
+const assignmentRouter=require('./routes/assignment')
 
 app.use(express.json()) //express.json() automatically recognizes incoming request object as JSON objects ,then parses any incoming JSON to server into javascript Object so we are able to access these incoming messages such as req.body
 app.use(express.urlencoded({ extended: true })); //Express.urlencoded() expects request data to be sent encoded in the URL, usually in strings or arrays:
@@ -21,6 +21,7 @@ const Student = require ('./Models/student')
 
 app.use(studentsRouter)
 app.use(teachersRouter)
+app.use(assignmentRouter)
 
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening at http://localhost:${process.env.PORT}`)

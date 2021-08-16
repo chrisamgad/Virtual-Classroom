@@ -23,6 +23,10 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required:true
     },
+    assignments:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'assignment'
+    }],
     tokens:[{ //tokens is an array of objects, each object contains a token
         token:{
             type:String,
@@ -72,6 +76,6 @@ studentSchema.statics.FindCredentials = async (email,password)=>{
     return student
 }
 
-const Student = mongoose.model("Student", studentSchema);
+const Student = mongoose.model("student", studentSchema);
 
 module.exports = Student;
