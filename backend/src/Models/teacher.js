@@ -1,6 +1,6 @@
 mongoose=require('mongoose')
-
-const studentSchema = new mongoose.Schema({
+import Student from './student'
+const teacherSchema = new mongoose.Schema({
     fullname: {
         type: String,
         required:true
@@ -20,9 +20,13 @@ const studentSchema = new mongoose.Schema({
     role:{ //Teacher or Student
         type: String,
         required:true
+    },
+    StudentsList: {
+        type: Array,
+        ref:'Student'
     }
    });
 
-const Student = mongoose.model("Student", studentSchema);
+const Student = mongoose.model("Teacher", studentSchema);
 
 module.exports = Student;
