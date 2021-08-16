@@ -14,8 +14,8 @@ app.use(express.urlencoded({ extended: true })); //Express.urlencoded() expects 
 app.use(express.static(__dirname + '/../public'));
 const Student = require ('./Models/student')
 
-const student = new Student({ fullname: 'Chris', email:'chrisamgad@yahoo.com',ID:900170819,password:'123',role:'student' });
-student.save()
+// const student = new Student({ fullname: 'Chris', email:'chrisamgad@yahoo.com',ID:900170819,password:'123',role:'student' });
+// student.save()
 
 
 

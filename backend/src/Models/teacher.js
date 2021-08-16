@@ -13,7 +13,7 @@ const teacherSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    ID: {
+    mobilenumber: {
         type: Number,
         required:true
     },
