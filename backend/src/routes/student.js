@@ -11,6 +11,10 @@ router.get('/', (req, res) => {
 
   router.post('/signup', async (req,res)=>{   
     try{
+      const DuplicateSudentFound=await Student.findOne({email:req.body.email})
+      if(DuplicateSudentFound)
+        return res.send('An account already exists with same email').status(500)
+        
       const student=new Student({
         fullname:req.body.fullname,
         email:req.body.email,
@@ -22,7 +26,7 @@ router.get('/', (req, res) => {
       const token=  await student.GenerateAuthToken()
       res.send({student,token}).status(200);
     }catch(e){
-      res.send(e)
+      res.send(e).status(500)
       console.log(e)
     }
   })
@@ -32,12 +36,13 @@ router.get('/', (req, res) => {
       const student= await Student.FindCredentials(req.body.email,req.body.password)
       if (!student)
         {
-          res.send('Incorrect email or password').status(404)
+          return res.send('Incorrect email or password').status(404)
         }
-      else  
-        res.send(student).status(200)
+        
+      res.send(student).status(200)
         
     }catch(e){
+      res.send(e).status(500)
       console.log(e)
       }
   })
