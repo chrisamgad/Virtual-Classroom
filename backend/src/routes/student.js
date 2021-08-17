@@ -49,7 +49,7 @@ router.get('/', (req, res) => {
       else
         next() //next to the function below for student
 
-    }, async function(req,res,next){
+    }, async function(req,res){
         try{
         const student= await Student.FindCredentials(req.body.email,req.body.password)
         if (!student)
@@ -64,6 +64,26 @@ router.get('/', (req, res) => {
         }
   })
 
+  router.post('/logout', StudentAuth(true),async (req,res,next)=>{
+    if(!req.student) //if the request didn't include a student (from StudentAuth)
+      next('route') //go to teachers route to look up for this token(in their TeacherAuth) if found
+    
+    else
+      next()
+  },async function(req,res){
+      try{
+        //Removes the current token from the array of tokens(array of currently logged in sessions)
+        req.student.tokens= req.student.tokens.filter((token)=>{
+            return token.token !== req.token //if token not equal the current token, return it
+        })
+        await req.student.save() //save
+
+        res.send(req.student)
+        
+    }catch(e){
+        res.send(e).status(500)
+    }
+  })
 
   router.get('/student/myprofile',StudentAuth, (req,res)=>{
     try{

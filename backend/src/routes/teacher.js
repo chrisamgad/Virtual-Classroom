@@ -1,5 +1,7 @@
 const express = require('express')
 const Teacher =require('../Models/teacher') 
+const TeacherAuth=require('../middleware/TeacherAuth')
+
 const encrypt = require('../GlobalMethods/encrypt')
 
 var router = express.Router()
@@ -43,4 +45,21 @@ router.post('/login',async(req,res)=>{
     console.log(e)
   }
 })
+
+router.post('/logout', TeacherAuth,async (req,res)=>{
+
+    try{
+      //Removes the current token from the array of tokens(array of currently logged in sessions)
+      req.teacher.tokens= req.teacher.tokens.filter((token)=>{
+          return token.token !== req.token //if token not equal the current token, return it
+      })
+      await req.teacher.save() //save
+
+      res.send(req.teacher)
+      
+  }catch(e){
+      res.send(e).status(500)
+  }
+})
+
 module.exports=router

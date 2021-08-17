@@ -8,6 +8,7 @@ const auth = async (req,res,next)=>{
         const teacher=await Teacher.findOne({_id:decoded._id, 'tokens.token': token}) //1st find the user with the correct ID
                 //2nd arg basically means that we are searching for a token in tokens array that has the token that was generated for every user
                 //In other words, it checks that the token is still stored in the tokens array so that he still gains access once he goes to webapge
+        
         if(!teacher)
             throw new Error('Unauthenticated teacher')
         
