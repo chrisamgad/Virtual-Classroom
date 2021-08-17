@@ -16,6 +16,7 @@ const Studentauth = async (req,res,next)=>{
             //2. add the next() as to continue with the route handling functions
         req.token = token
         req.student =student //Set a teacher property in request to the teacher that we just fetched
+        
         next() //if No Error
 
     }catch(e){

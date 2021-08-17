@@ -1,9 +1,9 @@
 const express = require('express')
 const Student = require('../Models/student')// requiring student model
 const StudentAuth=require('../middleware/StudentAuth')
-const requireRole=require('../middleware/requirerole')
 const encrypt = require('../GlobalMethods/encrypt')
-
+const Teacher = require('../Models/teacher')
+const Studentauth = require('../middleware/StudentAuth')
 
 var router = express.Router()
 
@@ -11,45 +11,43 @@ router.get('/', (req, res) => {
     res.send('Hello Student!')
   })
 
-  router.post('/signup', async (req,res,next)=>{   
+  router.post('/signup', async (req,res)=>{   
     
-      const student=await Student.findOne({email:req.body.email})
-      if(student.role !=='Student')
-        next('route') //go to next route functionality with same endpoint, which is the /signup for teachers routes
-      else
-        next() //next to the function below
-  
-  },async function(req,res){ //2nd arg function in case next() was called above
       try{
-      const DuplicateStudentFound=await Student.findOne({email:req.body.email})
-      if(DuplicateStudentFound)
-        return res.send('An account already exists with same email').status(500)
-        
-      const student=new Student({
-        fullname:req.body.fullname,
-        email:req.body.email,
-        password: await encrypt.encryptPass(req.body.password),
-        mobilenumber:req.body.mobilenumber,
-        role:req.body.role
-      });
-
-
-      await student.save()
-      const token=  await student.GenerateAuthToken()
+        const DuplicateStudentFound=await Student.findOne({email:req.body.email})
+        if(DuplicateStudentFound)
+          return res.send('An account already exists with same email').status(500)
+          
+        const student=new Student({
+          fullname:req.body.fullname,
+          email:req.body.email,
+          password: await encrypt.encryptPass(req.body.password),
+          mobilenumber:req.body.mobilenumber,
+          role:req.body.role
+        });
+        await student.save()
+        const token=  await student.GenerateAuthToken()
       res.send({student,token}).status(200);
-    }catch(e){
-      res.send(e).status(500)
-      console.log(e)
-    }
+      }catch(e){
+        res.send(e).status(500)
+        console.log(e)
+      }
   })
 
   router.post('/login', async (req,res,next)=>{
-    
-      const student= await Student.FindCredentials(req.body.email,req.body.password)
-      if(student.role !=='student')
-        next('route') //go to next route with same endpoint, which is the /login for teachers routes
+      let teacher=undefined; //initially null
+      const student= await Student.FindCredentials(req.body.email,req.body.password) 
+      //console.log(teacher)
+      if (!student) //if no student found search for teacher credentials in teachers collection
+        {
+          teacher= await Teacher.FindCredentials(req.body.email,req.body.password) 
+        }
+      
+      //console.log(teacher)
+      if(teacher) //if teacher was found
+        next('route') //go to next route with same endpoint, which is the /login for teachers routes       
       else
-        next() //next to the function below
+        next() //next to the function below for student
 
     }, async function(req,res,next){
         try{
