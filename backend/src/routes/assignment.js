@@ -14,6 +14,7 @@ const upload = multer({
 
 router.post('/createass',upload.single('Ass'), async (req,res)=>{
     console.log(req.file.buffer)  
+
 })
 
 module.exports=router
