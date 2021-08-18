@@ -67,8 +67,7 @@ studentSchema.statics.FindCredentials = async (email,password)=>{
         email:email
     })
     if(student)
-        {
-            
+        {         
             const verified=await bcrypt.compareSync(password,student.password)
             if(!verified)
                 return undefined

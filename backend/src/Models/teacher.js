@@ -29,10 +29,11 @@ const teacherSchema = new mongoose.Schema({
             required:true
         } 
      }],
-    StudentsList: {
-        type: Array,
-        //ref:'Student'
-    }
+    StudentsList: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'student'
+    }],
+
    },{   //to enable the use of virtual, set virtuals to true in toObject and toJSON as done below
     toObject: {
         virtuals: true
