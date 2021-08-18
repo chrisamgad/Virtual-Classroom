@@ -1,37 +1,48 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:4000/";
+const API_URL = "http://localhost:4000";
 
 class AuthService {
   login(email, password) {
     return axios
-      .post(API_URL + "login", {
+      .post(API_URL + "/login", {
         email,
         password
       })
       .then(response => {
-        // if (response.data.accessToken)
-        // {
-        //    localStorage.setItem("user", JSON.stringify(response.data));
+
         
-        // }
+        if (response.data.token)
+         {
+            localStorage.setItem("user", JSON.stringify(response.data));    //stringify as data is stored as JSON in local storage by nature 
+         }
         console.log(response.data)
         return response;
       }).catch((e)=>console.log(e + 'error was catched')
       );
   }
 
+  register(fullname, email, password, mobilenumber) {
+    return axios.post(API_URL + "/signup", {
+            fullname,
+            email,
+            mobilenumber,
+            password,
+            role: 'student'
+            }).then((response)=>{
+
+                if(response.data.token)
+                    localStorage.setItem("user", JSON.stringify(response.data));   
+                return response
+
+            }).catch((e)=>console.log(e + 'error was catched'))
+
+    }
+
   logout() {
     localStorage.removeItem("user");
   }
-
-  register(username, email, password) {
-    return axios.post(API_URL + "signup", {
-      username,
-      email,
-      password
-    });
-  }
+ 
 
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));;

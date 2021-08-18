@@ -2,6 +2,7 @@ import { Form, Button, Container,InputGroup,FormControl, Alert} from "react-boot
 import React ,{ useState } from "react"
 import styles from './SignUp.module.css'
 import validator from 'validator';
+import AuthService from '../../services/auth.service'
 
 const SignUp = ()=>{
 
@@ -126,15 +127,13 @@ const SignUp = ()=>{
             })
 
         //If we reach this point, validation is succesfull because no false validation was returned
-        return setCredentialValidation({
-            validated:true,
-            error:undefined
-        })
+        AuthService.register(CredentialDetails.fullname,CredentialDetails.email,CredentialDetails.password2,CredentialDetails.mobilenumber)
+        .then((response)=>console.log(response.data))
     }
 
 
-    console.log(CredentialDetails)
-    console.log(CredentialValidation)
+    // console.log(CredentialDetails)
+    // console.log(CredentialValidation)
 
     return(
         <div>

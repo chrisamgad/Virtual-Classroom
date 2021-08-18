@@ -1,7 +1,8 @@
-import { Form,Button,Container} from "react-bootstrap"
+import { Form,Button,Container,Alert} from "react-bootstrap"
 import {Link} from 'react-router-dom'
 import styles from './Login.module.css'
 import { useState } from "react"
+import validator from 'validator'
 import AuthService from '../../services/auth.service'
 
 const Login = ()=>{
@@ -10,6 +11,11 @@ const Login = ()=>{
         email:'',
         passsword:''
     })
+
+    const [CredentialValidation, setCredentialValidation]=useState({
+        validated:true,//initially true
+        error: undefined
+    }) 
 
     const setEmail = (e)=>{
         setCredentialDetails({
@@ -26,11 +32,20 @@ const Login = ()=>{
     }
 
     const handlesubmit = (e)=>{
-        e.preventDefault();
-        console.log('handlesubmit')
-        const response= AuthService.login(CredentialDetails.email, CredentialDetails.password).then((response)=>{
+        e.preventDefault(); //prevents refresh on submit
+
+        if(!validator.isEmail(CredentialDetails.email))
+        {
+           return setCredentialValidation({
+               validated:false,
+               error:'Invalid Email'
+           })
+        }
+        AuthService.login(CredentialDetails.email, CredentialDetails.password).then((response)=>{
             console.log(response.data)
-        })
+        }).catch((e)=>console.log(e))
+
+
     }
 
     //console.log(CredentialDetails)
@@ -58,6 +73,7 @@ const Login = ()=>{
                     <Button variant="primary" onClick={(e)=>handlesubmit(e)}>
                         Submit
                     </Button>
+                    {CredentialValidation.validated ? null : <Alert variant='danger' className={styles.alertStyle}>{CredentialValidation.error}</Alert>}
                    <p> <Link to="/createaccount" className={styles.create_account}>Create Account for Students</Link></p>
                 </Form>
             </div>
