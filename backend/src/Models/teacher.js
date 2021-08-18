@@ -31,7 +31,7 @@ const teacherSchema = new mongoose.Schema({
      }],
     StudentsList: {
         type: Array,
-        ref:'Student'
+        //ref:'Student'
     }
    },{   //to enable the use of virtual, set virtuals to true in toObject and toJSON as done below
     toObject: {

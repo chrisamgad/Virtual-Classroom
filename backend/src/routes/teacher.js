@@ -1,7 +1,7 @@
 const express = require('express')
 const Teacher =require('../Models/teacher') 
 const TeacherAuth=require('../middleware/TeacherAuth')
-
+const Student = require('../Models/student')
 const encrypt = require('../GlobalMethods/encrypt')
 
 var router = express.Router()
@@ -72,6 +72,52 @@ router.get('/myprofile',TeacherAuth, (req,res)=>{
     delete teacher.password;
 
     res.send(teacher).status(200)
+  }catch(e){
+    res.send(e)
+    console.log(e)
+  }
+})
+
+router.post('/addstudent', TeacherAuth,async (req,res)=>{
+  try{
+    const teacher=req.teacher;
+    //res.send(teacher)
+    const student = await Student.findOne({email:req.body.email}) //student email to be input by teacher in front end
+    if(student) //if student was found with this email
+      {
+        //console.log(teacher.StudentsList[5].email)
+        let teacherStudentsList=teacher.StudentsList;
+        if (teacherStudentsList.length !== 0 ) {//if teacherStudentList size is more than 0
+          //check if email is alredy there in studentsList
+          let containsDuplicateEmail = teacherStudentsList.some( student =>{
+            //console.log(student)
+            return student['email'] === req.body.email
+          })
+        
+          console.log(containsDuplicateEmail) 
+          if(containsDuplicateEmail) //if email was found in StudentsList
+          {
+            console.log('email already found in students list')
+            res.send('This student is already found in your students list')
+          }
+        
+          else{//if email was not found in StudentsList
+            teacher.StudentsList.push(student)
+            await teacher.save()
+            console.log('student added to list')
+            res.send(teacher)
+          }
+        }
+        else{//if teacherStudentsList didnt exist or has no elements yet
+          teacher.StudentsList.push(student)
+          await teacher.save()
+          console.log('student added to list')
+          res.send(teacher)
+        }
+        //console.log(teacher.StudentsList)
+      }
+    else
+      res.send('No student with this email')
   }catch(e){
     res.send(e)
     console.log(e)
