@@ -94,7 +94,7 @@ router.post('/addstudent', TeacherAuth,async (req,res)=>{
             return student['email'] === req.body.email
           })
         
-          console.log(containsDuplicateEmail) 
+          //console.log(containsDuplicateEmail) 
           if(containsDuplicateEmail) //if email was found in StudentsList
           {
             console.log('email already found in students list')
@@ -123,5 +123,31 @@ router.post('/addstudent', TeacherAuth,async (req,res)=>{
     console.log(e)
   }
 })
+
+router.patch('/removestudent', TeacherAuth,async (req,res)=>{
+  try{
+    
+    const teacherStudentsList= req.teacher.StudentsList;
+    if(teacherStudentsList.length>0)
+    {
+      const newteacherStudentsList=teacherStudentsList.filter((student)=>{
+        return (student.email !== req.body.email )
+      })
+      
+      req.teacher.StudentsList=newteacherStudentsList; //update new StudentsList in the teacher model
+      await req.teacher.save()
+      // console.log(req.teacher)
+      res.send(req.teacher).status(200)
+    }
+    else{
+      console.log('No students in StudentsList array')
+      res.send('There are no students to remove').status(500)
+    }
+    
+  }catch(e){
+
+  }
+})
+
 
 module.exports=router
