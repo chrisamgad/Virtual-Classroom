@@ -150,5 +150,18 @@ router.patch('/removestudent', TeacherAuth,async (req,res)=>{
   }
 })
 
+router.get('/getstudentslist', TeacherAuth,async(req,res)=>{
+  await Teacher.
+    findOne({email: req.teacher.email}).
+    populate('StudentsList').
+    exec(function (err, teacher) {
+      if (err) return handleError(err);
+      console.log(teacher.StudentsList);
+      res.send(teacher.StudentsList)
+      // prints "The author is Ian Fleming"
+    });
+
+})
+
 
 module.exports=router
