@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const Student=require('../Models/student')
 const Teacher=require('../Models/teacher')
 
-const Studentauth = (LogoutFlag)=>{
+const Studentauth = (CommonRoute)=>{
     //console.log(LogoutFlag)
     
     return async (req,res,next)=>{ //This is middleware
@@ -18,25 +18,25 @@ const Studentauth = (LogoutFlag)=>{
                 const decoded2= jwt.verify(token,process.env.JWT_SECRET) //decode the token if decoded successfully using the 2nd arg(secret key)
                 const teacher=await Teacher.findOne({_id:decoded2._id, 'tokens.token': token}) //1st find the user with the correct ID
                 
-                if (teacher && LogoutFlag) 
+                if (teacher && CommonRoute) 
                         {   //console.log('next')
-                            return next()
+                            return next('route')
                         }
+                else
+                    throw new Error()
                     
             }
 
-            if(!student || student.role!=='student')
-                {  
-                    throw new Error()
-                }
-            
-            //By reaching this point, there is no error thrown so we do 2 things
+            else{ //else a student was found with the token in header
+                //By reaching this point, there is no error thrown so we do 2 things
                 //1. set a user property in request such that it can be accessed by other route handlers
                 //2. add the next() as to continue with the route handling functions
-            req.token = token
-            req.student =student //Set a teacher property in request to the teacher that we just fetched
+                req.token = token
+                req.student =student //Set a teacher property in request to the teacher that we just fetched
+                
+                next() //if No Error
+            }
             
-            next() //if No Error
 
         }catch(e){
             res.status(401).send({error:'Please authenticate!!'})

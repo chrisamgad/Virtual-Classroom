@@ -37,17 +37,17 @@ router.get('/', (req, res) => {
   router.post('/login', async (req,res,next)=>{
       let teacher=undefined; //initially null
       const student= await Student.FindCredentials(req.body.email,req.body.password) 
-      //console.log(teacher)
-      if (!student) //if no student found search for teacher credentials in teachers collection
+      if (!student) //if no student was found, search for teacher credentials in teachers collection
         {
           teacher= await Teacher.FindCredentials(req.body.email,req.body.password) 
-        }
-      
-      //console.log(teacher)
-      if(teacher) //if teacher was found
-        next('route') //go to next route with same endpoint, which is the /login for teachers routes       
+          //console.log(teacher)
+          if(teacher) //if teacher was found
+            next('route') //go to next route with same endpoint, which is the /login for teachers routes  
+          else //no teacher and student was found 
+            return res.send('Incorrect email or password').status(404)
+        }  
       else
-        next() //next to the function below for student
+        next() //next to the function below for student to handle student login
 
     }, async function(req,res){
         try{
@@ -64,13 +64,7 @@ router.get('/', (req, res) => {
         }
   })
 
-  router.post('/logout', StudentAuth(true),async (req,res,next)=>{
-    if(!req.student) //if the request didn't include a student (from StudentAuth)
-      next('route') //go to teachers route to look up for this token(in their TeacherAuth) if found
-    
-    else
-      next()
-  },async function(req,res){
+  router.post('/logout', StudentAuth(true),async function(req,res){
       try{
         //Removes the current token from the array of tokens(array of currently logged in sessions)
         req.student.tokens= req.student.tokens.filter((token)=>{
