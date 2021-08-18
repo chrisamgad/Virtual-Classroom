@@ -6,7 +6,7 @@ import OurStory from './pages/OurStory/OurStory'
 import ContactUs from './pages/ContactUs/ContactUs'
 import Login from './pages/Login/Login'
 import SignUp from "./pages/SignUp/SignUp";
-
+import Profile from './pages/Profile/Profile'
 import './App.css';
 
 
@@ -26,6 +26,9 @@ function App() {
           </Route>
           <Route path="/createaccount">
             <SignUp />
+          </Route>
+          <Route path="/myprofile">
+            <Profile />
           </Route>
           <Route path="/">
             <Home />

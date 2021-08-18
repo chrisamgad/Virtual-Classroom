@@ -3,8 +3,9 @@ import React ,{ useState } from "react"
 import styles from './SignUp.module.css'
 import validator from 'validator';
 import AuthService from '../../services/auth.service'
+import {withRouter} from 'react-router'
 
-const SignUp = ()=>{
+const SignUp = (props)=>{
 
 
     const [CredentialDetails, setCredentialDetails] = useState({
@@ -128,7 +129,10 @@ const SignUp = ()=>{
 
         //If we reach this point, validation is succesfull because no false validation was returned
         AuthService.register(CredentialDetails.fullname,CredentialDetails.email,CredentialDetails.password2,CredentialDetails.mobilenumber)
-        .then((response)=>console.log(response.data))
+        .then((response)=>{
+            console.log(response.data)
+            props.history.push('/myprofile')
+        })
     }
 
 
@@ -185,4 +189,4 @@ const SignUp = ()=>{
     )
 }
 
-export default SignUp
+export default withRouter(SignUp)

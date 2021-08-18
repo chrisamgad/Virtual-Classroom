@@ -1,11 +1,13 @@
 import { Form,Button,Container,Alert} from "react-bootstrap"
 import {Link} from 'react-router-dom'
+import { withRouter } from "react-router";
 import styles from './Login.module.css'
 import { useState } from "react"
 import validator from 'validator'
 import AuthService from '../../services/auth.service'
 
-const Login = ()=>{
+const Login = (props)=>{
+
 
     const [CredentialDetails,setCredentialDetails]= useState({
         email:'',
@@ -42,7 +44,11 @@ const Login = ()=>{
            })
         }
         AuthService.login(CredentialDetails.email, CredentialDetails.password).then((response)=>{
-            console.log(response.data)
+            //console.log(response.data)
+            if(response.data.token)
+                props.history.push('/myprofile') // redirect to /myprofile if logged in successfully
+            else if(response.data.error)
+                console.log(response.data.error) // if insuccessfully logged in, console.log the error message
         }).catch((e)=>console.log(e))
 
 
@@ -82,4 +88,4 @@ const Login = ()=>{
     )
 }
 
-export default Login
+export default withRouter(Login)
