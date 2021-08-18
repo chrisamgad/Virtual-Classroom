@@ -62,4 +62,20 @@ router.post('/logout', TeacherAuth,async (req,res)=>{
   }
 })
 
+router.get('/myprofile',TeacherAuth, (req,res)=>{
+  try{
+    
+    let teacher= ({...req.teacher}._doc);
+    
+    //exclude tokens array and password to be sent to user for better security
+    delete teacher.tokens;
+    delete teacher.password;
+
+    res.send(teacher).status(200)
+  }catch(e){
+    res.send(e)
+    console.log(e)
+  }
+})
+
 module.exports=router

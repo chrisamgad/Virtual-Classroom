@@ -79,16 +79,17 @@ router.get('/', (req, res) => {
     }
   })
 
-  router.get('/student/myprofile',StudentAuth, (req,res)=>{
+  router.get('/myprofile',StudentAuth(true), (req,res)=>{
     try{
       
       let student= ({...req.student}._doc);
-        
+  
       //exclude tokens array and password to be sent to user for better security
       delete student.tokens;
       delete student.password;
-
+    
       res.send(student).status(200)
+      
     }catch(e){
       res.send(e)
       console.log(e)
