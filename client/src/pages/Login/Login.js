@@ -2,7 +2,7 @@ import { Form,Button,Container} from "react-bootstrap"
 import {Link} from 'react-router-dom'
 import styles from './Login.module.css'
 import { useState } from "react"
-
+import AuthService from '../../services/auth.service'
 
 const Login = ()=>{
 
@@ -22,6 +22,14 @@ const Login = ()=>{
         setCredentialDetails({
             ...CredentialDetails,
             password:e.target.value
+        })
+    }
+
+    const handlesubmit = (e)=>{
+        e.preventDefault();
+        console.log('handlesubmit')
+        const response= AuthService.login(CredentialDetails.email, CredentialDetails.password).then((response)=>{
+            console.log(response.data)
         })
     }
 
@@ -47,7 +55,7 @@ const Login = ()=>{
                     <Form.Group className="mb-3" controlId="formBasicCheckbox">
                         <Form.Check type="checkbox" label="Check me out" />
                     </Form.Group>
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" onClick={(e)=>handlesubmit(e)}>
                         Submit
                     </Button>
                    <p> <Link to="/createaccount" className={styles.create_account}>Create Account for Students</Link></p>

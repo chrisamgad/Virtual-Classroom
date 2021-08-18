@@ -8,6 +8,9 @@ const studentsRouter = require('./routes/student')
 const teachersRouter = require('./routes/teacher')
 const assignmentRouter=require('./routes/assignment')
 
+var cors = require('cors')
+app.use(cors())
+
 app.use(express.json()) //express.json() automatically recognizes incoming request object as JSON objects ,then parses any incoming JSON to server into javascript Object so we are able to access these incoming messages such as req.body
 app.use(express.urlencoded({ extended: true })); //Express.urlencoded() expects request data to be sent encoded in the URL, usually in strings or arrays:
                                                 //In other words, handles application/x-www-form-urlencoded

@@ -3,7 +3,6 @@ const Student = require('../Models/student')// requiring student model
 const StudentAuth=require('../middleware/StudentAuth')
 const encrypt = require('../GlobalMethods/encrypt')
 const Teacher = require('../Models/teacher')
-const Studentauth = require('../middleware/StudentAuth')
 
 var router = express.Router()
 
@@ -44,7 +43,7 @@ router.get('/', (req, res) => {
           if(teacher) //if teacher was found
             next('route') //go to next route with same endpoint, which is the /login for teachers routes  
           else //no teacher and student was found 
-            return res.send('Incorrect email or password').status(404)
+            return res.send({error: 'Incorrect email or password'}).status(404)
         }  
       else
         next() //next to the function below for student to handle student login
@@ -53,7 +52,7 @@ router.get('/', (req, res) => {
         try{
         const student= await Student.FindCredentials(req.body.email,req.body.password)
         if (!student)
-            return res.send('Incorrect email or password').status(404)
+            return res.send({error: 'Incorrect email or password'}).status(404)
         
         const token=  await student.GenerateAuthToken()
         res.send({student,token}).status(200)
