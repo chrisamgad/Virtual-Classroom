@@ -12,7 +12,7 @@ const Studentauth = (CommonRoute)=>{
         try{
             
             const token =req.header('Authorization').replace('Bearer ', '') //replace Bearer  with nothing to extract the token
-            
+            console.log(token)
             const decoded= jwt.verify(token,process.env.JWT_SECRET) //decode the token if decoded successfully using the 2nd arg(secret key)
             const student=await Student.findOne({_id:decoded._id, 'tokens.token': token}) //1st find the user with the correct ID
                     //2nd arg basically means that we are searching for a token in tokens array that has the token that was generated for every user
@@ -29,7 +29,8 @@ const Studentauth = (CommonRoute)=>{
                             //console.log('test')
                         }
                 else
-                    throw new Error()
+                    throw new Error('please authenticate')
+                    
                     
             }
 
@@ -43,11 +44,12 @@ const Studentauth = (CommonRoute)=>{
                 
                 next() //if No Error
             }
-            
 
-        }catch(e){
+        }
+        catch(e){
+            res.status(401).send({message:'Please authenticate'})
+
             
-            res.status(401).send({error:'Please authenticate!!'})
         }
     } 
 }
