@@ -11,7 +11,6 @@ class AuthService {
       })
       .then(response => {
 
-        
         if (response.data.token)
          {
             localStorage.setItem("user", JSON.stringify(response.data));    //stringify as data is stored as JSON in local storage by nature 
@@ -39,14 +38,14 @@ class AuthService {
 
     }
 
-  logout() {
+  logout() {//lesa kamelha (lazem te remove eltoken from server)
     localStorage.removeItem("user");
   }
  
 
-  getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user'));;
-  }
+//   getCurrentUser() { //this is not good because localstorage doesnt have expiration date so it can stay there for ever
+//     return JSON.parse(localStorage.getItem('user'));;
+//   }
 }
 
 export default new AuthService();

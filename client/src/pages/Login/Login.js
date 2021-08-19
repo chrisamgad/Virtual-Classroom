@@ -49,7 +49,7 @@ const Login = (props)=>{
                 props.history.push('/myprofile') // redirect to /myprofile if logged in successfully
             else if(response.data.error)
                 console.log(response.data.error) // if insuccessfully logged in, console.log the error message
-        }).catch((e)=>console.log(e))
+        })
 
 
     }

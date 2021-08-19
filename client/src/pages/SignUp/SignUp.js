@@ -131,7 +131,7 @@ const SignUp = (props)=>{
         AuthService.register(CredentialDetails.fullname,CredentialDetails.email,CredentialDetails.password2,CredentialDetails.mobilenumber)
         .then((response)=>{
             console.log(response.data)
-            props.history.push('/myprofile')
+            props.history.push(`/setavatar/${response.data.student._id}`)
         })
     }
 
