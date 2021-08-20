@@ -2,6 +2,7 @@ const express = require('express')
 const Teacher =require('../Models/teacher') 
 const TeacherAuth=require('../middleware/TeacherAuth')
 const Student = require('../Models/student')
+const Course = require('../Models/course')
 const encrypt = require('../GlobalMethods/encrypt')
 
 var router = express.Router()
@@ -78,49 +79,114 @@ router.get('/myprofile',TeacherAuth, (req,res)=>{
   }
 })
 
-router.post('/addstudent', TeacherAuth,async (req,res)=>{
+
+
+router.post('/teacher/createcourse',TeacherAuth,async(req,res)=>{
   try{
-    const teacher=req.teacher;
-    //res.send(teacher)
-    const student = await Student.findOne({email:req.body.email}) //student email to be input by teacher in front end
-    if(student) //if student was found with this email
-      {
-        //console.log(teacher.StudentsList[5].email)
-        let teacherStudentsList=teacher.StudentsList;
-        if (teacherStudentsList.length !== 0 ) {//if teacherStudentList size is more than 0
-          //check if email is alredy there in studentsList
-          let containsDuplicateID = teacherStudentsList.some( teacher_student_id =>{
-            return teacher_student_id.toString() === student._id.toString()
-          })
-        
-          //console.log(containsDuplicateID) 
-          if(containsDuplicateID) //if email was found in StudentsList
-          {
-            console.log('email already found in students list')
-            res.send('This student is already found in your students list')
-          }
-        
-          else{//if email was not found in StudentsList
-            //console.log(student._id)
-            teacher.StudentsList.push(student._id)
-            await teacher.save()
-           // console.log('student added to list')
-            res.send(teacher)
-          }
-        }
-        else{//if teacherStudentsList didnt exist or has no elements yet
-          teacher.StudentsList.push(student._id)
-          await teacher.save()
-          //console.log('student added to list')
-          res.send(teacher)
-        }
-        //console.log(teacher.StudentsList)
-      }
-    else
-      res.send('No student with this email')
+      const course= new Course({
+          name:req.body.name,
+          instructor:req.teacher._id
+      })
+      //console.log(course._id)
+      req.teacher.CoursesList.push(course._id)
+      await req.teacher.save()
+      await course.save()
+      res.send(course)
+
   }catch(e){
-    res.send(e)
+      console.log(e)
+      res.status(500).send(e)
+  }
+})
+
+router.get('/teacher/getmycourses',TeacherAuth,async(req,res)=>{
+    try{
+      const teacher=req.teacher;
+      
+      Teacher.findOne({email:teacher.email}) //send the CoursesList array to frontend that the teacher authenticated with this email has
+        .populate('CoursesList')
+        .exec(function(err,teacher){
+          if(teacher)
+            res.status(200).send(teacher.CoursesList)
+          else
+            throw new Error(err);
+        })
+      
+    }catch(e){
+      console.log(e)
+      res.status(500).send(e)
+    }
+})
+
+router.get('/teacher/getmycourse/:id',TeacherAuth,async(req,res)=>{
+  try{
+    const courseID=req.params.id
+
+    const teacher=req.teacher;
+    Teacher.findOne({email:teacher.email}) //send the CoursesList array to frontend that the teacher authenticated with this email has
+      .populate('CoursesList')
+      .exec(function(err,teacher){
+        if(teacher)
+        {
+            const course=  Course.findById(courseID).then((course)=>{
+              if(course)
+                res.status(200).send(course)
+              else
+                throw new Error('no course found with this ID')
+            }).catch((e)=>{
+              console.log(e)
+              res.status(404).send(e)
+            })
+        }
+          
+        else
+          throw new Error(err);
+      })
+    
+  }catch(e){
     console.log(e)
+    res.status(500).send(e)
+  }
+})
+
+router.patch('/teacher/removecourse/:id',TeacherAuth, async(req,res)=>{
+  try{
+    
+    const teacher=req.teacher
+    const InitialCoursesList=await Course.find({instructor:teacher._id}) //send the CoursesList array to frontend that the teacher authenticated with this email has
+    console.log(InitialCoursesList.length)
+    const UpdatedCoursesIDList = InitialCoursesList.filter((course)=>{
+      if(course._id.toString() !== req.params.id.toString())  
+          return true
+        
+      else //if id matches the id of the course we want to delete
+        {
+          // console.log(course._id.toString())
+          // console.log('req.params.id is '+req.params.id.toString())
+          Course.findByIdAndDelete(req.params.id).then((course))
+          return false
+        }
+    })
+    .map((course)=>{
+      return course._id
+    })
+
+    //console.log(UpdatedCoursesIDList.length) 
+
+    if(UpdatedCoursesIDList.length === InitialCoursesList.length)
+      {
+        throw new Error('ID of course was not found')
+      }
+    else{
+      teacher.CoursesList=UpdatedCoursesIDList; //update the courses list in the teacher
+      await teacher.save()//save the new teacher
+      res.send(teacher.CoursesList)
+    }
+
+
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e)
   }
 })
 

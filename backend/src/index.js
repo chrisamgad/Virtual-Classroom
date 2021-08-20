@@ -7,6 +7,7 @@ const app = express()
 const studentsRouter = require('./routes/student')
 const teachersRouter = require('./routes/teacher')
 const assignmentRouter=require('./routes/assignment')
+const courseRouter =require('./routes/course')
 
 var cors = require('cors')
 app.use(cors())
@@ -27,7 +28,7 @@ const Teacher = require('./Models/teacher')
 app.use(studentsRouter)
 app.use(teachersRouter)
 app.use(assignmentRouter)
-
+app.use(courseRouter)
 // Student.find().then((student)=>{
 //   console.log(student)
 // })

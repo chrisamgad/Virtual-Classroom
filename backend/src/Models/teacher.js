@@ -23,17 +23,20 @@ const teacherSchema = new mongoose.Schema({
         type: String,
         required:true
     },
+    CoursesList:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'course'
+    }],
+    StudentsList: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'student'
+    }],
     tokens:[{ //tokens is an array of objects, each object contains a token
         token:{
             type:String,
             required:true
         } 
-     }],
-    StudentsList: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:'student'
-    }],
-
+     }]
    },{   //to enable the use of virtual, set virtuals to true in toObject and toJSON as done below
     toObject: {
         virtuals: true
@@ -71,6 +74,6 @@ teacherSchema.statics.FindCredentials = async (email,password)=>{
 }
 
 
-const Teacher = mongoose.model("Teacher", teacherSchema);
+const Teacher = mongoose.model("teacher", teacherSchema);
 
 module.exports = Teacher;
