@@ -27,10 +27,6 @@ const teacherSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'course'
     }],
-    StudentsList: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:'student'
-    }],
     tokens:[{ //tokens is an array of objects, each object contains a token
         token:{
             type:String,

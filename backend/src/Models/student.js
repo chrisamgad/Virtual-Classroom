@@ -30,6 +30,10 @@ const studentSchema = new mongoose.Schema({
     avatar:{
         type:Buffer
     },
+    CoursesList:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'course'
+    }],
     tokens:[{ //tokens is an array of objects, each object contains a token
         token:{
             type:String,

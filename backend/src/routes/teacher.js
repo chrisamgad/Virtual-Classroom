@@ -190,6 +190,47 @@ router.patch('/teacher/removecourse/:id',TeacherAuth, async(req,res)=>{
   }
 })
 
+router.post('/teacher/addstudent', TeacherAuth,async (req,res)=>{
+  try{
+
+    const teacher=req.teacher;
+    //res.send(teacher)
+    const student = await Student.findOne({email:req.body.email}) //student email to be input by teacher in front end
+   //courseid to be sent by frontend
+    if(student) //if student was found with this email
+      { 
+        const StudentAlreadyEnrolledInCourse= student.CoursesList.some((courseID)=>{
+          return(courseID.toString() === req.body._id)
+            
+        })
+        //console.log(StudentAlreadyEnrolledInCourse)
+        if(StudentAlreadyEnrolledInCourse)
+          throw new Error('Student already is enrolled in this course')
+
+        const courseFoundInTeacher=  teacher.CoursesList.some((courseID)=>{
+          return (courseID.toString() === req.body._id)
+        })
+        if(!courseFoundInTeacher)
+          throw new Error('No course with this ID')
+      
+        const course= await Course.findById(req.body._id)
+        course.studentsList.push(student._id)// add student to course studentlist
+        //console.log(course)
+        await course.save()
+
+        student.CoursesList.push(course._id)//add course to student coursesList
+        await student.save()
+        res.send(student)
+    }
+    else
+      res.status(404).send('No student with this email')
+  }catch(e){
+    res.status(500).send(e)
+    console.log(e)
+  }
+})
+
+
 router.patch('/removestudent', TeacherAuth,async (req,res)=>{
   try{
 
