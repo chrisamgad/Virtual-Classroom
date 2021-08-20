@@ -192,7 +192,7 @@ router.patch('/teacher/removecourse/:id',TeacherAuth, async(req,res)=>{
 
 router.post('/teacher/addstudent', TeacherAuth,async (req,res)=>{
   try{
-
+  //takes in from client req.body._id --> course id and req.body.email--> student email
     const teacher=req.teacher;
     //res.send(teacher)
     const student = await Student.findOne({email:req.body.email}) //student email to be input by teacher in front end
@@ -231,35 +231,69 @@ router.post('/teacher/addstudent', TeacherAuth,async (req,res)=>{
 })
 
 
-router.patch('/removestudent', TeacherAuth,async (req,res)=>{
+router.patch('/teacher/removestudent', TeacherAuth,async (req,res)=>{
   try{
-
+    //takes in from client req.body._id --> course id and req.body.email--> student email
+    const teacher=req.teacher;
     const student = await Student.findOne({email:req.body.email}) //student email to be input by teacher in front end
-    const teacherStudentsList= req.teacher.StudentsList;
-    if(teacherStudentsList.length>0)
-    {
-      const newteacherStudentsList=teacherStudentsList.filter((teacher_student_id)=>{
-        return (teacher_student_id.toString() !== student._id.toString() )
+    //const courseID=req.body._id;
+    if(student)
+    {   
+      const courseIDFoundInTeacherCourses=  teacher.CoursesList.some((courseID)=>{
+        return (courseID.toString() === req.body._id)
       })
       
-      req.teacher.StudentsList=newteacherStudentsList; //update new StudentsList in the teacher model
-      await req.teacher.save()
-      // console.log(req.teacher)
-      res.send(req.teacher).status(200)
+      if(!courseIDFoundInTeacherCourses)
+        throw new Error('No course with this ID')
+
+      const courseIDFoundInStudents=  student.CoursesList.some((courseID)=>{
+        return (courseID.toString() === req.body._id)
+      })
+      //console.log(courseIDFoundInStudents)
+      
+      
+      if(!courseIDFoundInStudents)
+        throw new Error('Student isnt enrolled already in this course')
+
+      
+      //remove student from course Model
+      await Course.findById(req.body._id)
+        .populate('studentsList')
+        .exec(function(err,course){
+          if (err) 
+            return handleError(err);
+          //console.log(student.studentsList)
+          const NewstudentsArr=course.studentsList.filter((Student)=>{
+            return (Student.email !== req.body.email)
+          })
+          course.studentsList=NewstudentsArr
+          course.save().then((course)).catch((e)=>console.log(e))
+          //console.log(course)
+        })
+
+      //remove course from student model
+      const updatedCoursesList= student.CoursesList.filter((courseID)=>{
+        return(courseID.toString() !==req.body._id)
+      })
+      //console.log(updatedCoursesList)
+      student.CoursesList=updatedCoursesList
+      await student.save()
+
+      res.send(student)
+  
     }
-    else{
-     // console.log('No students in StudentsList array')
-      res.send('There are no students to remove').status(500)
-    }
+    else
+      res.status(404).send('No student with this email')
     
   }catch(e){
-
+    console.log(e)
+    res.status(500).send(e)
   }
 })
 
 router.get('/getstudentslist', TeacherAuth,async(req,res)=>{
   await Teacher.
-    findOne({email: req.teacher.email}). //find the teacher email that we want to populate the StudenstList of
+    findOne({email: req.teacher.email}). //find the teacher email that we want to populate the StudentsList of
     populate('StudentsList').
     exec(function (err, teacher) {
       if (err) return handleError(err);
