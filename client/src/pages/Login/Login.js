@@ -46,12 +46,10 @@ const Login = (props)=>{
         AuthService.login(CredentialDetails.email, CredentialDetails.password).then((response)=>{
             //console.log(response.data)
             if(response.data.token)
-                props.history.push('/myprofile') // redirect to /myprofile if logged in successfully
+                props.history.push('/dashboard') // redirect to /myprofile if logged in successfully
             else if(response.data.error)
                 console.log(response.data.error) // if insuccessfully logged in, console.log the error message
         })
-
-
     }
 
     //console.log(CredentialDetails)
@@ -72,9 +70,6 @@ const Login = (props)=>{
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" placeholder="Password" onChange={(e)=>setPassword(e)} />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                        <Form.Check type="checkbox" label="Check me out" />
                     </Form.Group>
                     <Button variant="primary" onClick={(e)=>handlesubmit(e)}>
                         Submit

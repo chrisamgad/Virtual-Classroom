@@ -1,0 +1,28 @@
+.NavContainer{
+    background: #f8f8f8;  /* fallback for old browsers */
+    display:flex !important;
+    align-items: center !important ;
+    /*border-radius: 5px;*/
+}
+
+.NavLink{
+
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    width: 100%;
+   /* background-color: red; */
+}
+
+.NavLink:hover{
+
+   
+    background-color: #31af36; 
+    color:white !important;
+}
+
+.brand{
+    margin:0 auto !important;
+    margin-top:30px !important;
+}

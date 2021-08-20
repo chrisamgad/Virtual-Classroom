@@ -9,6 +9,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import Profile from './pages/Profile/Profile'
 import SetAvatar from "./pages/SetAvatar/SetAvatar";
 import './App.css';
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
           </Route>
           <Route path="/setavatar">
             <SetAvatar />
+          </Route>
+          <Route path="/dashboard">
+            <Dashboard />
           </Route>
           <Route path="/">
             <Home />
