@@ -1,5 +1,6 @@
 import React from "react";
 import {Nav} from "react-bootstrap";
+import {Link} from 'react-router-dom'
 import { withRouter } from "react-router";
 import styles from './Sidebar.module.css'
 
@@ -19,12 +20,12 @@ const Side = props => {
                 className={styles.brand}
             /> 
             
-            <Nav.Link className={styles.NavLink} href="#home">Home</Nav.Link>
-            <Nav.Link className={styles.NavLink} href="#link">Courses</Nav.Link>
-            <Nav.Link className={styles.NavLink} href="#home">Assignments</Nav.Link>
-            <Nav.Link className={styles.NavLink} href="#link">Grades</Nav.Link>
-            <Nav.Link className={styles.NavLink} href="#link">My Profile</Nav.Link>
-            <Nav.Link className={styles.NavLink} href="#link">Settings</Nav.Link>  
+            <Nav.Link className={styles.NavLink} as={Link} to="/dashboard/home">Home</Nav.Link>
+            <Nav.Link className={styles.NavLink} as={Link} to="/dashboard/mycourses">Courses</Nav.Link>
+            <Nav.Link className={styles.NavLink} as={Link} to="/dashboard/announcments">Announcments</Nav.Link>
+            <Nav.Link className={styles.NavLink} as={Link} to="/dashboard/mygrades" >Grades</Nav.Link>
+            <Nav.Link className={styles.NavLink} as={Link} to="/dashboard/myprofile">My Profile</Nav.Link>
+            <Nav.Link className={styles.NavLink} as={Link} to="/dashboard/settings">Settings</Nav.Link>  
       
         </Nav>
           

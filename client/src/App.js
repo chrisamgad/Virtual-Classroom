@@ -10,13 +10,16 @@ import Profile from './pages/Profile/Profile'
 import SetAvatar from "./pages/SetAvatar/SetAvatar";
 import './App.css';
 import Dashboard from "./pages/Dashboard/Dashboard";
-
+import MyCourses from "./components/MyCourses/MyCourses";
 
 function App() {
   return (
     <div>
       <MainNavigation/>
       <Switch>
+      <Route path="/" exact>
+            <Home />
+          </Route> 
           <Route path="/ourstory">
             <OurStory />
           </Route>
@@ -35,12 +38,10 @@ function App() {
           <Route path="/setavatar">
             <SetAvatar />
           </Route>
-          <Route path="/dashboard">
+          <Route path="/dashboard" >
             <Dashboard />
           </Route>
-          <Route path="/">
-            <Home />
-          </Route>
+
         </Switch>
     </div>
   );
