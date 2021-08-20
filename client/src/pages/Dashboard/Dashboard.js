@@ -9,12 +9,6 @@ import MyCourses from "../../components/MyCourses/MyCourses";
 
 const Dash = props => {
    
-    //const [currentcomponent,setcurrentcomponent]=useState(<MyCourses/>)
-    const ReturnComponent=()=>{
-        let component =<MyCourses/>
-
-        return component
-    }
 
     return (
         <div>

@@ -46,7 +46,7 @@ const Login = (props)=>{
         AuthService.login(CredentialDetails.email, CredentialDetails.password).then((response)=>{
             //console.log(response.data)
             if(response.data.token)
-                props.history.push('/dashboard') // redirect to /myprofile if logged in successfully
+                props.history.push('/dashboard/home') // redirect to /myprofile if logged in successfully
             else if(response.data.error)
                 console.log(response.data.error) // if insuccessfully logged in, console.log the error message
         })
