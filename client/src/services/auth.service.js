@@ -43,9 +43,9 @@ class AuthService {
   }
  
 
-//   getCurrentUser() { //this is not good because localstorage doesnt have expiration date so it can stay there for ever
-//     return JSON.parse(localStorage.getItem('user'));;
-//   }
+  getCurrentUser() { //this is not good because localstorage doesnt have expiration date so it can stay there for ever
+    return JSON.parse(localStorage.getItem('user'));
+  }
 }
 
 export default new AuthService();

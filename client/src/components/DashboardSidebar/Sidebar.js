@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React,{useEffect, useLayoutEffect, useState} from "react";
 import {Nav} from "react-bootstrap";
 import {Link} from 'react-router-dom'
 import styles from './Sidebar.module.css'
@@ -14,7 +14,12 @@ const Sidebar = () => {
         settingsComp:false
     })
 
-    const [resetstyles,setresetstyles]=useState(false)
+    useEffect(()=>{
+        setcomponentstyles({
+            ...componentstyles,
+            homeComp:true
+        });
+    },[])
 
     const setCurrentLink= (current_component)=>{
 

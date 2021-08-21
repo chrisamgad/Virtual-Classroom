@@ -1,6 +1,6 @@
 import axios from 'axios'
 import authHeader from './auth-header'
-
+import AuthService from './auth.service'
 
 const API_URL = "http://localhost:4000";
 class StudentService {
@@ -36,6 +36,31 @@ class StudentService {
         }) //malhash lazma w msh shaghala
     }
  
+    async getCourses(){
+      if(AuthService.getCurrentUser().student)
+      {
+        const response=await axios.get(
+          API_URL +'/student/getmycourses',
+          {
+            headers: authHeader()
+          }
+        )
+        return response
+
+      }
+      else if (AuthService.getCurrentUser().teacher)
+      {
+        const response= await axios.get(
+          API_URL +'/teacher/getmycourses',           
+          {
+            headers: authHeader()
+          }
+        )
+        return response
+      }
+
+    }
+
     uploadAvatar(data){
       console.log(data)
       return axios.post(
