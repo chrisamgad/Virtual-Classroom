@@ -1,7 +1,7 @@
 import React,{useEffect, useState,useContext} from 'react'
 import Studentservice from '../../services/student-data-service'
 import Course from './Course/Course'
-import authService from '../../services/auth.service'
+
 import styles from './MyCourses.module.css'
 import AuthenticatedContext from '../../Contexts/AuthenticatedContext'
 const MyCourses =()=>{
@@ -35,7 +35,7 @@ const MyCourses =()=>{
             })
         }
 
-        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
    

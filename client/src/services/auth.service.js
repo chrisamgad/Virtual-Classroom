@@ -1,8 +1,10 @@
-import axios from "axios";
 
+import axios from "axios";
+import authHeader from "./auth-header";
 const API_URL = "http://localhost:4000";
 
 class AuthService {
+
   login(email, password) {
     return axios
       .post(API_URL + "/login", {
@@ -39,7 +41,23 @@ class AuthService {
     }
 
   logout() {//lesa kamelha (lazem te remove eltoken from server)
-    localStorage.removeItem("user");
+
+    
+    
+    //console.log(authHeader())
+    return axios.post(API_URL + "/logout",undefined,
+      {
+        headers:authHeader()
+      })
+      .then(res=>{
+        localStorage.removeItem("user");
+        console.log(res.data)
+        return res
+      }).catch(e=>{throw new Error(e)})
+
+  
+     
+    
   }
  
 
@@ -48,4 +66,4 @@ class AuthService {
   }
 }
 
-export default new AuthService();
+export default  new AuthService();

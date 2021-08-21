@@ -1,11 +1,11 @@
-import React,{useEffect, useLayoutEffect, useState} from "react";
+import React,{useEffect, useState} from "react";
 import {Nav} from "react-bootstrap";
-import {Link,useParams} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import styles from './Sidebar.module.css'
 
 const Sidebar = () => {
    
-    let { slug } = useParams();
+ 
     const [componentstyles,setcomponentstyles]=useState({
         homeComp:false,
         coursesComp:false,
@@ -41,6 +41,8 @@ const Sidebar = () => {
                 ...componentstyles,
                 settingsComp:true
             });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const setCurrentLink= (current_component)=>{

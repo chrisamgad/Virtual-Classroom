@@ -49,7 +49,7 @@ const Login = (props)=>{
             if(response.data.token)
                 {
                     props.history.push('/dashboard/home')// redirect to /myprofile if logged in successfully
-                    const SetsAuthenticatedUserstate= authenticateduserCtx.SetAuthenticatedUser()
+                    authenticateduserCtx.SetAuthenticatedUser()
                     
                 }
             else if(response.data.error)

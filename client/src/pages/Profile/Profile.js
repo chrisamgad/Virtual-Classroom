@@ -1,7 +1,7 @@
 
-import React,{useEffect, useState} from "react"
+import React,{useEffect} from "react"
 import StudentService from '../../services/student-data-service'
-import styles from './Profile.module.css'
+//import styles from './Profile.module.css'
 
 const Profile =()=>{
 

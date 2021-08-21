@@ -10,14 +10,15 @@ import Profile from './pages/Profile/Profile'
 import SetAvatar from "./pages/SetAvatar/SetAvatar";
 import './App.css';
 import Dashboard from "./pages/Dashboard/Dashboard";
-import MyCourses from "./components/MyCourses/MyCourses";
 import AuthenticatedContext from './Contexts/AuthenticatedContext'
 
 function App() {
 
   const authenticateduserCtx= useContext(AuthenticatedContext)
   useEffect(()=>{
-    const SetsAuthenticatedUserstate= authenticateduserCtx.SetAuthenticatedUser()
+    authenticateduserCtx.SetAuthenticatedUser()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
  
   return (

@@ -11,8 +11,11 @@ export function AuthenticatedContextProvider(props){
     const [authenticateduser,setauthenticateduser]=useState(undefined)
 
     function SetAuthenticatedUser(){
-        setauthenticateduser(AuthService.getCurrentUser())
-        
+        if(AuthService.getCurrentUser())
+            setauthenticateduser(AuthService.getCurrentUser())
+        else
+            setauthenticateduser(undefined)
+        console.log('1111111111111111')
     }
     const context ={
         AuthenticatedUser:authenticateduser,

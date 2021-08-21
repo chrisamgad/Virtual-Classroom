@@ -6,6 +6,7 @@ import React,{useEffect, useState,useContext} from 'react'
 import AuthenticatedContext from '../../Contexts/AuthenticatedContext'
 import authService from '../../services/auth.service'
 
+
 const MainNavigation = () =>{
     
   const authenticateduserCtx= useContext(AuthenticatedContext)
@@ -14,10 +15,10 @@ const MainNavigation = () =>{
   })
   
   useEffect(()=>{
-
+    console.log('test')
     if(authenticateduserCtx.AuthenticatedUser)
     {
-      console.log(authenticateduserCtx)
+      //console.log(authenticateduserCtx)
       if(authenticateduserCtx.AuthenticatedUser.teacher)
         {
           setuserdetails({
@@ -30,9 +31,21 @@ const MainNavigation = () =>{
           name:authenticateduserCtx.AuthenticatedUser.student.fullname
         })}
     }
+    else{
+      setuserdetails({
+        name:''
+      })
+    }
+    
 
     
-  },[authenticateduserCtx])
+  },[authenticateduserCtx.AuthenticatedUser])
+
+  const LogoutHandler =()=>{
+    authService.logout().then((res)=>{
+      authenticateduserCtx.SetAuthenticatedUser()
+    }).catch((e)=>console.log(e))
+  }
 
   // console.log(userdetails)
   // console.log('test '+userdetails.name)
@@ -62,11 +75,11 @@ const MainNavigation = () =>{
         </Nav>
 
         
-        { (userdetails.name === '') ? <Link className={styles.LoginLink} to="/login">LOG IN </Link> 
+        { (authenticateduserCtx.AuthenticatedUser === undefined) ? <Link className={styles.LoginLink} to="/login">LOG IN </Link> 
          : 
          <div className={styles.containerWelcomeMessage}>
           <div className={styles.WelcomeMessage}>Welcome, {userdetails.name}</div>
-          <Link className={styles.LogoutLink} to="/logout">LOG OUT </Link> 
+          <Link className={styles.LogoutLink} to="/" onClick={LogoutHandler}>LOG OUT </Link> 
          </div>
          }
         
