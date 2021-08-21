@@ -1,10 +1,11 @@
 import React,{useEffect, useLayoutEffect, useState} from "react";
 import {Nav} from "react-bootstrap";
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import styles from './Sidebar.module.css'
 
 const Sidebar = () => {
    
+    let { slug } = useParams();
     const [componentstyles,setcomponentstyles]=useState({
         homeComp:false,
         coursesComp:false,
@@ -15,10 +16,31 @@ const Sidebar = () => {
     })
 
     useEffect(()=>{
-        setcomponentstyles({
-            ...componentstyles,
-            homeComp:true
-        });
+        if(window.location.pathname === '/dashboard/home')
+            setcomponentstyles({
+                ...componentstyles,
+                homeComp:true
+            });
+        else if (window.location.pathname === '/dashboard/mycourses')
+            setcomponentstyles({
+                ...componentstyles,
+                coursesComp:true
+            });
+        else if (window.location.pathname === '/dashboard/announcments')
+            setcomponentstyles({
+                ...componentstyles,
+                announcmentsComp:true
+            });
+        else if (window.location.pathname === '/dashboard/grades')
+            setcomponentstyles({
+                ...componentstyles,
+                gradesComp:true
+            });
+        else if (window.location.pathname === '/dashboard/grades')
+            setcomponentstyles({
+                ...componentstyles,
+                settingsComp:true
+            });
     },[])
 
     const setCurrentLink= (current_component)=>{
@@ -80,7 +102,7 @@ const Sidebar = () => {
         
     }
 
-    console.log(componentstyles)
+   // console.log(window.location.pathname.toString())
 
     return (
         <div>

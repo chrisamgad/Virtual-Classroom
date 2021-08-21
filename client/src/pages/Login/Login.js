@@ -2,12 +2,13 @@ import { Form,Button,Container,Alert} from "react-bootstrap"
 import {Link} from 'react-router-dom'
 import { withRouter } from "react-router";
 import styles from './Login.module.css'
-import { useState } from "react"
+import { useContext, useState } from "react"
 import validator from 'validator'
 import AuthService from '../../services/auth.service'
-
+import AuthenticatedContext from "../../Contexts/AuthenticatedContext";
 const Login = (props)=>{
 
+    const authenticateduserCtx=useContext(AuthenticatedContext)
 
     const [CredentialDetails,setCredentialDetails]= useState({
         email:'',
@@ -46,10 +47,16 @@ const Login = (props)=>{
         AuthService.login(CredentialDetails.email, CredentialDetails.password).then((response)=>{
             //console.log(response.data)
             if(response.data.token)
-                props.history.push('/dashboard/home') // redirect to /myprofile if logged in successfully
+                {
+                    props.history.push('/dashboard/home')// redirect to /myprofile if logged in successfully
+                    const SetsAuthenticatedUserstate= authenticateduserCtx.SetAuthenticatedUser()
+                    
+                }
             else if(response.data.error)
                 console.log(response.data.error) // if insuccessfully logged in, console.log the error message
         })
+
+        
     }
 
     //console.log(CredentialDetails)

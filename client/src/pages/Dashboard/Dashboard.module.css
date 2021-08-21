@@ -1,6 +1,8 @@
 .DashboardMainContainer{
-    background-color: #bcddd6; 
+    background-color: #cbc9c994; 
     padding:0;
+    padding-top: 15px;
+    overflow:hidden;
 }
 
 

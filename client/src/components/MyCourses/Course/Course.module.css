@@ -1,0 +1,16 @@
+.cardcontainer{
+    margin: 10px auto;
+    width: 65rem;
+    border-radius: 12px !important;  
+    border-left: 2px solid #0088ff !important;  
+}
+
+.cardbody{
+    padding: 1.6rem 1rem !important;
+    margin-left: 10px;
+
+}
+
+.card{
+    font-family: var(--bs-font-sans-serif) !important;
+}

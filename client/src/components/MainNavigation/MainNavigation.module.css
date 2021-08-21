@@ -24,8 +24,37 @@
 }
 
 .LoginLink:hover{
-    background-color: #0088ff !important;
+    background-color: #7e8f9f !important;
     border-color: white !important;
     color:white;
 }
 
+.containerWelcomeMessage{
+    position:relative;
+}
+
+.WelcomeMessage{
+    position: absolute;
+    font-size: 17px;
+    font-weight: 400;
+    /* line-height: 24px; */
+    right: 165px;
+    bottom: -13px;
+    width: 132px;
+}
+
+.LogoutLink{
+    text-decoration: none !important;
+    background-color: #0088ff;
+    padding: 8px 40px !important;
+    border-radius: 5px;
+    color: #ffffff;
+    font-weight: 300 !important;
+    transition: background-color 1s ease, border-color 1s ease !important;
+}
+
+.LogoutLink:hover{
+    background-color: #31af36 !important;
+    border-color: white !important;
+    color:white;
+}

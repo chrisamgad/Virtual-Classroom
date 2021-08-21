@@ -1,15 +1,25 @@
-import React from "react";
+import React,{useContext,useEffect}  from "react";
+import AuthenticatedContext from '../../Contexts/AuthenticatedContext'
+
 import {Container, Row, Col, Nav } from "react-bootstrap";
-import { withRouter } from "react-router";
+
 import {Switch,Route} from 'react-router-dom'
 import Sidebar from "../../components/DashboardSidebar/Sidebar";
 import styles from './Dashboard.module.css'
 import MyCourses from "../../components/MyCourses/MyCourses";
 import './dashboard.css'
 
-const Dash = props => {
-   
 
+const Dash = (props) => {
+    const authenticateduserCtx= useContext(AuthenticatedContext)
+   
+    useEffect(()=>{
+       
+       // const SetsAuthenticatedUserstate= authenticateduserCtx.SetAuthenticatedUser()
+        
+    },[])
+       
+    
     return (
         <div>
          <Container  >
