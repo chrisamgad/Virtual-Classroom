@@ -4,7 +4,7 @@ const ContactUs = () =>{
 
     return(
         <div>
-            Contact Us
+            <i className="fas fa-camera"></i>
         </div>
     )
 }

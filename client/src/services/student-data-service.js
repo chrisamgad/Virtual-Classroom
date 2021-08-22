@@ -36,8 +36,8 @@ class StudentService {
         }) //malhash lazma w msh shaghala
     }
  
-    async getCourses(){
-      if(AuthService.getCurrentUser().student)
+    async getCourses(role){
+      if(AuthService.getCurrentUser().role==='student')
       {
         const response=await axios.get(
           API_URL +'/student/getmycourses',
@@ -48,7 +48,7 @@ class StudentService {
         return response
 
       }
-      else if (AuthService.getCurrentUser().teacher)
+      else if (AuthService.getCurrentUser().role==='teacher')
       {
         const response= await axios.get(
           API_URL +'/teacher/getmycourses',           
@@ -56,6 +56,7 @@ class StudentService {
             headers: authHeader()
           }
         )
+
         return response
       }
 

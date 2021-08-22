@@ -9,18 +9,35 @@ const AuthenticatedContext =createContext({
 
 export function AuthenticatedContextProvider(props){
     const [authenticateduser,setauthenticateduser]=useState(undefined)
+    const [authenticateduserRole,setauthenticateduserRole]=useState(undefined)
+    
 
     function SetAuthenticatedUser(){
         if(AuthService.getCurrentUser())
-            setauthenticateduser(AuthService.getCurrentUser())
+            {
+                setauthenticateduserRole(AuthService.getCurrentUser().role)
+                setauthenticateduser(AuthService.getCurrentUser().user)     
+            }
+
         else
-            setauthenticateduser(undefined)
-        console.log('1111111111111111')
+           { 
+               setauthenticateduserRole(undefined)
+               setauthenticateduser(undefined)
+            }
+        
     }
+
+    function GetAuthenticatedUserRole(){
+        if(AuthService.getCurrentUser())
+            console.log(AuthService.getCurrentUser())
+    }
+
     const context ={
         AuthenticatedUser:authenticateduser,
+        AuthenticatedUserRole:authenticateduserRole,
         SetAuthenticatedUser:SetAuthenticatedUser
     }
+
 
     return <AuthenticatedContext.Provider value={context}>
         {props.children}

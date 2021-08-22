@@ -7,7 +7,7 @@
 }
 
 .navlinkstyle{
-    margin: 0px 40px;
+    margin: 0px 30px;
     text-decoration: none ;
     color:black;
 }
@@ -24,7 +24,7 @@
 }
 
 .LoginLink:hover{
-    background-color: #7e8f9f !important;
+    background-color: #0088ff !important;
     border-color: white !important;
     color:white;
 }

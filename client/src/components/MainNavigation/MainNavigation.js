@@ -15,17 +15,18 @@ const MainNavigation = () =>{
   })
   
   useEffect(()=>{
-    console.log('test')
+    //console.log('test')
+    // authenticateduserCtx.SetAuthenticatedUser()
     if(authenticateduserCtx.AuthenticatedUser)
     {
-      //console.log(authenticateduserCtx)
-      if(authenticateduserCtx.AuthenticatedUser.teacher)
+      
+      if(authenticateduserCtx.AuthenticatedUserRole ==='teacher')
         {
           setuserdetails({
           name:authenticateduserCtx.AuthenticatedUser.teacher.fullname
         })
         }
-      else if(authenticateduserCtx.AuthenticatedUser.student)
+      else if(authenticateduserCtx.AuthenticatedUserRole ==='student')
         {
           setuserdetails({
           name:authenticateduserCtx.AuthenticatedUser.student.fullname
@@ -39,7 +40,7 @@ const MainNavigation = () =>{
     
 
     
-  },[authenticateduserCtx.AuthenticatedUser])
+  },[authenticateduserCtx])
 
   const LogoutHandler =()=>{
     authService.logout().then((res)=>{
@@ -48,7 +49,7 @@ const MainNavigation = () =>{
   }
 
   // console.log(userdetails)
-  // console.log('test '+userdetails.name)
+    // console.log(authenticateduserCtx.AuthenticatedUser)
     return(
     <div>
       <Navbar className={styles.colornav} variant="light">
@@ -71,11 +72,18 @@ const MainNavigation = () =>{
             <Nav.Item>
                 <Link className={styles.navlinkstyle}   to="/contactus">CONTACT US </Link>
             </Nav.Item>
-            
+            {
+              (authenticateduserCtx.AuthenticatedUser === undefined) ? null : 
+              <div>
+                <Nav.Item>
+                  <Link className={styles.navlinkstyle}   to="/dashboard/home">DASHBOARD </Link>
+                </Nav.Item>
+              </div>
+            }
         </Nav>
 
         
-        { (authenticateduserCtx.AuthenticatedUser === undefined) ? <Link className={styles.LoginLink} to="/login">LOG IN </Link> 
+        { (!authenticateduserCtx.AuthenticatedUser) ? <Link className={styles.LoginLink} to="/login">LOG IN </Link> 
          : 
          <div className={styles.containerWelcomeMessage}>
           <div className={styles.WelcomeMessage}>Welcome, {userdetails.name}</div>

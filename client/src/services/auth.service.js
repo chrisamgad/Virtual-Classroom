@@ -15,7 +15,12 @@ class AuthService {
 
         if (response.data.token)
          {
-            localStorage.setItem("user", JSON.stringify(response.data));    //stringify as data is stored as JSON in local storage by nature 
+          if(response.data.student)
+            localStorage.setItem("role", JSON.stringify(response.data.student.role))
+          else if (response.data.teacher)
+            localStorage.setItem("role", JSON.stringify(response.data.teacher.role))
+
+          localStorage.setItem("user", JSON.stringify(response.data));    //stringify as data is stored as JSON in local storage by nature 
          }
         console.log(response.data)
         return response;
@@ -33,7 +38,13 @@ class AuthService {
             }).then((response)=>{
 
                 if(response.data.token)
-                    localStorage.setItem("user", JSON.stringify(response.data));   
+                    {
+                      localStorage.setItem("user", JSON.stringify(response.data));   
+                      if(response.data.student)
+                        localStorage.setItem("role", JSON.stringify(response.data.student.role));  
+                      else if(response.data.teacher)
+                        localStorage.setItem("role", JSON.stringify(response.data.teacher.role));  
+                  }
                 return response
 
             }).catch((e)=>console.log(e + 'error was catched'))
@@ -51,6 +62,7 @@ class AuthService {
       })
       .then(res=>{
         localStorage.removeItem("user");
+        localStorage.removeItem("role");
         console.log(res.data)
         return res
       }).catch(e=>{throw new Error(e)})
@@ -62,7 +74,11 @@ class AuthService {
  
 
   getCurrentUser() { //this is not good because localstorage doesnt have expiration date so it can stay there for ever
-    return JSON.parse(localStorage.getItem('user'));
+   
+    return {
+      user:JSON.parse(localStorage.getItem('user')),
+      role:JSON.parse(localStorage.getItem('role'))
+    };
   }
 }
 

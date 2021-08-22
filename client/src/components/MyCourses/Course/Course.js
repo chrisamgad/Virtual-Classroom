@@ -1,6 +1,7 @@
 
 import {Card} from 'react-bootstrap'
 import styles from "./Course.module.css"
+import '../../../pages/Dashboard/Dashboard'
 
 const Course = (props)=>{
     return(

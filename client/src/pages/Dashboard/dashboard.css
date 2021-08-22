@@ -5,3 +5,8 @@
 .DashboardContainer{
     padding:0 !important;
 }
+
+.card{
+    display:inline-block !important;
+    flex-direction:unset;
+}

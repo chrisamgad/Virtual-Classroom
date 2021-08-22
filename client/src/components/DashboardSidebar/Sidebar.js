@@ -120,15 +120,15 @@ const Sidebar = () => {
                 className={styles.brand}
             /> 
             
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.homeComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/home" onClick={()=>setCurrentLink('home')}>Home</Nav.Link>
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.coursesComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses" onClick={()=>setCurrentLink('courses')}>Courses</Nav.Link>
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.announcmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/announcments" onClick={()=>setCurrentLink('announcments')}>Announcments</Nav.Link>
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.gradesComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mygrades" onClick={()=>setCurrentLink('grades')} >Grades</Nav.Link>
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.profileComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/myprofile" onClick={()=>setCurrentLink('profile')} >My Profile</Nav.Link>
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.settingsComp ? styles.onClickLinkStyle : null}` }  as={Link} to="/dashboard/settings" onClick={()=>setCurrentLink('settings')} >Settings</Nav.Link>  
+            <Nav.Link className={`${styles.NavLink}  ${componentstyles.homeComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/home" onClick={()=>setCurrentLink('home')}><i style={{marginRight:'6px'}} className="fas fa-home"></i>Home</Nav.Link>
+            <Nav.Link className={`${styles.NavLink}  ${componentstyles.coursesComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses" onClick={()=>setCurrentLink('courses')}><i style={{marginRight:'6px'}} className="fas fa-book"></i>Courses</Nav.Link>
+            <Nav.Link className={`${styles.NavLink}  ${componentstyles.announcmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/announcments" onClick={()=>setCurrentLink('announcments')}><i style={{marginRight:'6px'}} className="fas fa-bullhorn"></i>Announcments</Nav.Link>
+            <Nav.Link className={`${styles.NavLink}  ${componentstyles.gradesComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mygrades" onClick={()=>setCurrentLink('grades')} ><i style={{marginRight:'6px'}} className="fas fa-star-half-alt"></i>Grades</Nav.Link>
+            <Nav.Link className={`${styles.NavLink}  ${componentstyles.profileComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/myprofile" onClick={()=>setCurrentLink('profile')} ><i style={{marginRight:'6px', fontSize:'20px'}} className="fas fa-male"></i>My Profile</Nav.Link>
+            <Nav.Link className={`${styles.NavLink}  ${componentstyles.settingsComp ? styles.onClickLinkStyle : null}` }  as={Link} to="/dashboard/settings" onClick={()=>setCurrentLink('settings')} ><i style={{marginRight:'8px'}} className="fas fa-cogs"></i>Settings</Nav.Link>  
       
         </Nav>
-          
+        
         </div>
         );
   };

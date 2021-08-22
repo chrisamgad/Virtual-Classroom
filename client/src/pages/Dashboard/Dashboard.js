@@ -15,7 +15,7 @@ const Dash = (props) => {
    
     useEffect(()=>{
        
-        const SetsAuthenticatedUserstate= authenticateduserCtx.SetAuthenticatedUser()
+        authenticateduserCtx.SetAuthenticatedUser()
         
     },[])
        
