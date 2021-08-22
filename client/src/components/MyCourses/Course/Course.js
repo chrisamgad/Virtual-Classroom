@@ -14,7 +14,7 @@ const Course = (props)=>{
             <Card className={styles.cardcontainer} onClick={()=>push('/dashboard/mycourses/' + props.courseID)}>
                 <Card.Body className={styles.cardbody}>
                     <Card.Title>{props.coursename}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Instructor: {props.instructor}</Card.Subtitle>
+                    { props.role === 'student' ? <Card.Subtitle className="mb-2 text-muted">Instructor: {props.instructor}</Card.Subtitle> : null}
 
                 </Card.Body>
             </Card>

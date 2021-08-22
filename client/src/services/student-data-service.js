@@ -80,7 +80,20 @@ class StudentService {
           throw new Error (e.response.data.message) //e is an error message object in axios
         }) //malhash lazma w msh shaghala
     }
-    
+
+    getUserImage(){
+      let user_id=undefined;
+      if(AuthService.getCurrentUser().role==='student')
+        user_id=AuthService.getCurrentUser().user.student._id;
+      else if(AuthService.getCurrentUser().role==='teacher')
+        user_id=AuthService.getCurrentUser().user.teacher._id;
+
+      const ImageURL= API_URL + '/getavatar/' +user_id
+      
+      //console.log(response)
+      return ImageURL;
+    }
   }
+
   
   export default new StudentService();

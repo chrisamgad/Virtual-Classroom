@@ -1,7 +1,7 @@
 import React,{useContext,useEffect}  from "react";
 import AuthenticatedContext from '../../Contexts/AuthenticatedContext'
 import CourseContext from "../../Contexts/CourseContext";
-import {Container, Row, Col } from "react-bootstrap";
+import {Container, Row, Col, TabContainer } from "react-bootstrap";
 
 import {Switch,Route} from 'react-router-dom'
 import Sidebar from "../../components/DashboardSidebar/Sidebar";
@@ -14,8 +14,6 @@ import './dashboard.css'
 const Dashboard = (props) => {
     const authenticateduserCtx= useContext(AuthenticatedContext)
     const courseCtx=useContext(CourseContext)
-    
-   
 
     useEffect(()=>{
        
@@ -24,10 +22,9 @@ const Dashboard = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
        
-    
     return (
         <div>
-         <Container  >
+         <Container>
                 <Row>
                     
                     <Col md={2} className="SidebarContainer" >

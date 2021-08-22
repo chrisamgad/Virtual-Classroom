@@ -4,11 +4,12 @@ import {Nav} from "react-bootstrap";
 import {Link} from 'react-router-dom'
 import styles from './Sidebar.module.css'
 import CourseContext from "../../Contexts/CourseContext";
+import studentDataService from "../../services/student-data-service";
 
 const Sidebar = () => {
    
-    const {id}= useParams();
- 
+    const {Courseid}= useParams();
+    
     const [componentstyles,setcomponentstyles]=useState({
         homeComp:false,
         coursesComp:false,
@@ -20,6 +21,7 @@ const Sidebar = () => {
         assignmentsComp:false
     })
 
+    const [userimage,setuserimage]=useState(undefined)
     const courseCtx= useContext(CourseContext)
     
     useEffect(()=>{
@@ -39,19 +41,28 @@ const Sidebar = () => {
                 ...componentstyles,
                 announcmentsComp:true
             });
-        else if (window.location.pathname === `/dashboard/mycourses/${id}/coursesummary`)
+        else if (window.location.pathname === `/dashboard/mycourses/${Courseid}/coursesummary`)
             setcomponentstyles({
                 ...componentstyles,
                 coursesummaryComp:true
             });
-        else if (window.location.pathname === `/dashboard/mycourses/${id}/assignments`)
+        else if (window.location.pathname === `/dashboard/mycourses/${Courseid}/assignments`)
             setcomponentstyles({
                 ...componentstyles,
                 assignmentsComp:true
             });
 
+        if(courseCtx.WentInsideCourse)
+            setcomponentstyles({
+                ...componentstyles,
+                coursesummaryComp:true
+            });
+
+        
+        setuserimage(studentDataService.getUserImage())
+              
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    },[courseCtx.WentInsideCourse])
 
     const setCurrentLink= (current_component)=>{
 
@@ -146,7 +157,7 @@ const Sidebar = () => {
         <Nav className={styles.NavContainer}>
 
             <img
-                src="/images/logo.png"
+                src={userimage}
                 height="100"
                 width="100"
                 alt="Vimo Logo"

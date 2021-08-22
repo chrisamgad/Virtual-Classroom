@@ -52,8 +52,6 @@ class AuthService {
     }
 
   logout() {//lesa kamelha (lazem te remove eltoken from server)
-
-    
     
     //console.log(authHeader())
     return axios.post(API_URL + "/logout",undefined,
@@ -66,10 +64,7 @@ class AuthService {
         console.log(res.data)
         return res
       }).catch(e=>{throw new Error(e)})
-
-  
-     
-    
+   
   }
  
 

@@ -27,9 +27,12 @@
 }
 
 .brand{
-    display:block !important;
-    margin:0 auto !important;
-    margin-top:30px !important;
+    display: block !important;
+    margin: 0 auto !important;
+    margin-top: 22px !important;
+    margin-bottom: 22px !important;
+    border: 3px solid #31af36;
+    border-radius: 20px;
 }
 
 .onClickLinkStyle{
