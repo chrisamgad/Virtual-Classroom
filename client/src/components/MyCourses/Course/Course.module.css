@@ -4,7 +4,7 @@
     
     border: 0 !important;
     border-radius: 12px !important; 
-    padding-right: 100px; 
+    padding-right: 25px; 
     /* border-left: 2px solid #0088ff !important;   */
     /* transition:width 4s linear 4s !important ; */
     -webkit-transition: all 0.2s ease-in;
@@ -15,7 +15,7 @@ transition: all 0.2s ease-in;
 
 .cardcontainer:hover{
     cursor:pointer;
-    background-color: #ffc107;
+    background-color: #2cec93;
     padding-right: 100px !important;
 
     /* border-left: 2px solid #0088ff !important;   */

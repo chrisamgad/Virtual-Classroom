@@ -1,18 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import {useState,useEffect} from 'react'
 //import {useParams} from 'react-router-dom'
 import {Button,Form,Container,Alert} from 'react-bootstrap'
 import StudentService from '../../services/student-data-service.js'
 import styles from './SetAvatar.module.css'
+import {withRouter} from 'react-router'
+import AuthenticatedContext from '../../Contexts/AuthenticatedContext.js'
 
-const SetAvatar =()=>{
+const SetAvatar =(props)=>{
 
    // const[clicked,setButton]=useState(false)
     const [selectedFile, setselectedFile] = useState(undefined)
     const [imgLink,setimgLink]=useState("https://www.seekpng.com/png/full/110-1100707_person-avatar-placeholder.png")
     const [validated_extension,setvalidated_extenstion]=useState(true)//initially true
     
+    const authenticateduserCtx=useContext(AuthenticatedContext)
+
     useEffect(()=>{
         if(!validated_extension)
             {   
@@ -27,7 +31,11 @@ const SetAvatar =()=>{
         data.append('upload', selectedFile)
         console.log(data.file)
         StudentService.uploadAvatar(data)
-        .then(res=>console.log(res))
+        .then(res=>{
+            console.log(res)
+            authenticateduserCtx.SetAuthenticatedUser()
+            props.history.push(`/dashboard/home`)
+        })
         .catch((e)=>console.log(e))
     }
     
@@ -93,4 +101,4 @@ const SetAvatar =()=>{
 
 }
 
-export default SetAvatar
+export default withRouter(SetAvatar)

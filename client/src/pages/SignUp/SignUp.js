@@ -1,5 +1,5 @@
 import { Form, Button, Container,InputGroup,FormControl, Alert} from "react-bootstrap"
-import React ,{ useState } from "react"
+import React ,{ useContext, useState } from "react"
 import styles from './SignUp.module.css'
 import validator from 'validator';
 import AuthService from '../../services/auth.service'
@@ -7,7 +7,7 @@ import {withRouter} from 'react-router'
 
 const SignUp = (props)=>{
 
-
+   
     const [CredentialDetails, setCredentialDetails] = useState({
         fullname:'',
         email:'',
