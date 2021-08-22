@@ -11,7 +11,9 @@ const MyCourses =()=>{
     const [courses,setcourses]=useState([])
     const [userdetails,setuserdetails]=useState({
         name:'',
-        role:''
+        role:'',
+        instructorname:'',
+        studentslist:[]
     })
     
    const authenticateduserCtx= useContext(AuthenticatedContext)
@@ -22,13 +24,13 @@ const MyCourses =()=>{
       // authenticateduserCtx.SetAuthenticatedUser()
         if(authenticateduserCtx.AuthenticatedUserRole==="student")
         {
-            console.log(authenticateduserCtx.AuthenticatedUser.student.fullname)
+            //console.log(authenticateduserCtx.AuthenticatedUser.student.fullname)
             setuserdetails({
                 name:authenticateduserCtx.AuthenticatedUser.student.fullname,
                 role:authenticateduserCtx.AuthenticatedUser.student.role
             })
             Studentservice.getCourses().then((response)=>{
-                //console.log(response)
+                console.log(response)
                 setcourses(response.data)
               }).catch((e)=>console.log(e))
         }
@@ -55,7 +57,12 @@ const MyCourses =()=>{
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[authenticateduserCtx])
 
-   
+    const getInstructorName =(course)=>{
+        const instructorname=course.instructor.fullname
+        console.log(instructorname)
+        return instructorname
+    }
+
     //console.log(userdetails)
     return (
         <div>
@@ -63,7 +70,7 @@ const MyCourses =()=>{
            { 
                courses.map((course,id)=>{
                     
-                   return <Course key={id} coursename={course.name} courseID={course._id.toString()} instructor={userdetails.name} role={userdetails.role}/>
+                   return <Course key={id} coursename={course.name} courseID={course._id.toString()} instructor={getInstructorName(course)} role={userdetails.role}/>
                })
             
             }

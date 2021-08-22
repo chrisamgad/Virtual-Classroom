@@ -10,6 +10,9 @@ const courseSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'teacher'
     },
+    description:{
+        type:String
+    },
     studentsList:[{    
             type:mongoose.Schema.Types.ObjectId,
             ref:'student'

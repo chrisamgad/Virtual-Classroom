@@ -15,7 +15,7 @@ const Dashboard = (props) => {
     const authenticateduserCtx= useContext(AuthenticatedContext)
     const courseCtx=useContext(CourseContext)
     
-    console.log(courseCtx.WentInsideCourse)
+   
 
     useEffect(()=>{
        

@@ -67,7 +67,9 @@ router.get('/', (req, res) => {
   })
 
   router.post('/logout', StudentAuth(true),async function(req,res){
+    
       try{
+      
         //Removes the current token from the array of tokens(array of currently logged in sessions)
         req.student.tokens= req.student.tokens.filter((token)=>{
             return token.token !== req.token //if token not equal the current token, return it
@@ -90,7 +92,7 @@ router.get('/', (req, res) => {
       delete student.tokens;
       delete student.password;
     
-      res.send(student).status(200)
+      res.send({student,role:student.role}).status(200)
       
     }catch(e){
       res.send(e)
@@ -121,8 +123,6 @@ router.get('/', (req, res) => {
 
   router.post('/uploadavatar',StudentAuth(true), upload.single('upload'), async (req,res)=>{
    
-   
-  
       if(!req.file) //if no picture was chosen by user, just use the default avatar instead that is found in the public/img/defaultavatar
       { 
         const buffer = await sharp('./public/img/defaultavatar.png').resize({width:175, height:175}).png().toBuffer()
@@ -161,6 +161,36 @@ router.get('/', (req, res) => {
     }catch(e){
         res.status(404).send()
     }
+})
+
+router.get('/student/getmycourses',StudentAuth(false), async (req,res)=>{
+
+  
+  try{
+    
+    Student.findOne({email:req.student.email}) //populate the nested instructor field inside CoursesList-->populate CoursesList --> ALL inside Student
+    .populate({
+      path:'CoursesList',
+      populate:{
+        path: 'instructor'
+      }
+    })
+    .exec(function(err,student){
+      if(student)
+      {
+        
+        //console.log(student) 
+        res.status(200).send(student.CoursesList)
+      }
+        
+      else
+        throw new Error(err);
+    })
+
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e)
+  }
 })
 
   router.post('/testuploadimage',upload.single('upload'),  (req,res)=>{
