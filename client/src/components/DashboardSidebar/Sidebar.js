@@ -1,10 +1,13 @@
-import React,{useEffect, useState} from "react";
+import React,{useContext, useEffect, useState} from "react";
+import {useParams} from 'react-router-dom'
 import {Nav} from "react-bootstrap";
 import {Link} from 'react-router-dom'
 import styles from './Sidebar.module.css'
+import CourseContext from "../../Contexts/CourseContext";
 
 const Sidebar = () => {
    
+    const {id}= useParams();
  
     const [componentstyles,setcomponentstyles]=useState({
         homeComp:false,
@@ -12,14 +15,19 @@ const Sidebar = () => {
         announcmentsComp:false,
         gradesComp:false,
         profileComp:false,
-        settingsComp:false
+        settingsComp:false,
+        coursesummaryComp:false,
+        assignmentsComp:false
     })
 
+    const courseCtx= useContext(CourseContext)
+    
     useEffect(()=>{
         if(window.location.pathname === '/dashboard/home')
             setcomponentstyles({
                 ...componentstyles,
                 homeComp:true
+                
             });
         else if (window.location.pathname === '/dashboard/mycourses')
             setcomponentstyles({
@@ -31,15 +39,15 @@ const Sidebar = () => {
                 ...componentstyles,
                 announcmentsComp:true
             });
-        else if (window.location.pathname === '/dashboard/grades')
+        else if (window.location.pathname === `/dashboard/mycourses/${id}/coursesummary`)
             setcomponentstyles({
                 ...componentstyles,
-                gradesComp:true
+                coursesummaryComp:true
             });
-        else if (window.location.pathname === '/dashboard/grades')
+        else if (window.location.pathname === `/dashboard/mycourses/${id}/assignments`)
             setcomponentstyles({
                 ...componentstyles,
-                settingsComp:true
+                assignmentsComp:true
             });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,7 +62,10 @@ const Sidebar = () => {
                 gradesComp:false,
                 profileComp:false,
                 settingsComp:false,
-                homeComp:true
+                homeComp:true,
+                coursesummaryComp:false,
+                assignmentsComp:false
+
             });
         else if(current_component==='courses')
             setcomponentstyles({
@@ -63,7 +74,10 @@ const Sidebar = () => {
                 gradesComp:false,
                 profileComp:false,
                 settingsComp:false,
-                coursesComp:true
+                coursesummaryComp:false,
+                assignmentsComp:false,
+                coursesComp:true,
+
             });
         else if(current_component === 'announcments')
             setcomponentstyles({
@@ -72,7 +86,10 @@ const Sidebar = () => {
                 profileComp:false,
                 settingsComp:false,
                 coursesComp:false,
+                coursesummaryComp:false,
+                assignmentsComp:false,
                 announcmentsComp:true
+    
             });
         else if (current_component === 'grades')
             setcomponentstyles({
@@ -81,6 +98,8 @@ const Sidebar = () => {
                 announcmentsComp:false,
                 profileComp:false,
                 settingsComp:false,
+                coursesummaryComp:false,
+                assignmentsComp:false,
                 gradesComp:true
             });
         else if (current_component === 'profile')
@@ -90,18 +109,33 @@ const Sidebar = () => {
                 announcmentsComp:false,
                 gradesComp:false,
                 settingsComp:false,
+                coursesummaryComp:false,
+                assignmentsComp:false,
                 profileComp:true
             });
-        else if (current_component === 'settings')
+        else if (current_component === 'coursesummary')
             setcomponentstyles({
                 homeComp:false,
                 coursesComp:false,
                 announcmentsComp:false,
                 gradesComp:false,
                 profileComp:false,
-                settingsComp:true
+                settingsComp:false,
+                assignmentsComp:false,
+                coursesummaryComp:true
+               
             });
-        
+        else if (current_component === 'assignments')
+            setcomponentstyles({
+                homeComp:false,
+                coursesComp:false,
+                announcmentsComp:false,
+                gradesComp:false,
+                profileComp:false,
+                settingsComp:false,
+                coursesummaryComp:false,
+                assignmentsComp:true,
+            });
     }
 
    // console.log(window.location.pathname.toString())
@@ -119,13 +153,25 @@ const Sidebar = () => {
 
                 className={styles.brand}
             /> 
+            {
+                courseCtx.WentInsideCourse ?
+                <div>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.coursesummaryComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses/:id/coursesummary" onClick={()=>setCurrentLink('coursesummary')}><i style={{marginRight:'10px',fontSize:'18px'}} className="fas fa-clipboard-list"></i>Course Summary</Nav.Link>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.assignmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses/:id/assignments" onClick={()=>setCurrentLink('assignments')}><i style={{marginRight:'9px',fontSize:'17px'}} className="fas fa-tasks"></i>Assignments</Nav.Link>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.back ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses" onClick={()=>setCurrentLink('back')}><i style={{marginRight:'9px'}} className="fas fa-backward"></i>Back</Nav.Link>
+                    
+                </div>
+                :
+                <div>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.homeComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/home" onClick={()=>setCurrentLink('home')}><i style={{marginRight:'6px'}} className="fas fa-home"></i>Home</Nav.Link>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.coursesComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses" onClick={()=>setCurrentLink('courses')}><i style={{marginRight:'6px'}} className="fas fa-book"></i>Courses</Nav.Link>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.announcmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/announcments" onClick={()=>setCurrentLink('announcments')}><i style={{marginRight:'6px'}} className="fas fa-bullhorn"></i>Announcments</Nav.Link>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.gradesComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mygrades" onClick={()=>setCurrentLink('grades')} ><i style={{marginRight:'6px'}} className="fas fa-star-half-alt"></i>Grades</Nav.Link>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.profileComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/myprofile" onClick={()=>setCurrentLink('profile')} ><i style={{marginRight:'6px', fontSize:'20px'}} className="fas fa-male"></i>My Profile</Nav.Link>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.settingsComp ? styles.onClickLinkStyle : null}` }  as={Link} to="/dashboard/settings" onClick={()=>setCurrentLink('settings')} ><i style={{marginRight:'8px'}} className="fas fa-cogs"></i>Settings</Nav.Link>  
+                </div>
+            }
             
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.homeComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/home" onClick={()=>setCurrentLink('home')}><i style={{marginRight:'6px'}} className="fas fa-home"></i>Home</Nav.Link>
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.coursesComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses" onClick={()=>setCurrentLink('courses')}><i style={{marginRight:'6px'}} className="fas fa-book"></i>Courses</Nav.Link>
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.announcmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/announcments" onClick={()=>setCurrentLink('announcments')}><i style={{marginRight:'6px'}} className="fas fa-bullhorn"></i>Announcments</Nav.Link>
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.gradesComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mygrades" onClick={()=>setCurrentLink('grades')} ><i style={{marginRight:'6px'}} className="fas fa-star-half-alt"></i>Grades</Nav.Link>
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.profileComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/myprofile" onClick={()=>setCurrentLink('profile')} ><i style={{marginRight:'6px', fontSize:'20px'}} className="fas fa-male"></i>My Profile</Nav.Link>
-            <Nav.Link className={`${styles.NavLink}  ${componentstyles.settingsComp ? styles.onClickLinkStyle : null}` }  as={Link} to="/dashboard/settings" onClick={()=>setCurrentLink('settings')} ><i style={{marginRight:'8px'}} className="fas fa-cogs"></i>Settings</Nav.Link>  
       
         </Nav>
         

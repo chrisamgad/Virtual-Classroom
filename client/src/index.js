@@ -5,16 +5,23 @@ import App from './App';
 import {BrowserRouter as Router} from "react-router-dom";
 // Importing the Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {AuthenticatedContextProvider} from './Contexts/AuthenticatedContext'
+import {CourseContextProvider} from './Contexts/CourseContext'
+import {AuthenticatedContextProvider} from './Contexts/AuthenticatedContext';
+//import {TestContextProvider} from './Contexts/TestContext'
 
 ReactDOM.render(
-  <AuthenticatedContextProvider>
-    <Router>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </Router>
-  </AuthenticatedContextProvider>,
+  
+ <CourseContextProvider>
+      <AuthenticatedContextProvider>   
+          <Router>
+            <React.StrictMode>
+              <App />
+            </React.StrictMode>
+          </Router>
+        
+      </AuthenticatedContextProvider>
+     </CourseContextProvider>
+  ,
   document.getElementById('root')
 );
 

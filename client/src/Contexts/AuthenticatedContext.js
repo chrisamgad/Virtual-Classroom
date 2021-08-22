@@ -4,7 +4,9 @@ import AuthService from '../services/auth.service'
 
 
 const AuthenticatedContext =createContext({
-    AuthenticatedUser:undefined
+    AuthenticatedUser:undefined,
+    AuthenticatedUserRole:undefined
+
 })
 
 export function AuthenticatedContextProvider(props){
@@ -25,11 +27,6 @@ export function AuthenticatedContextProvider(props){
                setauthenticateduser(undefined)
             }
         
-    }
-
-    function GetAuthenticatedUserRole(){
-        if(AuthService.getCurrentUser())
-            console.log(AuthService.getCurrentUser())
     }
 
     const context ={

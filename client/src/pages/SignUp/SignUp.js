@@ -1,5 +1,5 @@
 import { Form, Button, Container,InputGroup,FormControl, Alert} from "react-bootstrap"
-import React ,{ useContext, useState } from "react"
+import React ,{useState } from "react"
 import styles from './SignUp.module.css'
 import validator from 'validator';
 import AuthService from '../../services/auth.service'

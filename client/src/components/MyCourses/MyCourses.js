@@ -4,6 +4,8 @@ import Course from './Course/Course'
 
 import styles from './MyCourses.module.css'
 import AuthenticatedContext from '../../Contexts/AuthenticatedContext'
+import CourseContext from '../../Contexts/CourseContext'
+
 const MyCourses =()=>{
     
     const [courses,setcourses]=useState([])
@@ -13,10 +15,10 @@ const MyCourses =()=>{
     })
     
    const authenticateduserCtx= useContext(AuthenticatedContext)
-   
+   const courseCtx=useContext(CourseContext)
 
     useEffect(()=>{
-      
+        courseCtx.SetWentInsideCourse(false);
       // authenticateduserCtx.SetAuthenticatedUser()
         if(authenticateduserCtx.AuthenticatedUserRole==="student")
         {
@@ -61,7 +63,7 @@ const MyCourses =()=>{
            { 
                courses.map((course,id)=>{
                     
-                   return <Course key={id} coursename={course.name} instructor={userdetails.name} role={userdetails.role}/>
+                   return <Course key={id} coursename={course.name} courseID={course._id.toString()} instructor={userdetails.name} role={userdetails.role}/>
                })
             
             }
