@@ -1,4 +1,5 @@
 import React,{useEffect, useState,useContext} from 'react'
+import {Button} from 'react-bootstrap'
 import Studentservice from '../../services/student-data-service'
 import Course from './Course/Course'
 
@@ -6,7 +7,7 @@ import styles from './MyCourses.module.css'
 import AuthenticatedContext from '../../Contexts/AuthenticatedContext'
 import CourseContext from '../../Contexts/CourseContext'
 
-const MyCourses =()=>{
+const MyCourses =(props)=>{
     
     const [courses,setcourses]=useState([])
     const [userdetails,setuserdetails]=useState({
@@ -60,10 +61,20 @@ const MyCourses =()=>{
     const getTotalNumberOfCourese=()=>{
         return courses.length
     }
+
+    const  HandleNewCourseClick = ()=>{
+        props.setShowBackdrop(true)
+    }
+
     //console.log(userdetails)
     return (
         <div>
-            <div className={styles.heading}>COURSES</div>
+            <div className={styles.Mycoursesheadercontainer}>
+                <div className={styles.heading}>COURSES</div>
+                    <Button variant="success" className={styles.ADDcourse} onClick={HandleNewCourseClick}>Add Course</Button>
+                    <Button variant="danger" className={styles.DELETEcourse}>Delete Course</Button>
+                
+            </div>
             <p className={styles.N_courses_paragraph}>Total Number of courses you have = {getTotalNumberOfCourese()}</p>
            {  
                courses.map((course,id)=>{

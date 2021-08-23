@@ -95,5 +95,11 @@ class StudentService {
     }
   }
 
+  // AddCoures(){
+  //   return axios.post(
+  //     API_URL+'/'
+  //   )
+  // }
+
   
   export default new StudentService();

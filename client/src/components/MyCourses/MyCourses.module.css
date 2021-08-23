@@ -1,5 +1,8 @@
-.heading{
+.Mycoursesheadercontainer{
+    display: flex;
+}
 
+.heading{
     font-size: 26px;
     font-weight: 300;
     color: #000000;
@@ -7,6 +10,14 @@
     margin-left: 33px;
     margin-bottom: 12px;
 }   
+.ADDcourse{
+    position: absolute;
+    right: 175px;
+}
+.DELETEcourse{
+    position: absolute;
+    right: 27px;
+}
 .N_courses_paragraph{
     margin-left: 36px;
     font-weight: 400;

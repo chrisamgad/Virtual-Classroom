@@ -124,6 +124,17 @@ const Sidebar = () => {
                 assignmentsComp:false,
                 profileComp:true
             });
+        else if (current_component === 'settings')
+        setcomponentstyles({
+            homeComp:false,
+            coursesComp:false,
+            announcmentsComp:false,
+            gradesComp:false,
+            profileComp:false,
+            coursesummaryComp:false,
+            assignmentsComp:false,
+            settingsComp:true
+        });
         else if (current_component === 'coursesummary')
             setcomponentstyles({
                 homeComp:false,

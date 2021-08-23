@@ -1,10 +1,11 @@
 import React from 'react'
+import AddCourseForm from '../../components/MyCourses/AddCourseForm/AddCourseForm'
 
 const ContactUs = () =>{
 
     return(
         <div>
-            <i className="fas fa-camera"></i>
+            <AddCourseForm/>
         </div>
     )
 }
