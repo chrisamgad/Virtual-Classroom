@@ -73,12 +73,14 @@ const MainNavigation = () =>{
                 <Link className={styles.navlinkstyle}   to="/contactus">CONTACT US </Link>
             </Nav.Item>
             {
-              (authenticateduserCtx.AuthenticatedUser === undefined) ? null : 
+              (authenticateduserCtx.AuthenticatedUser) ?               
               <div>
                 <Nav.Item>
                   <Link className={styles.navlinkstyle}   to="/dashboard/home">DASHBOARD </Link>
                 </Nav.Item>
-              </div>
+            </div> 
+            : 
+            null
             }
         </Nav>
 

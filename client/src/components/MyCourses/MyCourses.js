@@ -50,6 +50,12 @@ const MyCourses =(props)=>{
                 setcourses(response.data)
               }).catch((e)=>console.log(e))
         }
+        else{
+            setuserdetails({
+                name:'',
+                role:''
+            })
+        }
 
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,18 +79,27 @@ const MyCourses =(props)=>{
         setdeletecourseState(value)
 
     }
+    
+    const ReturnIfTeacher = ()=>{
+        if(userdetails.role==='teacher')
+            return <div>
+                            <Button variant="success" className={styles.ADDcourse} onClick={HandleNewCourseClick}>Add Course</Button>
+                            <Button variant="danger" className={styles.DELETEcourse} onClick={()=>setDeleteCourseState(true)}>Delete Course</Button>
+            </div>
+        else
+            return null
+    }
+    
+
     //console.log(userdetails)
     return (
         <div>
             <div className={styles.Mycoursesheadercontainer}>
                 <div className={styles.heading}>COURSES</div>
                     {
-                        deletecourseState ? <Button variant="danger" className={styles.DELETEcourse} onClick={()=>setDeleteCourseState(true)}>Cancel</Button>
+                        (deletecourseState) ? <Button variant="danger" className={styles.DELETEcourse} onClick={()=>setDeleteCourseState(true)}>Cancel</Button>
                            :
-                        <div>
-                            <Button variant="success" className={styles.ADDcourse} onClick={HandleNewCourseClick}>Add Course</Button>
-                            <Button variant="danger" className={styles.DELETEcourse} onClick={()=>setDeleteCourseState(true)}>Delete Course</Button>
-                        </div>
+                            ReturnIfTeacher()
                     }
                 
             </div>
