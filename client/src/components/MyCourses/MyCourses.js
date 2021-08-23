@@ -16,9 +16,12 @@ const MyCourses =(props)=>{
         instructorname:'',
         studentslist:[]
     })
+
     
    const authenticateduserCtx= useContext(AuthenticatedContext)
    const courseCtx=useContext(CourseContext)
+
+   const [deletecourseState,setdeletecourseState]= useState(false)
 
     useEffect(()=>{
         courseCtx.SetWentInsideCourse(false);
@@ -66,20 +69,31 @@ const MyCourses =(props)=>{
         props.setShowBackdrop(true)
     }
 
+    const  setDeleteCourseState = (value)=>{
+        setdeletecourseState(value)
+
+    }
     //console.log(userdetails)
     return (
         <div>
             <div className={styles.Mycoursesheadercontainer}>
                 <div className={styles.heading}>COURSES</div>
-                    <Button variant="success" className={styles.ADDcourse} onClick={HandleNewCourseClick}>Add Course</Button>
-                    <Button variant="danger" className={styles.DELETEcourse}>Delete Course</Button>
+                    {
+                        deletecourseState ? <Button variant="danger" className={styles.DELETEcourse} onClick={()=>setDeleteCourseState(true)}>Cancel</Button>
+                           :
+                        <div>
+                            <Button variant="success" className={styles.ADDcourse} onClick={HandleNewCourseClick}>Add Course</Button>
+                            <Button variant="danger" className={styles.DELETEcourse} onClick={()=>setDeleteCourseState(true)}>Delete Course</Button>
+                        </div>
+                    }
                 
             </div>
-            <p className={styles.N_courses_paragraph}>Total Number of courses you have = {getTotalNumberOfCourese()}</p>
+            <p className={styles.N_courses_paragraph}>Total Number of courses you have is {getTotalNumberOfCourese()}</p>
            {  
                courses.map((course,id)=>{
                     
-                   return <Course key={id} coursename={course.name} courseID={course._id.toString()} instructor={getInstructorName(course)} role={userdetails.role}/>
+                   return <Course key={id} coursename={course.name} courseID={course._id.toString()} 
+                   instructor={getInstructorName(course)} role={userdetails.role} delete={deletecourseState}  setdeletecoursestate={setdeletecourseState}/>
                })
             
             }
