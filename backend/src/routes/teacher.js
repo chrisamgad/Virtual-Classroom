@@ -4,6 +4,7 @@ const TeacherAuth=require('../middleware/TeacherAuth')
 const Student = require('../Models/student')
 const Course = require('../Models/course')
 const encrypt = require('../GlobalMethods/encrypt')
+const FindDifferanceInBothArrs=require('../GlobalMethods/FindDifferanceInBothArrs')
 
 var router = express.Router()
 
@@ -149,6 +150,67 @@ router.get('/teacher/getmycourse/:id',TeacherAuth,async(req,res)=>{
   }
 })
 
+router.patch('/teacher/updatecourses', TeacherAuth,async(req,res)=>{
+
+  try{
+    const teacher=req.teacher;
+    const ReceivedcoursesArr=req.body.courses;
+    // console.log(teacher.CoursesList)
+    const ReceivedcoursesIDsArr= ReceivedcoursesArr.map((course)=>course._id.toString()) 
+    const CurrentTeachersCoursesIDs=teacher.CoursesList
+    CurrentTeachersCoursesIDs== CurrentTeachersCoursesIDs.map((course)=>course._id.toString()) 
+    // console.log(CurrentTeachersCoursesIDs)
+    // console.log(ReceivedcoursesIDsArr)
+ 
+
+    //1. update new courses list of teacher
+    teacher.CoursesList=ReceivedcoursesIDsArr
+    teacher.save()  
+    //console.log(teacher.CoursesList)
+    
+    
+    //2. remove any courses from Course model with filtered IDs
+     CoursesIDsToBeRemoved=FindDifferanceInBothArrs(CurrentTeachersCoursesIDs,ReceivedcoursesIDsArr);
+     console.log(CoursesIDsToBeRemoved)
+     if(CoursesIDsToBeRemoved.length >0)
+        CoursesIDsToBeRemoved.forEach(courseID => {
+          Course.findByIdAndDelete(courseID).then((res)=>console.log(res)).catch(e=>console.log(e))
+        })
+      else if(CoursesIDsToBeRemoved.length ===0)
+      {
+        console.log('test')
+        await Course.deleteMany({})
+      }
+        
+
+
+    //3. update courseList in student (dawar 3la kol elstudents elwa5deen elcourse da)
+    //This is too complex, dawar 3la tare2a tanya w 7awel tesala7ha
+    console.log('start here')
+      Student.find({}).then((students)=>{   
+          students.forEach(student=>{
+            //console.log(student.fullname)
+              CoursesIDsToBeRemoved.forEach((courseID)=>{
+                const CourseList=student.CoursesList
+                student.CoursesList=CourseList.filter((course_id)=>{
+                    return (courseID.toString() !== course_id.toString() )
+                  })
+                //console.log(CourseList)
+              })
+          //console.log(student)
+          student.save().then()
+      })
+    })  
+
+
+    res.status(200).send(teacher.CoursesList)
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e)
+  }
+  
+})
+
 router.patch('/teacher/removecourse/:id',TeacherAuth, async(req,res)=>{
   try{
     
@@ -220,7 +282,7 @@ router.post('/teacher/addstudent', TeacherAuth,async (req,res)=>{
 
         student.CoursesList.push(course._id)//add course to student coursesList
         await student.save()
-        res.send(student)
+        res.send({student,course})
     }
     else
       res.status(404).send('No student with this email')

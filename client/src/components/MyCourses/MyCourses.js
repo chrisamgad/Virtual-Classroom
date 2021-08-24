@@ -10,6 +10,8 @@ import CourseContext from '../../Contexts/CourseContext'
 const MyCourses =(props)=>{
     
     const [courses,setcourses]=useState([])
+    const [copycoursesBeforeDelete,set_copycoursesBeforeDelete] =useState([])
+
     const [userdetails,setuserdetails]=useState({
         name:'',
         role:'',
@@ -36,6 +38,7 @@ const MyCourses =(props)=>{
             Studentservice.getCourses().then((response)=>{
                 //console.log(response)
                 setcourses(response.data)
+                set_copycoursesBeforeDelete(response.data)
               }).catch((e)=>console.log(e))
         }
         else if (authenticateduserCtx.AuthenticatedUserRole==="teacher")
@@ -48,6 +51,7 @@ const MyCourses =(props)=>{
             Studentservice.getCourses().then((response)=>{
                // console.log(response.data)
                 setcourses(response.data)
+                set_copycoursesBeforeDelete(response.data)
               }).catch((e)=>console.log(e))
         }
         else{
@@ -79,6 +83,24 @@ const MyCourses =(props)=>{
         setdeletecourseState(value)
 
     }
+
+    const handleValidatingDeleteFromUser = (deleteBool)=>{
+        if(deleteBool)
+            {
+                setdeletecourseState(false)
+                console.log(courses)
+                Studentservice.DeleteCourses(courses)
+                .then((res)=>console.log(res.data))
+                .catch((e)=>console.log(e))
+               // Studentservice
+            }
+        else
+            {
+                setcourses(copycoursesBeforeDelete)
+                setdeletecourseState(false)
+            }
+
+    }
     
     const ReturnIfTeacher = ()=>{
         if(userdetails.role==='teacher')
@@ -97,7 +119,11 @@ const MyCourses =(props)=>{
             <div className={styles.Mycoursesheadercontainer}>
                 <div className={styles.heading}>COURSES</div>
                     {
-                        (deletecourseState) ? <Button variant="danger" className={styles.DELETEcourse} onClick={()=>setDeleteCourseState(true)}>Cancel</Button>
+                        (deletecourseState) ? 
+                        <div>
+                            <Button variant="danger" className={styles.DELETEcourse} style={{right: '120px'}} onClick={()=>handleValidatingDeleteFromUser(true)}>Are you sure?</Button>
+                            <Button variant="warning" className={styles.DELETEcourse} onClick={()=>handleValidatingDeleteFromUser(false)}>Cancel</Button>
+                        </div>
                            :
                             ReturnIfTeacher()
                     }
@@ -107,7 +133,7 @@ const MyCourses =(props)=>{
            {  
                courses.map((course,id)=>{
                     
-                   return <Course key={id} coursename={course.name} courseID={course._id.toString()} 
+                   return <Course key={id} courses={courses} setcourses={setcourses} Thiscoursename={course.name} ThiscourseID={course._id.toString()} 
                    instructor={getInstructorName(course)} role={userdetails.role} delete={deletecourseState}  setdeletecoursestate={setdeletecourseState}/>
                })
             

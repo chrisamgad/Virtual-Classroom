@@ -150,6 +150,7 @@ router.get('/', (req, res) => {
 
   router.get('/getavatar/:id', async (req,res)=>{
     try{
+        console.log('TEST')
         const student =await Student.findById(req.params.id) //find user by id provided
 
         if(!student || !student.avatar) // if no user or his avatar found, produce an error

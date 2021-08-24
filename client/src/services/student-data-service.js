@@ -70,7 +70,7 @@ class StudentService {
           data
         ,
         {
-          headers: authHeader(),
+          headers: authHeader()
           
         }
       ).then((response)=> {
@@ -93,6 +93,15 @@ class StudentService {
       //console.log(response)
       return ImageURL;
     }
+
+    DeleteCourses(newcoursesarr){
+     return axios.patch( API_URL + '/teacher/updatecourses'
+      ,{courses: newcoursesarr}, {headers: authHeader()})
+            .then((res)=>res)
+            .catch((e)=>{throw new Error(e)}) 
+    }
+
+
   }
 
   // AddCoures(){
