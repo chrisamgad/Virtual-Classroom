@@ -101,14 +101,22 @@ class StudentService {
             .catch((e)=>{throw new Error(e)}) 
     }
 
+    AddCourse(course_name,course_description){
+      return axios.post(
+        API_URL+'/teacher/createcourse',
+        {
+          coursename:course_name,
+          description:course_description
+        },
+        {
+          headers:authHeader()
+        }
+      )
+    }
 
   }
 
-  // AddCoures(){
-  //   return axios.post(
-  //     API_URL+'/'
-  //   )
-  // }
+
 
   
   export default new StudentService();

@@ -26,6 +26,7 @@ const MyCourses =(props)=>{
    const [deletecourseState,setdeletecourseState]= useState(false)
 
     useEffect(()=>{
+
         courseCtx.SetWentInsideCourse(false);
       // authenticateduserCtx.SetAuthenticatedUser()
         if(authenticateduserCtx.AuthenticatedUserRole==="student")
@@ -60,10 +61,10 @@ const MyCourses =(props)=>{
                 role:''
             })
         }
-
-
+    
+    
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[authenticateduserCtx])
+    },[authenticateduserCtx,courseCtx.courses_changed])
 
     const getInstructorName =(course)=>{
         const instructorname=course.instructor.fullname

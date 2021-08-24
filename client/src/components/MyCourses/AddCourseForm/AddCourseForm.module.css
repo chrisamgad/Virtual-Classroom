@@ -48,3 +48,7 @@
     width: 70%;
     margin: 0 auto;
 }
+
+.alertstyles{
+    padding: 0.75rem 1rem !important;
+}

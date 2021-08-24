@@ -2,22 +2,27 @@
 import React,{createContext,useState} from 'react'
 
 const CourseContext =createContext({
-    WentInsideCourse:false
-
+    WentInsideCourse:false,
+    courses_changed: false
 })
 
 export function CourseContextProvider(props){
     const [WentInsideCourse,setWentInsideCourse]=useState(false);
-    
+    const[courses_changed, set_courses_changed]=useState(false)    
 
     function SetWentInsideCourse(value){
-        setWentInsideCourse(value)
-        
+        setWentInsideCourse(value)       
+    }
+
+    function Toggle_courses_changed(){
+        set_courses_changed((prevstate)=>!prevstate)       
     }
 
     const context ={
         WentInsideCourse:WentInsideCourse,
-        SetWentInsideCourse:SetWentInsideCourse
+        SetWentInsideCourse:SetWentInsideCourse,
+        courses_changed:courses_changed,
+        Toggle_courses_changed:Toggle_courses_changed
     }
 
 
