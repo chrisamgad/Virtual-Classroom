@@ -28,14 +28,12 @@ const Sidebar = () => {
     useEffect(()=>{
 
         var pathArray = window.location.pathname.split('/');
-        console.log(pathArray[1])
-        
         if(window.location.pathname === '/dashboard/home')
             setcomponentstyles({
                 ...componentstyles,
                 homeComp:true
             });
-        else if (window.location.pathname === '/dashboard/mycourses')  
+        else if (window.location.pathname === '/dashboard/mycourses' )  
             setcomponentstyles({
                 ...componentstyles,
                 coursesComp:true
@@ -45,6 +43,7 @@ const Sidebar = () => {
                 ...componentstyles,
                 announcmentsComp:true
             });
+        
         else if (pathArray[2]==="mycourses" && pathArray[4]==="coursesummary")
             setcomponentstyles({
                 ...componentstyles,
@@ -58,6 +57,7 @@ const Sidebar = () => {
                 assignmentsComp:true
             });
 
+
             //console.log(window.location.pathname)
         // if(courseCtx.WentInsideCourse)
         //     setcomponentstyles({
@@ -70,7 +70,7 @@ const Sidebar = () => {
         setuserimage(studentDataService.getUserImage())
               
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[courseCtx.WentInsideCourse, window.location.pathname])
+    },[courseCtx.WentInsideCourse])
 
     const setCurrentLink= (current_component)=>{
 
@@ -170,7 +170,7 @@ const Sidebar = () => {
        
     }
 
-   // console.log(window.location.pathname.toString())
+    console.log(courseCtx.WentInsideCourse)
 
     return (
         <div>

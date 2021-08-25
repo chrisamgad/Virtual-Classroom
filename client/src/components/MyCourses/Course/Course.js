@@ -39,7 +39,8 @@ const Course = (props)=>{
     const handleClickOnCard=()=>{
         if(!props.delete) //prevents clicking on the course while on delete mode
             {
-                push('/dashboard/mycourses/' + props.ThiscourseID)
+                push('/dashboard/mycourses/' + props.ThiscourseID+'/coursesummary/viewstudents')
+                courseCtx.SetWentInsideCourse(true)
                 courseCtx.SetCurrentCourseChosen(props.course)
             }
     }

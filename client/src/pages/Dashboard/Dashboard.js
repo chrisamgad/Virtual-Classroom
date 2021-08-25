@@ -1,16 +1,17 @@
 import React,{useContext,useEffect,useState}  from "react";
 import AuthenticatedContext from '../../Contexts/AuthenticatedContext'
 import CourseContext from "../../Contexts/CourseContext";
-import {Container, Row, Col, TabContainer } from "react-bootstrap";
+import {Container, Row, Col } from "react-bootstrap";
 
 import {Switch,Route} from 'react-router-dom'
 import Sidebar from "../../components/DashboardSidebar/Sidebar";
 import styles from './Dashboard.module.css'
 import MyCourses from "../../components/MyCourses/MyCourses";
-import CourseDetails from "../../components/MyCourses/Course/CourseDetails/CourseDetails";
+import CourseSummary from "../../components/MyCourses/Course/CourseSummary/CourseSummary";
 import Backdrop from '../../components/Backdrop/Backdrop'
 import AddCourseForm from '../../components/MyCourses/AddCourseForm/AddCourseForm'
 import Assignments from "../../components/MyCourses/Course/Assignments/Assignments";
+import ViewStudents from '../../components/ViewStudents/ViewStudents'
 import './dashboard.css'
 
 
@@ -49,8 +50,8 @@ const Dashboard = (props) => {
                                     <Route exact path={`/dashboard/mycourses`}>
                                         <MyCourses setShowBackdrop={setShowBackdrop}/>
                                     </Route>
-                                    <Route exact path={`/dashboard/mycourses/:id`}>
-                                        <CourseDetails />
+                                    <Route path={`/dashboard/mycourses/:id/coursesummary`}>
+                                        <CourseSummary />
                                     </Route>
                                     <Route exact path={`/dashboard/mycourses/:id/assignments`}>
                                         <Assignments />

@@ -11,7 +11,6 @@ const Assignments = ()=>{
 
     useEffect(()=>{
             
-    
         courseCtx.SetWentInsideCourse(true)
             
         
