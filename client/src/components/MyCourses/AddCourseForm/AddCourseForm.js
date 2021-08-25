@@ -37,17 +37,14 @@ const AddCourseForm = (props)=>{
     const AddNewCourse = ()=>{
         
         if(validator.isEmpty(newcoursedetails.coursename,{ ignore_whitespace:true }))
-        {
-            console.log('first validate')
             return seterror('Course Name field must not be empty!')
-        }
+        
             
-        if (validator.isEmpty(newcoursedetails.description,{ ignore_whitespace:true }))
-        {
+        if (validator.isEmpty(newcoursedetails.description,{ ignore_whitespace:true }))   
             return seterror('Course Description field must not be empty!')  
-        } 
+        
             
-        console.log(newcoursedetails)
+        //console.log(newcoursedetails)
         studentDataService.AddCourse(newcoursedetails.coursename,newcoursedetails.description).then().catch((e)=>console.log(e))
         coursesCtx.Toggle_courses_changed(true)
         props.setShowBackdrop(false)
@@ -59,7 +56,7 @@ const AddCourseForm = (props)=>{
         
     }
 
-    console.log(error)
+    //console.log(error)
 
     return(
         <div>

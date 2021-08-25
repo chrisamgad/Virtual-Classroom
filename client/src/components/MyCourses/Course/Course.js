@@ -13,7 +13,7 @@ const Course = (props)=>{
     const[cardcontainerstyle,setcardcontainerstyle]=useState(styles.cardcontainer)
 
     useEffect(()=>{
-       console.log(props.delete)
+       //console.log(props.delete)
         if(props.delete)
              setcardcontainerstyle(`${styles.cardcontainerwithDelete}`)
         else
@@ -26,7 +26,7 @@ const Course = (props)=>{
     const handleDeleteIconClicked =()=>{
         // props.setdeletecoursestate(false)
         const UpdatedCoursesArr= props.courses.filter((course)=>{
-            console.log(props.ThiscourseID)
+            //console.log(props.ThiscourseID)
             return (course._id.toString() !== props.ThiscourseID)
         })
 

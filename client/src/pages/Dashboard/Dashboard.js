@@ -40,7 +40,7 @@ const Dashboard = (props) => {
                         </Col>
 
                         <Col md={10} className="DashboardContainer" >
-                            <div className={styles.DashboardMainContainer}>                
+                                          
                                 <Switch>
                                     <Route exact path={`/dashboard/home`}>
                                         Home
@@ -58,7 +58,7 @@ const Dashboard = (props) => {
                                         My Grades
                                     </Route>
                                 </Switch>        
-                            </div>
+                            
                         </Col>
                     </Row>
                 </Container>

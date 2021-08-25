@@ -89,7 +89,7 @@ const MyCourses =(props)=>{
         if(deleteBool)
             {
                 setdeletecourseState(false)
-                console.log(courses)
+                //console.log(courses)
                 Studentservice.DeleteCourses(courses)
                 .then((res)=>console.log(res.data))
                 .catch((e)=>console.log(e))
@@ -119,6 +119,7 @@ const MyCourses =(props)=>{
         <div>
             <div className={styles.Mycoursesheadercontainer}>
                 <div className={styles.heading}>COURSES</div>
+                
                     {
                         (deletecourseState) ? 
                         <div>
@@ -130,7 +131,9 @@ const MyCourses =(props)=>{
                     }
                 
             </div>
-            <p className={styles.N_courses_paragraph}>Total Number of courses you have is {getTotalNumberOfCourese()}</p>
+            <p className={styles.N_courses_paragraph}  >Total Number of courses you have is {getTotalNumberOfCourese()}</p>
+            <div className={styles.coursescontainer} id={styles["scroll"]}>
+            
            {  
                courses.map((course,id)=>{
                     
@@ -139,6 +142,7 @@ const MyCourses =(props)=>{
                })
             
             }
+            </div>
         </div>
     )
 }
