@@ -1,5 +1,5 @@
 import React,{useState,useContext, useEffect} from 'react'
-import CourseContext from '../../../Contexts/CourseContext';
+import CourseContext from '../../../../Contexts/CourseContext';
 
 
 const CourseDetails = ()=>{

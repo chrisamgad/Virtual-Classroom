@@ -137,7 +137,7 @@ const MyCourses =(props)=>{
            {  
                courses.map((course,id)=>{
                     
-                   return <Course key={id} courses={courses} setcourses={setcourses} Thiscoursename={course.name} ThiscourseID={course._id.toString()} 
+                   return <Course key={id} courses={courses} setcourses={setcourses} course={course} Thiscoursename={course.name} ThiscourseID={course._id.toString()} 
                    instructor={getInstructorName(course)} role={userdetails.role} delete={deletecourseState}  setdeletecoursestate={setdeletecourseState}/>
                })
             

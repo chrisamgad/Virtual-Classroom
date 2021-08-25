@@ -20,18 +20,22 @@ const Sidebar = () => {
         coursesummaryComp:false,
         assignmentsComp:false
     })
+    const [current_course_id,set_current_course_id]=useState(undefined)
 
     const [userimage,setuserimage]=useState(undefined)
     const courseCtx= useContext(CourseContext)
     
     useEffect(()=>{
+
+        var pathArray = window.location.pathname.split('/');
+        console.log(pathArray[1])
+        
         if(window.location.pathname === '/dashboard/home')
             setcomponentstyles({
                 ...componentstyles,
                 homeComp:true
-                
             });
-        else if (window.location.pathname === '/dashboard/mycourses')
+        else if (window.location.pathname === '/dashboard/mycourses')  
             setcomponentstyles({
                 ...componentstyles,
                 coursesComp:true
@@ -41,28 +45,32 @@ const Sidebar = () => {
                 ...componentstyles,
                 announcmentsComp:true
             });
-        else if (window.location.pathname === `/dashboard/mycourses/${Courseid}/coursesummary`)
+        else if (pathArray[2]==="mycourses" && pathArray[4]==="coursesummary")
             setcomponentstyles({
                 ...componentstyles,
+                assignmentsComp:false,
                 coursesummaryComp:true
             });
-        else if (window.location.pathname === `/dashboard/mycourses/${Courseid}/assignments`)
+        else if (pathArray[2]==="mycourses" && pathArray[4]==="assignments")
             setcomponentstyles({
                 ...componentstyles,
+                coursesummaryComp:false,
                 assignmentsComp:true
             });
 
-        if(courseCtx.WentInsideCourse)
-            setcomponentstyles({
-                ...componentstyles,
-                coursesummaryComp:true
-            });
+            //console.log(window.location.pathname)
+        // if(courseCtx.WentInsideCourse)
+        //     setcomponentstyles({
+        //         ...componentstyles,
+        //         assignmentsComp:false,
+        //         coursesummaryComp:true
+        //     });
 
         
         setuserimage(studentDataService.getUserImage())
               
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[courseCtx.WentInsideCourse])
+    },[courseCtx.WentInsideCourse, window.location.pathname])
 
     const setCurrentLink= (current_component)=>{
 
@@ -147,7 +155,7 @@ const Sidebar = () => {
                 coursesummaryComp:true
                
             });
-        else if (current_component === 'assignments')
+        else if (current_component === 'assignments') 
             setcomponentstyles({
                 homeComp:false,
                 coursesComp:false,
@@ -158,6 +166,8 @@ const Sidebar = () => {
                 coursesummaryComp:false,
                 assignmentsComp:true,
             });
+
+       
     }
 
    // console.log(window.location.pathname.toString())
@@ -178,8 +188,8 @@ const Sidebar = () => {
             {
                 courseCtx.WentInsideCourse ?
                 <div>
-                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.coursesummaryComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses/:id/coursesummary" onClick={()=>setCurrentLink('coursesummary')}><i style={{marginRight:'10px',fontSize:'18px'}} className="fas fa-clipboard-list"></i>Course Summary</Nav.Link>
-                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.assignmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses/:id/assignments" onClick={()=>setCurrentLink('assignments')}><i style={{marginRight:'9px',fontSize:'17px'}} className="fas fa-tasks"></i>Assignments</Nav.Link>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.coursesummaryComp ? styles.onClickLinkStyle : null}` } as={Link} to={`/dashboard/mycourses/${JSON.parse(localStorage.getItem("current_course_chosen"))._id}/coursesummary` } onClick={()=>setCurrentLink('coursesummary')}><i style={{marginRight:'10px',fontSize:'18px'}} className="fas fa-clipboard-list"></i>Course Summary</Nav.Link>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.assignmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to={`/dashboard/mycourses/${JSON.parse(localStorage.getItem("current_course_chosen"))._id}/assignments`} onClick={()=>setCurrentLink('assignments')}><i style={{marginRight:'9px',fontSize:'17px'}} className="fas fa-tasks"></i>Assignments</Nav.Link>
                     <Nav.Link className={`${styles.NavLink}  ${componentstyles.back ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses" onClick={()=>setCurrentLink('back')}><i style={{marginRight:'9px'}} className="fas fa-backward"></i>Back</Nav.Link>
                     
                 </div>

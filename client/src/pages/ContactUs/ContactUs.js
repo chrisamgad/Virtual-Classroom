@@ -1,11 +1,11 @@
 import React from 'react'
-import AddCourseForm from '../../components/MyCourses/AddCourseForm/AddCourseForm'
+import TimePicker from 'react-time-picker'
 
 const ContactUs = () =>{
 
     return(
         <div>
-            <AddCourseForm/>
+            <TimePicker/>
         </div>
     )
 }

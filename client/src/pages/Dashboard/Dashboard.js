@@ -7,9 +7,10 @@ import {Switch,Route} from 'react-router-dom'
 import Sidebar from "../../components/DashboardSidebar/Sidebar";
 import styles from './Dashboard.module.css'
 import MyCourses from "../../components/MyCourses/MyCourses";
-import CourseDetails from "./CourseDetails/CourseDetails";
+import CourseDetails from "../../components/MyCourses/Course/CourseDetails/CourseDetails";
 import Backdrop from '../../components/Backdrop/Backdrop'
 import AddCourseForm from '../../components/MyCourses/AddCourseForm/AddCourseForm'
+import Assignments from "../../components/MyCourses/Course/Assignments/Assignments";
 import './dashboard.css'
 
 
@@ -50,6 +51,9 @@ const Dashboard = (props) => {
                                     </Route>
                                     <Route exact path={`/dashboard/mycourses/:id`}>
                                         <CourseDetails />
+                                    </Route>
+                                    <Route exact path={`/dashboard/mycourses/:id/assignments`}>
+                                        <Assignments />
                                     </Route>
                                     <Route exact path={`/dashboard/announcments`}>
                                         Announcments

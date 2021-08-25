@@ -4,13 +4,15 @@ import styles from "./Course.module.css"
 import { useHistory } from 'react-router-dom'
 
 import '../../../pages/Dashboard/Dashboard'
-import { useEffect,useState } from 'react'
-import studentDataService from '../../../services/student-data-service'
+import { useEffect,useState,useContext } from 'react'
+import CourseContext from '../../../Contexts/CourseContext'
 
 const Course = (props)=>{
 
     const { push } = useHistory()
     const[cardcontainerstyle,setcardcontainerstyle]=useState(styles.cardcontainer)
+
+    const courseCtx=useContext(CourseContext)
 
     useEffect(()=>{
        //console.log(props.delete)
@@ -35,8 +37,11 @@ const Course = (props)=>{
 
 
     const handleClickOnCard=()=>{
-        if(!props.delete)
-            push('/dashboard/mycourses/' + props.courseID)
+        if(!props.delete) //prevents clicking on the course while on delete mode
+            {
+                push('/dashboard/mycourses/' + props.ThiscourseID)
+                courseCtx.SetCurrentCourseChosen(props.course)
+            }
     }
 
 
