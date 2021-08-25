@@ -17,7 +17,7 @@ const courseSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:'student'
         }],
-    assignments:[{
+    assignmentsList:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'assignment'
     }]
