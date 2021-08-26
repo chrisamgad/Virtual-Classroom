@@ -188,7 +188,7 @@ const Sidebar = () => {
             {
                 courseCtx.WentInsideCourse ?
                 <div>
-                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.coursesummaryComp ? styles.onClickLinkStyle : null}` } as={Link} to={`/dashboard/mycourses/${JSON.parse(localStorage.getItem("current_course_chosen"))._id}/coursesummary` } onClick={()=>setCurrentLink('coursesummary')}><i style={{marginRight:'10px',fontSize:'18px'}} className="fas fa-clipboard-list"></i>Course Summary</Nav.Link>
+                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.coursesummaryComp ? styles.onClickLinkStyle : null}` } as={Link} to={`/dashboard/mycourses/${JSON.parse(localStorage.getItem("current_course_chosen"))._id}/coursesummary/viewstudents` } onClick={()=>setCurrentLink('coursesummary')}><i style={{marginRight:'10px',fontSize:'18px'}} className="fas fa-clipboard-list"></i>Course Summary</Nav.Link>
                     <Nav.Link className={`${styles.NavLink}  ${componentstyles.assignmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to={`/dashboard/mycourses/${JSON.parse(localStorage.getItem("current_course_chosen"))._id}/assignments`} onClick={()=>setCurrentLink('assignments')}><i style={{marginRight:'9px',fontSize:'17px'}} className="fas fa-tasks"></i>Assignments</Nav.Link>
                     <Nav.Link className={`${styles.NavLink}  ${componentstyles.back ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses" onClick={()=>setCurrentLink('back')}><i style={{marginRight:'9px'}} className="fas fa-backward"></i>Back</Nav.Link>
                     

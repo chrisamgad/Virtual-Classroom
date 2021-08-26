@@ -1,0 +1,16 @@
+.heading{
+    font-size: 26px;
+    color: #000000;
+    font-weight: 400;
+    background: linear-gradient(45deg, #878787, transparent);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.StudentsContainer{
+    margin-top:10px;
+    margin-left:10px;
+    
+}

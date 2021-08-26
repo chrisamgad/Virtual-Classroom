@@ -114,7 +114,21 @@ class StudentService {
       )
     }
 
+    getCurrentStudents(courseID){
+      return axios.get(
+        `${API_URL}/teacher/${courseID}/getstudentslist`,
+        {
+          headers:authHeader()
+        }
+      )
+      .then(res=>res)
+      .catch((e)=>{throw new Error(e)})
+    }
+
+
   }
+
+
 
 
 

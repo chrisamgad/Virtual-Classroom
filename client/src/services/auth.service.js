@@ -75,6 +75,8 @@ class AuthService {
       role:JSON.parse(localStorage.getItem('role'))
     };
   }
+
+  
 }
 
 export default  new AuthService();

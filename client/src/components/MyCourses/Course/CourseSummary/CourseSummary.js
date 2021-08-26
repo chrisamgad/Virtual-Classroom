@@ -43,6 +43,7 @@ const CourseSummary = ()=>{
         <Router>
             <div>
                 <div className={styles.nav}>
+                    <div className={styles.border}></div>
                     <Nav.Item>
                         <Nav.Link className={ navitems.viewstudentsComp ? styles.nav_link_active : styles.nav_link }  
                         onClick={()=>setnavitems({
@@ -52,6 +53,7 @@ const CourseSummary = ()=>{
                         as={Link} 
                         to={`/dashboard/mycourses/${JSON.parse(localStorage.getItem("current_course_chosen"))._id}/coursesummary/viewstudents`}>View Students Enrolled</Nav.Link>
                     </Nav.Item>
+                    <div className={styles.border}></div>
                     <Nav.Item>
                         <Nav.Link className={navitems.modifystudentsComp ? styles.nav_link_active : styles.nav_link} onClick={()=>setnavitems({
                             viewstudentsComp:false,
@@ -60,13 +62,14 @@ const CourseSummary = ()=>{
                         as={Link}
                          to={`/dashboard/mycourses/${JSON.parse(localStorage.getItem("current_course_chosen"))._id}/coursesummary/modifystudents`} >Modify Students Access</Nav.Link>
                     </Nav.Item>
+                    <div className={styles.border}></div>
                 </div>
 
                 <Switch>
-                    <Route exact path={`/dashboard/mycourses/:id/coursesummary/viewstudents`}>
+                    <Route exact path={`/dashboard/mycourses/:courseid/coursesummary/viewstudents`}>
                         <ViewStudents />
                     </Route>
-                    <Route exact path={`/dashboard/mycourses/:id/coursesummary/modifystudents`}>
+                    <Route exact path={`/dashboard/mycourses/:courseid/coursesummary/modifystudents`}>
                         <ModifyStudents />
                     </Route>
                 </Switch>

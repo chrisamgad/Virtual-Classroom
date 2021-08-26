@@ -7,16 +7,18 @@
     padding-bottom: 5px;
 }
 .nav_link{
-    font-size: 1.23rem;
-    border-right: 1px solid #33372145;
-    border-left: 1px solid #33372145;
+    font-size: 1.1rem;
+
 }
 .nav_link:hover{
     color:#31af36 !important;
 }
 .nav_link_active{
-    font-size: 1.23rem;
+    font-size: 1.1rem;
     color:#0088ff  !important;
-    border-right: 1px solid #33372145;
-    border-left: 1px solid #33372145;
+}
+
+.border{
+    
+    border-left:1px solid #33372145;
 }
