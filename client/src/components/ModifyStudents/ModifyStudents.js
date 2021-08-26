@@ -1,7 +1,7 @@
 import React from 'react';
 import {useContext,useEffect} from 'react'
 import CourseContext from '../../Contexts/CourseContext';
-
+import styles from './ModifyStudents.module.css'
 
 const ModifyStudents = ()=>{
 
@@ -9,12 +9,15 @@ const ModifyStudents = ()=>{
     
     useEffect(()=>{
         courseCtx.SetWentInsideCourse(true)
-        console.log('test')
+        
     },[])
 
     return(
         <div>
-            Modify Students 
+            <p className={styles.heading}>Modify Students</p> 
+            <div className={styles.StudentsContainer}>
+
+            </div>
         </div>
     )
 }

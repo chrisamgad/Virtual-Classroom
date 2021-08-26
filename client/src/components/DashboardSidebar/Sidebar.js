@@ -1,5 +1,4 @@
 import React,{useContext, useEffect, useState} from "react";
-import {useParams} from 'react-router-dom'
 import {Nav} from "react-bootstrap";
 import {Link} from 'react-router-dom'
 import styles from './Sidebar.module.css'
@@ -7,9 +6,7 @@ import CourseContext from "../../Contexts/CourseContext";
 import studentDataService from "../../services/student-data-service";
 
 const Sidebar = () => {
-   
-    const {Courseid}= useParams();
-    
+ 
     const [componentstyles,setcomponentstyles]=useState({
         homeComp:false,
         coursesComp:false,
@@ -20,7 +17,6 @@ const Sidebar = () => {
         coursesummaryComp:false,
         assignmentsComp:false
     })
-    const [current_course_id,set_current_course_id]=useState(undefined)
 
     const [userimage,setuserimage]=useState(undefined)
     const courseCtx= useContext(CourseContext)
@@ -170,7 +166,7 @@ const Sidebar = () => {
        
     }
 
-    console.log(courseCtx.WentInsideCourse)
+    //console.log(courseCtx.WentInsideCourse)
 
     return (
         <div>

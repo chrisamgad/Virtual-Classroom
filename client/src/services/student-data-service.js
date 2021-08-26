@@ -114,9 +114,9 @@ class StudentService {
       )
     }
 
-    getCurrentStudents(courseID){
+    getCurrentStudents(courseID,limit,skip){
       return axios.get(
-        `${API_URL}/teacher/${courseID}/getstudentslist`,
+        `${API_URL}/teacher/${courseID}/getstudentslist?limit=${limit}&skip=${skip}`,
         {
           headers:authHeader()
         }

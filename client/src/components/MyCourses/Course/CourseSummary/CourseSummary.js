@@ -36,9 +36,11 @@ const CourseSummary = ()=>{
         // courseCtx.SetCurrentCourseChosen()
         //console.log(courseCtx.SetInsideCourseBool)
         courseCtx.SetWentInsideCourse(true)
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
-    console.log(courseCtx)
+    //console.log(courseCtx)
     return(
         <Router>
             <div>

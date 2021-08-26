@@ -6,9 +6,11 @@ import { useContext, useState } from "react"
 import validator from 'validator'
 import AuthService from '../../services/auth.service'
 import AuthenticatedContext from "../../Contexts/AuthenticatedContext";
+import CourseContext from "../../Contexts/CourseContext";
 const Login = (props)=>{
 
     const authenticateduserCtx=useContext(AuthenticatedContext)
+    const courseCtx=useContext(CourseContext)
 
     const [CredentialDetails,setCredentialDetails]= useState({
         email:'',
@@ -49,7 +51,9 @@ const Login = (props)=>{
             if(response.data.token)
                 {
                     props.history.push('/dashboard/home')// redirect to /myprofile if logged in successfully
+                    courseCtx.SetWentInsideCourse(false)
                     authenticateduserCtx.SetAuthenticatedUser()
+                    
                     
                 }
             else if(response.data.error)
