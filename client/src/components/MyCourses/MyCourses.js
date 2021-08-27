@@ -132,8 +132,7 @@ const MyCourses =(props)=>{
                 
             </div>
             <p className={styles.N_courses_paragraph}  >Total Number of courses you have is {getTotalNumberOfCourese()}</p>
-            <div className={styles.coursescontainer} id={styles["scroll"]}>
-            
+            <div className={styles.coursescontainer} id={styles["scroll"]}> 
            {  
                courses.map((course,id)=>{
                     
