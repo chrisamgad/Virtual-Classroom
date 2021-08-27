@@ -15,9 +15,11 @@
 }
 .nav_link_active{
     font-size: 1.1rem;
-    color:#0088ff  !important;
+    color:#ff0000  !important;
 }
-
+.nav_link_active:hover{
+    color:#31af36  !important;
+}
 .border{
     
     border-left:1px solid #33372145;

@@ -125,6 +125,34 @@ class StudentService {
       .catch((e)=>{throw new Error(e)})
     }
 
+    RemoveStudent(student,courseID){
+      return axios.patch(
+        `${API_URL}/teacher/removestudent`,
+        {
+          email:student.email,
+          course_id:courseID
+        },
+        {
+          headers:authHeader()
+        }
+      )
+      .then(res=>res)
+      .catch((e)=>{throw new Error(e)})
+    }
+
+    AddStudent(student_email,courseID){
+      return axios.post(
+        `${API_URL}/teacher/addstudent`,
+        {
+          email:student_email,
+          course_id:courseID
+        },
+        {
+          headers:authHeader()
+        }
+      ).then((res)=>res)
+      .catch((e)=>{throw new Error(e)})
+    }
 
   }
 
