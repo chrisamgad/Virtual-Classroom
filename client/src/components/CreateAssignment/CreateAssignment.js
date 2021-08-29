@@ -46,13 +46,13 @@ const AddCourseForm = (props)=>{
 
     const uploadAssignment = ()=>{
         const deadline=ConvertDateInputIntoDateJSObject()
-        console.log(deadline)
-        console.log(assignmentdetails)
+        //console.log(deadline)
+        //console.log(assignmentdetails)
          const filedata = new FormData() 
          //Form data to be sent
          filedata.append('name', assignmentdetails.name)
-         filedata.append('duedata', deadline)
-         filedata.append('description', deadline)
+         filedata.append('duedate', deadline)
+         filedata.append('description', assignmentdetails.description)
          filedata.append('myFile', selectedfile) //includes the selected file
 
         studentDataService.CreateAndUploadAssignment(courseid,filedata).then((res)=>{
@@ -66,8 +66,8 @@ const AddCourseForm = (props)=>{
     }
 
     
-    console.log(dayvalue)
-    console.log(timevalue)
+   // console.log(dayvalue)
+    //console.log(timevalue)
     
     return(
         <div>

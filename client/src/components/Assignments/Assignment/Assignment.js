@@ -27,7 +27,7 @@ const  Assignment= (props) => {
         <Card.Header>Assignment #{props.index +1 }</Card.Header>
         <Card.Body>
             <Card.Title  className="mb-3">{props.assignment.name}</Card.Title>
-            <Card.Subtitle >Due: <span>  {moment(props.assignment.DueDate).format("MMMM Do YYYY, h:mm:ss a")}</span></Card.Subtitle>
+            <Card.Subtitle >Due: <span>{moment(props.assignment.DueDate).format("MMMM Do YYYY, h:mm:ss a")}  </span></Card.Subtitle>
             <Card.Text> Submission Status:<span> {props.assignment.SubmissionStatus}</span></Card.Text>
         </Card.Body>
     </Card>
