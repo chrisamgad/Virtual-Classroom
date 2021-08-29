@@ -1,4 +1,5 @@
 const express = require('express')
+const mongoose = require('mongoose')
 const Teacher =require('../Models/teacher') 
 const TeacherAuth=require('../middleware/TeacherAuth')
 const Student = require('../Models/student')
@@ -7,8 +8,7 @@ const Assignment = require ('../Models/assignment')
 const encrypt = require('../GlobalMethods/encrypt')
 const FindDifferanceInBothArrs=require('../GlobalMethods/FindDifferanceInBothArrs')
 const multer = require('multer')
-const File = require('../Models/file')
-
+const AssignmentFile = require('../Models/assignment-file')
 var router = express.Router()
 
  
@@ -257,127 +257,6 @@ router.patch('/teacher/removecourse/:id',TeacherAuth, async(req,res)=>{
 })
 
 
-router.post('/teacher/:courseid/createassignment',TeacherAuth,async(req,res)=>{
-  try{
-    const assignment = new Assignment({
-    name:req.body.name,
-    course:req.params.courseid,
-    SubmissionStatus:'NotSubmittedYet',
-    DueDate: req.body.duedate,
-    grade: undefined
-    })
-    //console.log(assignment)
-    await assignment.save()
-
-    //Add assignment to course assignmentslist
-    let course=await Course.findById(req.params.courseid)
-    course.assignmentsList.push(assignment._id)
-    //console.log(course)
-    await course.save()
-    res.status(200).send(assignment)
-  }catch(e){
-    res.status(500).send('couldnt create new file')
-    console.log(e)
-  }
-})
-
-
-//Configuration for Multer
-const multerStorage = multer.diskStorage({
-  
-  destination: (req, file, cb) => {
-    cb(null, "public/files");
-    
-  },
-  filename: (req, file, cb) => {
-    //const ext = file.mimetype.split("/")[1];
-    console.log(file)
-    var re = /(?:\.([^.]+))?$/;//regex
-    var ext = re.exec(file.originalname)[1];   // extension extracted
-
-    //console.log(req.body)
-    cb(null, `assignment-${req.body.assignmentid}.${ext}`);
-  },
-});
-
-// Multer Filter to filter files types
-const multerFilter = (req, file, cb) => {
-  if(!file.originalname.match(/\.(pdf|docx|doc)$/)) //if file extension is not jpg or jpeg or png
-    return cb(new Error('Please upload only pdf or docx or doc'))  //return error using the callback
-  
-  cb(null,true)
-  
-};
-
-//Calling the "multer" Function
-const upload = multer({
-  storage: multerStorage,
-  fileFilter: multerFilter,
-});
-
-///teacher/:courseid/uploadassignment/:assignmentid
-router.post('/teacher/uploadassignment',TeacherAuth,upload.single('myFile'),async(req,res)=>{
-
-  try {
-    const newFile = await File.create({
-      name: req.file.filename
-    });
-    res.status(200).send('uploaded file successfully');
-  } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
-  }
-
-})
-
-
-router.get('/teacher/:courseid/getassignments', TeacherAuth,async(req,res)=>{
-
-  try{
-    await Course.
-      findById(req.params.courseid). 
-      populate('assignmentsList').
-      exec(function (err, course) {
-        if (err) return handleError(err);
-        //console.log(course.assignmentsList);
-        res.send(course.assignmentsList)
-        
-      });
-  }catch(e){
-    console.log(e)
-    res.status(500).send(e)
-  }
-})
-
-router.patch('/teacher/:courseid/deleteassignment/:assignmentid', TeacherAuth,async(req,res)=>{
-
-  try{
-    
-  //First check if teacher is the owner of this assignment (by using courseid and searching for this course in the teacher)
-  const OwnerOfAssignmentFlag=req.teacher.CoursesList.includes(req.params.courseid);
-  if(OwnerOfAssignmentFlag)
-  {
-    //1. delete assignment from Course
-    const course=await Course.findById(req.params.courseid)
-    //console.log(course)
-    course.assignmentsList=course.assignmentsList.filter((assID)=>{
-      return (assID.toString()!==req.params.assignmentid)
-    })
-    await course.save()
-
-    //2.delete assignment from Assignment
-    await Assignment.findByIdAndDelete(req.params.assignmentid)
-
-  }
-  else
-    throw new Error("You're not the owner of this assignment!!")
-
-
-  }catch(e){
-    console.log(e)
-    res.status(500).send(e)
-  }
-})
 
 router.post('/teacher/addstudent', TeacherAuth,async (req,res)=>{
   try{
@@ -483,17 +362,39 @@ router.patch('/teacher/removestudent', TeacherAuth,async (req,res)=>{
 router.get('/teacher/:courseid/getstudentslist', TeacherAuth,async(req,res)=>{
  
   try{
-
+    // console.log("limit is "+parseInt(req.query.limit))
+    // console.log("skip is "+parseInt(req.query.skip))
+    // console.log(req.query)
+   
     OwnerOfCourseFlag=req.teacher.CoursesList.includes(req.params.courseid)
   
     if(OwnerOfCourseFlag)
     {
+      let TotalStudentsArrLength;
+      //1. get student length
       await Course.findById(req.params.courseid)
-      .populate('studentsList').
-      exec(function (err, course) {
+      .populate({
+        path:'studentsList'
+      })
+      .exec(function (err, course) {
         if (err) return handleError(err);
-        console.log(course.studentsList);
-        res.send(course.studentsList)
+        //console.log(course.studentsList);
+        TotalStudentsArrLength=course.studentsList.length;
+      });
+
+      await Course.findById(req.params.courseid)
+      .populate({
+        path:'studentsList',
+        options:{
+          limit:parseInt(req.query.limit),
+          skip:parseInt(req.query.skip)
+        }
+      })
+      .exec(function (err, course) {
+        if (err) return handleError(err);
+
+        console.log(TotalStudentsArrLength);
+        res.send({studentsList:course.studentsList, TotalStudentsArrLength})
         
       });
     }
@@ -506,6 +407,185 @@ router.get('/teacher/:courseid/getstudentslist', TeacherAuth,async(req,res)=>{
   
   
 
+})
+
+
+
+
+//Configuration for Multer
+const multerStorage = multer.diskStorage({
+  
+  destination: (req, file, cb) => {
+    cb(null, "public/files");
+    
+  },
+  filename: (req, file, cb) => {
+    //const ext = file.mimetype.split("/")[1];
+    //console.log(file)
+    var re = /(?:\.([^.]+))?$/;//regex
+    var ext = re.exec(file.originalname)[1];   // extension extracted
+
+    const assignment = new Assignment({
+      name:req.body.name,
+      course:req.params.courseid,
+      description:req.body.description,
+      SubmissionStatus:'In-Progress', // 3-States--> In-Progress, Submitted, Deadline-Passed
+      DueDate: req.body.duedate,
+      
+      grade: undefined
+      })
+
+    const newFile = new AssignmentFile({
+      name: file.originalname,
+      assignment:assignment._id
+
+    });
+    newFile.save().then()
+
+    assignment.assignmentfile=newFile._id;
+    
+    assignment.save().then() //save assignment
+    req.assignment=assignment
+    //console.log(req.body)
+    req.assignmentid=assignment._id;
+
+
+    
+
+    Assignment.findByIdAndUpdate(req.assignmentid,{assignmentfile:newFile._id})
+      .then()
+      .catch((e)=>console.log(e))
+    
+    cb(null, `assignment-${req.assignmentid}.${ext}`); //save file uploaded in its destination (/public/files) 
+
+  }
+});
+
+// Multer Filter to filter files types
+const multerFilter = async(req, file, cb) => {
+  if(!file.originalname.match(/\.(pdf|docx|doc)$/)) //if file extension is not jpg or jpeg or png
+    return cb(new Error('Please upload only pdf or docx or doc'))  //return error using the callback
+  
+  
+  const course=await Course.findById(req.params.courseid);
+  if(!course)
+    throw new Error('No coures with this courseid')
+  if(course.instructor.toString() !== req.teacher._id.toString())
+    throw new Error('This is not your course to upload an assignment to!!')
+  
+
+  cb(null,true)
+  
+};
+
+//Calling the "multer" Function
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+router.post('/teacher/:courseid/createassignment',TeacherAuth,upload.single('myFile'),async(req,res,next)=>{
+
+  try{
+    //console.log(req.name)
+
+  // req.assignmentid=assignment._id
+    //console.log(req.assignmentid)
+
+    const course=await Course.findById(req.params.courseid);
+    course.assignmentsList.push(req.assignmentid)
+    //console.log(course)
+    await course.save()
+    res.status(200).send(req.assignment)
+    //next() // go to the next middleware upload.single, which is called in line 503
+  }catch(e){
+    res.status(500).send('couldnt create new file')
+    console.log(e)
+  }
+})
+
+///teacher/:courseid/uploadassignment/:assignmentid
+router.post('/teacher/:courseid/uploadassignment/:assignmentid',TeacherAuth,async(req,res,next)=>{
+
+    try {
+      //Check if teacher is the owner of the course
+      const course=await Course.findById(req.params.courseid);
+      if(!course)
+        throw new Error('No coures with this courseid')
+      console.log(course.instructor)
+
+      if(course.instructor.toString() !== req.teacher._id.toString())
+        throw new Error('This is not your course to upload an assignment to!!')
+      
+      //Check if assignmet is in the assignmentslist of the course
+      console.log(course.assignmentsList)
+      const AssignmentFoundInCourse=course.assignmentsList.includes( mongoose.Types.ObjectId(req.params.assignmentid))
+      if(!AssignmentFoundInCourse)
+        throw new Error('No assignment was found in the course with this assignment id')    
+      res.status(200).send('uploaded file successfully');
+      next() // go to the next middleware upload.single, which is called in line 503
+    } catch (e) {
+      console.log(e)
+      res.status(500).send(e.message)
+    }
+
+  }, upload.single('myFile')
+
+)
+
+
+router.get('/teacher/:courseid/getassignments', TeacherAuth,async(req,res)=>{
+
+  try{
+    const course=await Course.findById(req.params.courseid);
+    if(!course)
+      throw new Error('No coures with this courseid')
+
+    if(course.instructor.toString() !== req.teacher._id.toString())
+      throw new Error('This is not your course to get assignments from!!')
+
+    await Course.
+      findById(req.params.courseid). 
+      populate('assignmentsList').
+      exec(function (err, course) {
+        if (err) return handleError(err);
+        //console.log(course.assignmentsList);
+        res.send(course.assignmentsList)
+        
+      });
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e.message)
+  }
+})
+
+router.patch('/teacher/:courseid/deleteassignment/:assignmentid', TeacherAuth,async(req,res)=>{
+
+  try{
+    
+  //First check if teacher is the owner of this assignment (by using courseid and searching for this course in the teacher)
+  const OwnerOfAssignmentFlag=req.teacher.CoursesList.includes(req.params.courseid);
+  if(OwnerOfAssignmentFlag)
+  {
+    //1. delete assignment from Course
+    const course=await Course.findById(req.params.courseid)
+    //console.log(course)
+    course.assignmentsList=course.assignmentsList.filter((assID)=>{
+      return (assID.toString()!==req.params.assignmentid)
+    })
+    await course.save()
+
+    //2.delete assignment from Assignment
+    await Assignment.findByIdAndDelete(req.params.assignmentid)
+
+  }
+  else
+    throw new Error("You're not the owner of this assignment!!")
+
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e)
+  }
 })
 
 

@@ -8,6 +8,9 @@ const assignmentSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref: 'course'
     },
+    description:{
+        type:String
+    },
     SubmissionStatus:{
         type:String
     },
@@ -15,8 +18,8 @@ const assignmentSchema = new mongoose.Schema({
         type: Date
     },
     assignmentfile: {
-        type: Buffer //allows storing binary data, which helps us in storing files
-        
+        type:mongoose.Schema.Types.ObjectId, //allows storing binary data, which helps us in storing files
+        ref:'assignment-file'
     },
     grade:{
         type: Number

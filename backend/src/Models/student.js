@@ -23,10 +23,6 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required:true
     },
-    assignments:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'assignment'
-    }],
     avatar:{
         type:Buffer
     },

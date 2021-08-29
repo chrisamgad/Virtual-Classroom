@@ -154,10 +154,33 @@ class StudentService {
       .catch((e)=>{throw new Error(e)})
     }
 
+    GetAssignments(courseID){
+      return axios.get(
+        `${API_URL}/teacher/${courseID}/getassignments`,
+        {
+          headers:authHeader()
+        }
+        ).then((res)=>res)
+        .catch((e)=>{throw new Error(e)})
+    }
+
+    // `${API_URL}/teacher/${courseID}/createassignment`
+    CreateAndUploadAssignment(courseID,data){
+
+      return axios.post(
+        `${API_URL}/teacher/${courseID}/createassignment`,
+        data,
+        { 
+          headers:authHeader()
+        }
+      ).then((res)=>res)
+      .catch((e)=>{throw new Error(e)})
+    }
+
+
   }
 
-
-
+ 
 
 
   

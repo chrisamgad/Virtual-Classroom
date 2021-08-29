@@ -10,7 +10,7 @@ import MyCourses from "../../components/MyCourses/MyCourses";
 import CourseSummary from "../../components/MyCourses/Course/CourseSummary/CourseSummary";
 import Backdrop from '../../components/Backdrop/Backdrop'
 import AddCourseForm from '../../components/MyCourses/AddCourseForm/AddCourseForm'
-import Assignments from "../../components/MyCourses/Course/Assignments/Assignments";
+import Assignments from "../../components/Assignments/Assignments";
 import ViewStudents from '../../components/ViewStudents/ViewStudents'
 import './dashboard.css'
 
@@ -50,10 +50,10 @@ const Dashboard = (props) => {
                                     <Route exact path={`/dashboard/mycourses`}>
                                         <MyCourses setShowBackdrop={setShowBackdrop}/>
                                     </Route>
-                                    <Route path={`/dashboard/mycourses/:id/coursesummary`}>
+                                    <Route path={`/dashboard/mycourses/:courseid/coursesummary`}>
                                         <CourseSummary />
                                     </Route>
-                                    <Route exact path={`/dashboard/mycourses/:id/assignments`}>
+                                    <Route exact path={`/dashboard/mycourses/:courseid/assignments`}>
                                         <Assignments />
                                     </Route>
                                     <Route exact path={`/dashboard/announcments`}>
