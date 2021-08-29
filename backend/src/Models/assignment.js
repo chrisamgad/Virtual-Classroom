@@ -11,9 +11,6 @@ const assignmentSchema = new mongoose.Schema({
     description:{
         type:String
     },
-    SubmissionStatus:{
-        type:String
-    },
     DueDate:{
         type: Date
     },

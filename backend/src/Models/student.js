@@ -30,6 +30,13 @@ const studentSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref: 'course'
     }],
+    assignmentsList:[{
+        SubmissionStatus: String,
+        assignment:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'assignment'
+        }
+    }],
     tokens:[{ //tokens is an array of objects, each object contains a token
         token:{
             type:String,

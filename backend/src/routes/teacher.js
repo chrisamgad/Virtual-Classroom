@@ -449,13 +449,26 @@ const multerStorage = multer.diskStorage({
     req.assignment=assignment
     //console.log(req.body)
     req.assignmentid=assignment._id;
-
-
     
 
     Assignment.findByIdAndUpdate(req.assignmentid,{assignmentfile:newFile._id})
       .then()
       .catch((e)=>console.log(e))
+
+    //Add assignment to student
+    Student.find().then((students)=>{
+        students.forEach((student)=>{
+          if(student.CoursesList.includes( mongoose.Types.ObjectId(req.params.courseid)))
+            student.assignmentsList.push({
+              assignment: req.assignmentid,
+              SubmissionStatus: 'In-Progress'
+            })      
+          //console.log(student)
+          student.save().then()
+        })
+
+      //console.log(students)
+    })
     
     cb(null, `assignment-${req.assignmentid}.${ext}`); //save file uploaded in its destination (/public/files) 
 
@@ -505,35 +518,6 @@ router.post('/teacher/:courseid/createassignment',TeacherAuth,upload.single('myF
   }
 })
 
-///teacher/:courseid/uploadassignment/:assignmentid
-router.post('/teacher/:courseid/uploadassignment/:assignmentid',TeacherAuth,async(req,res,next)=>{
-
-    try {
-      //Check if teacher is the owner of the course
-      const course=await Course.findById(req.params.courseid);
-      if(!course)
-        throw new Error('No coures with this courseid')
-      console.log(course.instructor)
-
-      if(course.instructor.toString() !== req.teacher._id.toString())
-        throw new Error('This is not your course to upload an assignment to!!')
-      
-      //Check if assignmet is in the assignmentslist of the course
-      console.log(course.assignmentsList)
-      const AssignmentFoundInCourse=course.assignmentsList.includes( mongoose.Types.ObjectId(req.params.assignmentid))
-      if(!AssignmentFoundInCourse)
-        throw new Error('No assignment was found in the course with this assignment id')    
-      res.status(200).send('uploaded file successfully');
-      next() // go to the next middleware upload.single, which is called in line 503
-    } catch (e) {
-      console.log(e)
-      res.status(500).send(e.message)
-    }
-
-  }, upload.single('myFile')
-
-)
-
 
 router.get('/teacher/:courseid/getassignments', TeacherAuth,async(req,res)=>{
 
@@ -565,32 +549,47 @@ router.patch('/teacher/:courseid/deleteassignment/:assignmentid', TeacherAuth,as
   try{
     
   //First check if teacher is the owner of this assignment (by using courseid and searching for this course in the teacher)
-  const OwnerOfAssignmentFlag=req.teacher.CoursesList.includes(req.params.courseid);
+  const OwnerOfAssignmentFlag=req.teacher.CoursesList.includes(mongoose.Types.ObjectId(req.params.courseid));
   if(OwnerOfAssignmentFlag)
   {
     //1. delete assignment from Course
     const course=await Course.findById(req.params.courseid)
     //console.log(course)
     //console.log(course.assignmentsList)
+    const AssignmentFound=course.assignmentsList.includes(mongoose.Types.ObjectId(req.params.assignmentid))
+    if(!AssignmentFound)
+      throw new Error('Assignment Not found in course')
+
     course.assignmentsList=course.assignmentsList.filter((assID)=>{
       return (assID.toString()!==req.params.assignmentid)
     })
     await course.save()
 
-
-
     // //2. delete the assignment file instance pointed at by the assignment
     const assignmentfileID=await Assignment.findById(req.params.assignmentid).then((assignment)=>assignment.assignmentfile)
     await AssignmentFile.findByIdAndDelete(assignmentfileID)
   
-    //3.delete  Assignment from Assignment model
+    //3.delete assignment from student
+    Student.find().then((students)=>{
+      students.forEach((student)=>{
+        if(student.CoursesList.includes( mongoose.Types.ObjectId(req.params.courseid)))
+          student.assignmentsList=student.assignmentsList.filter((ass)=>{
+            return(ass.assignment.toString() !== req.params.assignmentid)
+          })
+        //console.log(student)
+        student.save().then()
+      })
+
+    //console.log(students)
+    })
+    //4.delete  Assignment from Assignment model
     await Assignment.findByIdAndDelete(req.params.assignmentid)
 
-    //4.delete the actual file from destination
+    //5.delete the actual file from destination
     var filePath =`public/files/assignment-${req.params.assignmentid}.pdf`
     fs.unlinkSync(filePath);
    
-    res.status(200).send(course.assignmentsList)
+   res.status(200).send(course.assignmentsList)
 
   }
   else
@@ -599,9 +598,22 @@ router.patch('/teacher/:courseid/deleteassignment/:assignmentid', TeacherAuth,as
     
   }catch(e){
     console.log(e)
-    res.status(500).send(e)
+    res.status(500).send(e.message)
   }
 })
 
+router.get('/teacher/:courseid/assignments/:assignmentid',(req,res)=>{
+  try{
+
+     // console.log('fileController.download: started')
+      var filePath =`public/files/assignment-612b74921b75e8e54ce631a1.pdf`
+      res.download(filePath); // Set disposition and send it.
+
+  }catch(e){
+    res.status(500).send(e.message)
+    console.log(e)
+  }
+  
+})
 
 module.exports=router
