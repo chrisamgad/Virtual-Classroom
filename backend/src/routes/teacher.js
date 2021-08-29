@@ -9,6 +9,7 @@ const encrypt = require('../GlobalMethods/encrypt')
 const FindDifferanceInBothArrs=require('../GlobalMethods/FindDifferanceInBothArrs')
 const multer = require('multer')
 const AssignmentFile = require('../Models/assignment-file')
+const fs=require('fs')
 var router = express.Router()
 
  
@@ -469,7 +470,7 @@ const multerFilter = async(req, file, cb) => {
   
   const course=await Course.findById(req.params.courseid);
   if(!course)
-    throw new Error('No coures with this courseid')
+    throw new Error('No course with this courseid')
   if(course.instructor.toString() !== req.teacher._id.toString())
     throw new Error('This is not your course to upload an assignment to!!')
   
@@ -570,18 +571,32 @@ router.patch('/teacher/:courseid/deleteassignment/:assignmentid', TeacherAuth,as
     //1. delete assignment from Course
     const course=await Course.findById(req.params.courseid)
     //console.log(course)
+    //console.log(course.assignmentsList)
     course.assignmentsList=course.assignmentsList.filter((assID)=>{
       return (assID.toString()!==req.params.assignmentid)
     })
     await course.save()
 
-    //2.delete assignment from Assignment
+
+
+    // //2. delete the assignment file instance pointed at by the assignment
+    const assignmentfileID=await Assignment.findById(req.params.assignmentid).then((assignment)=>assignment.assignmentfile)
+    await AssignmentFile.findByIdAndDelete(assignmentfileID)
+  
+    //3.delete  Assignment from Assignment model
     await Assignment.findByIdAndDelete(req.params.assignmentid)
+
+    //4.delete the actual file from destination
+    var filePath =`public/files/assignment-${req.params.assignmentid}.pdf`
+    fs.unlinkSync(filePath);
+   
+    res.status(200).send(course.assignmentsList)
 
   }
   else
     throw new Error("You're not the owner of this assignment!!")
 
+    
   }catch(e){
     console.log(e)
     res.status(500).send(e)
