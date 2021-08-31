@@ -1,16 +1,16 @@
 
-import React,{useState,useContext} from 'react'
+import React,{useState,useContext, useEffect} from 'react'
 import {Form,Button,Alert} from 'react-bootstrap'
 import styles from './CreateAssignment.module.css'
 import TimePicker from 'react-time-picker'
 import DatePicker from 'react-date-picker'
 import {useParams} from 'react-router-dom'
 import studentDataService from '../../services/student-data-service'
+import validator from 'validator'
 
-const AddCourseForm = (props)=>{
+const CreateAssignment = (props)=>{
 
     const {courseid} =useParams()
-
 
     //console.log(error)
     const [dayvalue, setdayvalue] = useState(new Date());
@@ -20,12 +20,36 @@ const AddCourseForm = (props)=>{
         description:''
     })
     const [selectedfile,setselectedfile]=useState(null)
+    const [validated,setvalidated]=useState({
+        isvalidated:true,
+        error:undefined
+    })
+
+        
+    useEffect(()=>{
+        if(props.show===false)
+            props.setCreateMode(false)
+    
+
+    },[props.show])
+
 
     const UpdatedSelectedFileState = (e)=>{
 
         setselectedfile(e.target.files[0])
+        
     }
-
+    const UpdateAssignmentName =(e)=>{
+        setvalidated({
+            isvalidated:true,
+            error:undefined
+        })
+        setassignmentdetails({
+            ...assignmentdetails,
+            name:e.target.value
+            })
+    }
+    
     const ConvertDateInputIntoDateJSObject =()=>{
         const date= new Date(dayvalue)
         const year= date.getFullYear()
@@ -42,12 +66,29 @@ const AddCourseForm = (props)=>{
 
     const Cancel = ()=>{
         props.setshowBackdrop(false)
+        props.setCreateMode(false)
     }
 
     const uploadAssignment = ()=>{
         const deadline=ConvertDateInputIntoDateJSObject()
         //console.log(deadline)
         //console.log(assignmentdetails)
+        if(validator.isEmpty(assignmentdetails.name,{ignore_whitespace:true}))
+        {
+            console.log('hena')
+            return setvalidated({
+                isvalidated:false,
+                error:'Assignment must have a name'
+            })
+           
+        }
+
+        if(selectedfile ===null)
+            return setvalidated({
+                isvalidated:false,
+                error:'Assignment paper must be uploaded'
+            })
+
          const filedata = new FormData() 
          //Form data to be sent
          filedata.append('name', assignmentdetails.name)
@@ -55,23 +96,34 @@ const AddCourseForm = (props)=>{
          filedata.append('description', assignmentdetails.description)
          filedata.append('myFile', selectedfile) //includes the selected file
 
+         
         studentDataService.CreateAndUploadAssignment(courseid,filedata).then((res)=>{
             let newassigmentsArr=props.assignments
             newassigmentsArr.push(res.data)
             props.setassignments(newassigmentsArr)
+            props.setCreateMode(false)
             props.setshowBackdrop(false)
         }).catch((e)=>console.log(e))
         
-        
+        setvalidated({
+                isvalidated:true,
+                error:'undefined'
+        })
+
+        setassignmentdetails({
+            name:'',
+            description:''
+        })
     }
 
     
-   // console.log(dayvalue)
-    //console.log(timevalue)
+   
+    console.log(validated)
+    console.log(assignmentdetails)
     
     return(
         <div>
-        { props.show ? 
+        { props.CreateMode ? 
             <div>
                 <Form className={styles.FormContainer}>
                     <i className={`fas fa-times-circle ${styles.windowclose}`} ></i>
@@ -79,18 +131,17 @@ const AddCourseForm = (props)=>{
                     <Form.Group className="mb-3"controlId="formBasicCourseName">
                         <p>Enter the Assignment Name</p> 
                         <Form.Control  type="text" placeholder="Enter Assignment Name" 
-                        onChange={(e)=>setassignmentdetails({
-                            ...assignmentdetails,
-                            name:e.target.value
-                            })}/>
+                        onChange={(e)=>UpdateAssignmentName(e)}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicDescription">
                         <p >Enter the Assignment Description (optional)</p>
                         <Form.Control type="text" placeholder="Description"
-                        onChange={(e)=>setassignmentdetails({
-                            ...assignmentdetails,
-                            description:e.target.value
-                            })}
+                        onChange={(e)=>{
+                            setassignmentdetails({
+                                ...assignmentdetails,
+                                description:e.target.value
+                            })
+                            }}
                         />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicFile">
@@ -125,7 +176,8 @@ const AddCourseForm = (props)=>{
                             <Button variant="warning" className={styles.buttonstyle} onClick={Cancel}>
                                 Cancel
                             </Button>  
-                    </div>   
+                    </div>
+                    {validated.isvalidated ? null : <Alert variant='danger' className={styles.alertStyle}>{validated.error}</Alert>}   
                 </Form>
             </div>
         : null
@@ -134,4 +186,4 @@ const AddCourseForm = (props)=>{
     )
 }
 
-export default AddCourseForm;
+export default CreateAssignment;

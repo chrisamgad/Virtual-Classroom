@@ -177,7 +177,14 @@ class StudentService {
       .catch((e)=>{throw new Error(e)})
     }
 
-
+    DeleteAssignment(courseID,assignmentID){
+      return axios.patch(
+        `${API_URL}/teacher/${courseID}/deleteassignment/${assignmentID}`,undefined,{
+          headers:authHeader()
+        })
+        .then(res=>res)
+        .catch((e)=>{throw new Error(e)})
+    }
   }
 
  

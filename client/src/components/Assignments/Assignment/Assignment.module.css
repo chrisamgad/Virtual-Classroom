@@ -1,0 +1,33 @@
+.Card{
+    background-color: #ffffff ;
+    margin-bottom: 10px;
+    border:2px solid #ffffff !important;
+    color: black ;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+}
+
+.Card:hover{
+    background-color: #4f4c4c !important;
+    border:2px solid #dc3545 !important;
+    color:white;
+  
+
+}
+.cardcontainer{
+    margin-bottom: 20px !important;
+    width: 20rem !important;
+}
+
+.Submitted{
+    background-color: #198754 !important;
+    margin-bottom: 10px;
+}
+
+.Deadline_Passed{
+    background-color: #dc3545;
+    margin-bottom: 10px;
+}
+
