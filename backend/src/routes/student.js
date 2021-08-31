@@ -1,8 +1,13 @@
 const express = require('express')
+const mongoose=require('mongoose')
 const Student = require('../Models/student')// requiring student model
 const StudentAuth=require('../middleware/StudentAuth')
 const encrypt = require('../GlobalMethods/encrypt')
 const Teacher = require('../Models/teacher')
+const Course = require('../Models/course')
+const File=require('../Models/file')
+const AssignmentAttempt=require('../Models/student-assignment-attempt')
+
 const fs =require('fs')
 const multer = require('multer') //for uploading images
 const sharp =require('sharp')
@@ -194,14 +199,107 @@ router.get('/student/getmycourses',StudentAuth(false), async (req,res)=>{
   }
 })
 
-  router.post('/testuploadimage',upload.single('upload'),  (req,res)=>{
+router.get('/student/:courseid/getassignments',StudentAuth(false),async(req,res)=>{
+
+  try{
+    const course=await Course.findById(req.params.courseid);
+    if(!course)
+      throw new Error('No course with this courseid')
+
+    const StudentInCourseFlag=course.studentsList.includes(mongoose.Types.ObjectId(req.student._id))
+    if(!StudentInCourseFlag) 
+      throw new Error('Student is not in this course!!')
+
+    await Course.
+      findById(req.params.courseid). 
+      populate('assignmentsList').
+      exec(function (err, course) {
+        if (err) return handleError(err);
+        //console.log(course.assignmentsList);
+        res.send(course.assignmentsList)
+        
+      });
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e.message)
+  }
+})
+
+//Configuration for Multer
+const multerStorage = multer.diskStorage({
+  
+  destination: (req, file, cb) => {
+    cb(null, "public/files/attempts");
     
-     try{
-       console.log(req.file)
-       res.send('success')
-     }catch(e){
-       console.log(e)
-     }
+  },
+  filename: (req, file, cb) => {
+    //const ext = file.mimetype.split("/")[1];
+    //console.log(file)
+    var re = /(?:\.([^.]+))?$/;//regex
+    var ext = re.exec(file.originalname)[1];   // extension extracted
+
+    const attempt = new AssignmentAttempt({
+      course:req.params.courseid,
+      status:'Submitted-On-Time',
+      assignment:req.params.assignmentid,
+      student:req.student._id
+      })
+
+    const newFile = new File({
+      name: file.originalname,
+      ext:ext,
+      attempt:attempt._id
+
+    });
+    newFile.save().then()
+    
+    req.attempt=attempt
+    attempt.save().then()
+    AssignmentAttempt.findByIdAndUpdate(attempt._id,{attempt_file:newFile._id})
+      .then()
+      .catch((e)=>console.log(e))
+
+    
+    cb(null, `attempt-${attempt._id}.${ext}`); //save file uploaded in its destination (/public/files) 
+
+  }
+});
+
+// Multer Filter to filter files types and do validation
+const multerFilter = async(req, file, cb) => {
+  if(!file.originalname.match(/\.(pdf|docx|doc)$/)) //if file extension is not jpg or jpeg or png
+    return cb(new Error('Please upload only pdf or docx or doc'))  //return error using the callback
+  
+  
+  const course=await Course.findById(req.params.courseid);
+  if(!course)
+    throw new Error('No course with this courseid')
+  
+  const StudentInCourseFlag=course.studentsList.includes(mongoose.Types.ObjectId(req.student._id))
+  if(!StudentInCourseFlag) 
+    throw new Error('Student is not in this course!!')
+  
+
+  cb(null,true)
+  
+};
+
+//Calling the "multer" Function
+const upload2 = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+router.post('/student/:courseid/submitassignment/:assignmentid',StudentAuth(false),upload2.single('myFile'),async(req,res,next)=>{
+
+  try{
+
+    res.status(200).send(req.attempt)
+    //next() // go to the next middleware upload.single, which is called in line 503
+  }catch(e){
+    res.status(500).send('couldnt create new file')
+    console.log(e)
+  }
 })
 
 module.exports=router

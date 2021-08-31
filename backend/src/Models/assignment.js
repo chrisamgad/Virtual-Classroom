@@ -11,12 +11,15 @@ const assignmentSchema = new mongoose.Schema({
     description:{
         type:String
     },
+    status:{
+        type:String  //2 states-> In-Progress, which means still available for students to submit, AND Done, which means students no longer have access to submit their attempts (because deadline has passed)
+    },
     DueDate:{
         type: Date
     },
     assignmentfile: {
         type:mongoose.Schema.Types.ObjectId, //allows storing binary data, which helps us in storing files
-        ref:'assignment-file'
+        ref:'file'
     },
     grade:{
         type: Number
