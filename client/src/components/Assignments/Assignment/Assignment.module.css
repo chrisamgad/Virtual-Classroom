@@ -1,6 +1,5 @@
 .Card{
     background-color: #ffffff ;
-    margin-bottom: 10px;
     border:2px solid #ffffff !important;
     color: black ;
     -webkit-transition: all 0.2s ease-in;
@@ -31,3 +30,15 @@
     margin-bottom: 10px;
 }
 
+.assignmentdownloadlink{
+    display: inline-block;
+    border-right:1px solid rgba(0,0,0,.125) ;
+    border-radius: none;
+    color: #0088ff;
+}
+
+.assignmentdownloadlink:hover{
+    color: #ffffff;
+    background-color: #0088ff;
+    cursor: pointer;
+}

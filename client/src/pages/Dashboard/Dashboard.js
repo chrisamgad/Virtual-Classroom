@@ -12,6 +12,7 @@ import Backdrop from '../../components/Backdrop/Backdrop'
 import AddCourseForm from '../../components/MyCourses/AddCourseForm/AddCourseForm'
 import Assignments from "../../components/Assignments/Assignments";
 import ViewStudents from '../../components/ViewStudents/ViewStudents'
+import AssignmentDetails from "../../components/AssignmentDetails/AssignmentDetails";
 import './dashboard.css'
 
 
@@ -55,6 +56,9 @@ const Dashboard = (props) => {
                                     </Route>
                                     <Route exact path={`/dashboard/mycourses/:courseid/assignments`}>
                                         <Assignments />
+                                    </Route>
+                                    <Route exact path={`/dashboard/mycourses/:courseid/assignments/:assignmentid`}>
+                                        <AssignmentDetails />
                                     </Route>
                                     <Route exact path={`/dashboard/announcments`}>
                                         Announcments
