@@ -27,7 +27,7 @@ const DeleteAssignmentValidation = (props) => {
         props.setDeleteMode(false)
     }
 
-    console.log(courseid,props.assignemnttoberemoved)
+    //console.log(courseid,props.assignemnttoberemoved)
     return ( 
     <div>
         {

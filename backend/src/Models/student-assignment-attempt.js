@@ -23,7 +23,17 @@ const student_assignment_attempt_Schema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId, 
         ref:'student'
     }
-})
+},
+    {   //to enable the use of virtual, set virtuals to true in toObject and toJSON as done below
+        toObject: {
+            virtuals: true
+        },
+        toJSON: {
+            virtuals: true
+        },
+        timestamps:true //Adding Createdat and Updatedat timestamps to User
+    }
+)
 
 const StudentAssignmentAttempt = mongoose.model("student-assignment-attempt", student_assignment_attempt_Schema);
 

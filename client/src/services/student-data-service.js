@@ -153,8 +153,12 @@ class StudentService {
       ).then((res)=>res)
       .catch((e)=>{throw new Error(e)})
     }
-
+    
     GetAssignments(courseID){
+      const role=JSON.parse(localStorage.getItem("role"))
+      if(role==='teacher')
+    {
+      console.log('sdfsdfsdds')
       return axios.get(
         `${API_URL}/teacher/${courseID}/getassignments`,
         {
@@ -164,12 +168,22 @@ class StudentService {
         .catch((e)=>{throw new Error(e)})
     }
 
+      else if (role==='student')
+        return axios.get(
+          `${API_URL}/student/${courseID}/getassignments`,
+          {
+            headers:authHeader()
+          }
+          ).then((res)=>res)
+          .catch((e)=>{throw new Error(e)})
+    }
+
     // `${API_URL}/teacher/${courseID}/createassignment`
-    CreateAndUploadAssignment(courseID,data){
+    CreateAndUploadAssignment(courseID,formdata){
 
       return axios.post(
         `${API_URL}/teacher/${courseID}/createassignment`,
-        data,
+        formdata,
         { 
           headers:authHeader()
         }
@@ -185,6 +199,30 @@ class StudentService {
         .then(res=>res)
         .catch((e)=>{throw new Error(e)})
     }
+
+    SubmitAttempt(courseID,assignmentID,formdata){
+      return axios.post(
+        `${API_URL}/student/${courseID}/submitassignment/${assignmentID}`,
+        formdata,
+        {
+          headers:authHeader()
+        }
+      ).then((res)=>console.log(res))
+      .catch((e)=>{throw new Error(e)})
+    }
+
+    GetAttempt(courseID,assignmentID){
+      return axios.get(
+        `${API_URL}/student/${courseID}/getattempt/${assignmentID}`,
+        {
+          headers:authHeader()
+        }
+        ).then((res)=>res)
+        .catch((e)=>{throw new Error(e)})
+
+    }
+
+
   }
 
  

@@ -72,12 +72,12 @@ const ViewStudents = ()=>{
             
         
     }
-    console.log(NoMoreStudents)
-    console.log("newstudentsincourse = "+ studentsincourse.CurrentstudentsDisplayed.length + "and Totalsarrlength = " + studentsincourse.ActualTotalStudentsArrLength)
+    //console.log(NoMoreStudents)
+    //console.log("newstudentsincourse = "+ studentsincourse.CurrentstudentsDisplayed.length + "and Totalsarrlength = " + studentsincourse.ActualTotalStudentsArrLength)
     return(
         <div>
             <p className={styles.heading}>Students Enrolled in the Course</p>
-            <p className={styles.totalNStudents}>Total Number of Students Enrolled in this course are {studentsincourse.ActualTotalStudentsArrLength}</p>
+            <p className={styles.totalNStudents}>Total Number of Students Enrolled in this course is {studentsincourse.ActualTotalStudentsArrLength}</p>
             <div className={styles.StudentsContainer}>
                 {studentsincourse.CurrentstudentsDisplayed.map((student,index)=><Student key={index} index={index+1} student={student}/>) }
            </div>

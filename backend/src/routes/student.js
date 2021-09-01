@@ -6,6 +6,7 @@ const encrypt = require('../GlobalMethods/encrypt')
 const Teacher = require('../Models/teacher')
 const Course = require('../Models/course')
 const File=require('../Models/file')
+const Assignment=require('../Models/assignment')
 const AssignmentAttempt=require('../Models/student-assignment-attempt')
 
 const fs =require('fs')
@@ -237,14 +238,14 @@ const multerStorage = multer.diskStorage({
     //console.log(file)
     var re = /(?:\.([^.]+))?$/;//regex
     var ext = re.exec(file.originalname)[1];   // extension extracted
+    
 
     const attempt = new AssignmentAttempt({
       course:req.params.courseid,
-      status:'Submitted-On-Time',
       assignment:req.params.assignmentid,
       student:req.student._id
       })
-
+    
     const newFile = new File({
       name: file.originalname,
       ext:ext,
@@ -254,7 +255,9 @@ const multerStorage = multer.diskStorage({
     newFile.save().then()
     
     req.attempt=attempt
-    attempt.save().then()
+
+   attempt.save().then()
+   
     AssignmentAttempt.findByIdAndUpdate(attempt._id,{attempt_file:newFile._id})
       .then()
       .catch((e)=>console.log(e))
@@ -291,14 +294,83 @@ const upload2 = multer({
 });
 
 router.post('/student/:courseid/submitassignment/:assignmentid',StudentAuth(false),upload2.single('myFile'),async(req,res,next)=>{
-
+  
   try{
+    // console.log(req.attempt)
+    const AttemptSubmissionTime=req.attempt.createdAt;
+   
+    //const testdate=new Date(2021,9,30,5,00)
+    const assignment=await Assignment.findById(req.params.assignmentid)
+    assignment.attempts.push(req.attempt._id)
+    
+    await assignment.save()
+
+    const AssignmentDeadline=assignment.DueDate;
+    if(AttemptSubmissionTime>AssignmentDeadline)
+      req.attempt.status='Submitted-Late'
+    else if(AttemptSubmissionTime<=AssignmentDeadline)
+      req.attempt.status='Submitted-On-Time'
+
+    await req.attempt.save()
+    console.log('Assignment Deadline is '  +AssignmentDeadline)
+    console.log('AttemptSubmissionTime is ' + AttemptSubmissionTime)
+    //console.log(testdate)
 
     res.status(200).send(req.attempt)
-    //next() // go to the next middleware upload.single, which is called in line 503
+
   }catch(e){
     res.status(500).send('couldnt create new file')
     console.log(e)
+  }
+})
+
+router.get('/student/:courseid/getattempt/:assignmentid',StudentAuth(false),async(req,res,next)=>{
+
+  try{
+    const course=await Course.findById(req.params.courseid)
+    if(!course)
+    throw new Error('No course with this courseid')
+  
+    const StudentInCourseFlag=course.studentsList.includes(mongoose.Types.ObjectId(req.student._id))
+    if(!StudentInCourseFlag) 
+      throw new Error('Student is not in this course!!')
+    
+    let AttemptFoundFlag=false
+    const assignment=await Assignment.findById(req.params.assignmentid)
+
+    if(!assignment)
+      throw new Error('No Assignment with this ID!!')
+
+    let studentFoundWithAttempt
+    Assignment.findById(req.params.assignmentid)
+      .populate({
+        path:'attempts',
+        populate:{
+          path:'student'
+        }
+      })
+      .exec()
+      .then((assignment)=>{
+        assignment.attempts.forEach((attempt)=>{
+          if(attempt.student._id.toString()===req.student._id.toString()) //if attempt found
+            {
+              AttemptFoundFlag=true
+              studentFoundWithAttempt=attempt.student
+              //console.log(AttemptFoundFlag)
+            }
+        })
+
+      if(AttemptFoundFlag)
+        res.status(200).send({student:studentFoundWithAttempt,AttemptFoundFlag:true})
+      else
+        res.status(200).send({AttemptFoundFlag:false})
+    })
+       
+  
+    
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e.message)
   }
 })
 

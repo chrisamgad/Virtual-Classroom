@@ -52,7 +52,7 @@ const  Assignment= (props) => {
                 </Card.Body>
             </Link>
             <Card.Footer className={styles.assignmentdownloadlink} onClick={DownloadAssignment}>
-                View Assignment
+                Download Assignment
             </Card.Footer>
         </Card>
 

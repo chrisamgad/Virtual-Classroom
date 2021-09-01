@@ -14,7 +14,7 @@ transition: all 0.2s ease-in;
 .cardcontainer:hover{
     cursor:pointer;
     /* padding-right: 100px !important; */
-    border:2px solid blue !important;
+    border:2px solid #0088ff !important;
     /* border-left: 2px solid #0088ff !important;   */
 }
 

@@ -520,9 +520,10 @@ router.post('/teacher/:courseid/createassignment',TeacherAuth,upload.single('myF
 })
 
 
-router.get('/teacher/:courseid/getassignments',async(req,res)=>{
-
+router.get('/teacher/:courseid/getassignments',TeacherAuth,async(req,res)=>{
+  
   try{
+    
     const course=await Course.findById(req.params.courseid);
     if(!course)
       throw new Error('No coures with this courseid')
@@ -539,6 +540,39 @@ router.get('/teacher/:courseid/getassignments',async(req,res)=>{
         res.send(course.assignmentsList)
         
       });
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e.message)
+  }
+})
+
+router.get('/teacher/:courseid/assignment/:assignmentid/getattempts',TeacherAuth,async(req,res)=>{
+  try{
+
+    const course=await Course.findById(req.params.courseid);
+    if(!course)
+      throw new Error('No course with this courseid')
+    if(course.instructor.toString() !== req.teacher._id.toString()) 
+      throw new Error('This is not your course!!')
+
+    const assignment=await Assignment.findById(req.params.assignmentid)
+    if(!assignment)
+      throw new Error('No assignment with this ID')
+
+    await Assignment.findById(req.params.assignmentid)
+      .populate({ //This is how we populate nested fields
+        path:'attempts',
+        populate:{
+          path: 'student'
+        }
+      })
+      .exec(function(err,assignment){
+        if(err)
+          throw new Error(err)
+        //console.log(assignment)
+        res.status(200).send(assignment.attempts)
+      })
+    
   }catch(e){
     console.log(e)
     res.status(500).send(e.message)

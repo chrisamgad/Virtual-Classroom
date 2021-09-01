@@ -21,6 +21,10 @@ const assignmentSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId, //allows storing binary data, which helps us in storing files
         ref:'file'
     },
+    attempts:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'student-assignment-attempt'
+    }],
     grade:{
         type: Number
     },

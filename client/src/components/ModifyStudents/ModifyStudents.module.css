@@ -2,7 +2,8 @@
     font-size: 26px;
     color: #000000;
     font-weight: 500;
-    background: linear-gradient(45deg, #3186af, transparent);
+    /* background: linear-gradient(45deg, #3186af, transparent);*/
+    background: linear-gradient(45deg, #0088ff, transparent);
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
