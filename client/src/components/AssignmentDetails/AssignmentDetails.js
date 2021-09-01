@@ -16,7 +16,9 @@ const AssignmentDetails = () => {
     useEffect(()=>{
         //Get Students --> Details to display are name,email,submissionstatus,link to the students uploaded attemptv
         studentDataService.GetAttempt(URLparameters.courseid,URLparameters.assignmentid).then((res)=>{
+            console.log(res)
             setAlreadySubmitted(res.data.AttemptFoundFlag)
+
         })
         courseCtx.SetWentInsideCourse(true)
     },[])
@@ -34,10 +36,24 @@ const AssignmentDetails = () => {
 
     const ReturnHTMLBasedOnRole=()=>{
         if(AlreadySubmitted)
-            return <div>You already submitted your attempt to this assignment</div>
+             return (
+             <div className={styles.AlreadySubmittedContainer}>
+                    <p>You already submitted your attempt to this assignment at:</p>
+
+                    <i className={`fas fa-file-download ${styles.downloadicon}`} ></i>
+                    <p onClick={()=>
+                        window.location.assign(`http://localhost:4000/teacher/${URLparameters.courseid}/assignments/${URLparameters.assignmentid}`)
+                    }>Download Submitted Attempt</p>
+             </div>
+             )
         else{   
             if(SubmitSuccess)
-                return <div>Submit Sucess</div>
+                return (
+                    <div className={styles.Submit_success_container}>
+                        <p >Submitted Sucessfully</p>
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    )
             else {
                 return (
                     <div>
@@ -56,7 +72,7 @@ const AssignmentDetails = () => {
     }
 
     return ( 
-    <div>
+    <div style={{height:'100%'}}>
        { ReturnHTMLBasedOnRole()}
     </div> 
     );

@@ -254,6 +254,7 @@ const multerStorage = multer.diskStorage({
     });
     newFile.save().then()
     
+    attempt.attempt_file=newFile._id
     req.attempt=attempt
 
    attempt.save().then()
@@ -365,13 +366,53 @@ router.get('/student/:courseid/getattempt/:assignmentid',StudentAuth(false),asyn
       else
         res.status(200).send({AttemptFoundFlag:false})
     })
-       
-  
-    
+         
   }catch(e){
     console.log(e)
     res.status(500).send(e.message)
   }
+})
+
+
+router.get('/student/:studentid/:courseid/assignments/:assignmentid/downloadattempt',StudentAuth(true),(req,res)=>{
+  try{
+    console.log('test')
+    let ext='';
+    let attemptID;
+    Assignment.findById(req.params.assignmentid)
+      .populate({
+        path:'attempts',
+        populate:{
+          path:'attempt_file'
+        }
+      })
+      .exec().then((assignment)=>{
+        assignment.attempts.forEach((attempt)=>{
+            if(attempt.student.toString() === req.params.studentid)
+              {
+                ext=attempt.attempt_file.ext  
+                attemptID=attempt. _id    
+                  
+              }
+            console.log(attemptID)
+         })
+
+         var filePath =`public/files/attempts/attempt-${attemptID}.${ext}`
+         res.download(filePath); // Set disposition and send it.
+      })
+      
+
+       
+        // console.log('fileController.download: started')
+
+      
+     
+
+  }catch(e){
+    res.status(500).send(e.message)
+    console.log(e)
+  }
+  
 })
 
 module.exports=router
