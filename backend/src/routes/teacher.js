@@ -1,15 +1,23 @@
+//Libraries
 const express = require('express')
 const mongoose = require('mongoose')
-const Teacher =require('../Models/teacher') 
+const fs=require('fs')
+const multer = require('multer')
+//Middlewares
 const TeacherAuth=require('../middleware/TeacherAuth')
+const getstudentList=require('../middleware/getstudentsList')
+//Models
+const Teacher =require('../Models/teacher') 
 const Student = require('../Models/student')
 const Course = require('../Models/course')
 const Assignment = require ('../Models/assignment')
+const File = require('../Models/file')
+const Attempt = require('../Models/student-assignment-attempt')
+
+//Global Methods
 const encrypt = require('../GlobalMethods/encrypt')
 const FindDifferanceInBothArrs=require('../GlobalMethods/FindDifferanceInBothArrs')
-const multer = require('multer')
-const File = require('../Models/file')
-const fs=require('fs')
+
 var router = express.Router()
 
  
@@ -360,54 +368,10 @@ router.patch('/teacher/removestudent', TeacherAuth,async (req,res)=>{
   }
 })
 
-router.get('/teacher/:courseid/getstudentslist', TeacherAuth,async(req,res)=>{
- 
-  try{
-    // console.log("limit is "+parseInt(req.query.limit))
-    // console.log("skip is "+parseInt(req.query.skip))
-    // console.log(req.query)
-   
-    OwnerOfCourseFlag=req.teacher.CoursesList.includes(req.params.courseid)
-  
-    if(OwnerOfCourseFlag)
-    {
-      let TotalStudentsArrLength;
-      //1. get student length
-      await Course.findById(req.params.courseid)
-      .populate({
-        path:'studentsList'
-      })
-      .exec(function (err, course) {
-        if (err) return handleError(err);
-        //console.log(course.studentsList);
-        TotalStudentsArrLength=course.studentsList.length;
-      });
 
-      await Course.findById(req.params.courseid)
-      .populate({
-        path:'studentsList',
-        options:{
-          limit:parseInt(req.query.limit),
-          skip:parseInt(req.query.skip)
-        }
-      })
-      .exec(function (err, course) {
-        if (err) return handleError(err);
 
-        console.log(TotalStudentsArrLength);
-        res.send({studentsList:course.studentsList, TotalStudentsArrLength})
-        
-      });
-    }
-    else
-      throw new error('You are not the owner of the course!')
-  }catch(e){
-    console.log(e)
-    res.status(500).send(e)
-  }
-  
-  
-
+router.get('/teacher/:courseid/getstudentslist', TeacherAuth,getstudentList,async(req,res)=>{
+        res.send({studentsList:req.studentsList, TotalStudentsArrLength:req.TotalStudentsArrLength})
 })
 
 
@@ -506,11 +470,13 @@ router.post('/teacher/:courseid/createassignment',TeacherAuth,upload.single('myF
 
   // req.assignmentid=assignment._id
     //console.log(req.assignmentid)
-
+    
     const course=await Course.findById(req.params.courseid);
     course.assignmentsList.push(req.assignmentid)
     //console.log(course)
     await course.save()
+
+    
     res.status(200).send(req.assignment)
     //next() // go to the next middleware upload.single, which is called in line 503
   }catch(e){
@@ -546,38 +512,6 @@ router.get('/teacher/:courseid/getassignments',TeacherAuth,async(req,res)=>{
   }
 })
 
-router.get('/teacher/:courseid/assignment/:assignmentid/getattempts',TeacherAuth,async(req,res)=>{
-  try{
-
-    const course=await Course.findById(req.params.courseid);
-    if(!course)
-      throw new Error('No course with this courseid')
-    if(course.instructor.toString() !== req.teacher._id.toString()) 
-      throw new Error('This is not your course!!')
-
-    const assignment=await Assignment.findById(req.params.assignmentid)
-    if(!assignment)
-      throw new Error('No assignment with this ID')
-
-    await Assignment.findById(req.params.assignmentid)
-      .populate({ //This is how we populate nested fields
-        path:'attempts',
-        populate:{
-          path: 'student'
-        }
-      })
-      .exec(function(err,assignment){
-        if(err)
-          throw new Error(err)
-        //console.log(assignment)
-        res.status(200).send(assignment.attempts)
-      })
-    
-  }catch(e){
-    console.log(e)
-    res.status(500).send(e.message)
-  }
-})
 
 router.patch('/teacher/:courseid/deleteassignment/:assignmentid', TeacherAuth,async(req,res)=>{
 
@@ -679,7 +613,56 @@ router.get('/teacher/:courseid/assignments/:assignmentid',(req,res)=>{
     res.status(500).send(e.message)
     console.log(e)
   }
-  
+})  
+
+
+router.get('/teacher/:courseid/assignment/:assignmentid/getattempts',TeacherAuth,getstudentList,async(req,res)=>{
+  try{
+
+    const course=await Course.findById(req.params.courseid);
+    if(!course)
+      throw new Error('No course with this courseid')
+    if(course.instructor.toString() !== req.teacher._id.toString()) 
+      throw new Error('This is not your course!!')
+
+    const assignment=await Assignment.findById(req.params.assignmentid)
+    if(!assignment)
+      throw new Error('No assignment with this ID')
+
+    Assignment.findById(req.params.assignmentid)
+      .populate({ //This is how we populate nested fields
+        path:'attempts',
+        populate:{
+          path: 'student'
+        }
+      })
+      .exec().then((assignment)=>{
+        
+        //console.log(assignment)
+        
+        //console.log(req.studentsList[0])
+        const studentsWhoDidntAttempt=req.studentsList.filter((student)=>{
+            const StudentAttemptFoundflag=assignment.attempts.some((attempt)=>{
+              if(attempt.student._id.toString() ===student._id.toString())
+                return true
+              else
+                return false
+            }) 
+         // console.log(StudentAttemptFoundflag)
+          if(!StudentAttemptFoundflag)
+            return true
+          else
+            return false
+        })
+      
+        //studentsWhoDidntAttempt.forEach((test)=>console.log(test))
+        res.status(200).send({attempts:assignment.attempts, studentsWhoDidntAttempt:studentsWhoDidntAttempt})
+      })
+    
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e.message)
+  }
 })
 
 module.exports=router
