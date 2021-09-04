@@ -70,7 +70,7 @@ const MainNavigation = () =>{
                 <Link className={styles.navlinkstyle}  to="/ourstory">OUR STORY</Link>
             </Nav.Item>
             <Nav.Item>
-                <Link className={styles.navlinkstyle}   to="/contactus">CONTACT US </Link>
+                <Link className={styles.navlinkstyle}   to="/contactus">CONTACT US</Link>
             </Nav.Item>
             {
               (authenticateduserCtx.AuthenticatedUser) ?               

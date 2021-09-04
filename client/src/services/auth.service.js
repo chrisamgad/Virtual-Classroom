@@ -7,7 +7,7 @@ class AuthService {
 
   login(email, password) {
     return axios
-      .post(API_URL + "/login", {
+      .post(process.env.REACT_APP_BACKEND_DOMAIN + "/login", {
         email,
         password
       })
@@ -29,7 +29,7 @@ class AuthService {
   }
 
   register(fullname, email, password, mobilenumber) {
-    return axios.post(API_URL + "/signup", {
+    return axios.post(process.env.REACT_APP_BACKEND_DOMAIN + "/signup", {
             fullname,
             email,
             mobilenumber,
@@ -54,7 +54,7 @@ class AuthService {
   logout() {//lesa kamelha (lazem te remove eltoken from server)
     
     //console.log(authHeader())
-    return axios.post(API_URL + "/logout",undefined,
+    return axios.post(process.env.REACT_APP_BACKEND_DOMAIN + "/logout",undefined,
       {
         headers:authHeader()
       })

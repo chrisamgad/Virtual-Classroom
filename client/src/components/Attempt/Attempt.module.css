@@ -1,0 +1,58 @@
+.CardContainer{
+    width:33%;
+}
+
+.hidden{
+    display: none;
+}
+
+.cardheader{
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    
+}
+.cardheader:hover{
+    cursor: pointer;
+    background-color:rgb(113 194 180);
+}
+
+.arrowsicon{
+    position: absolute;
+    right: 15px;
+    top: 13px;
+    font-size: 17px;
+}
+.circleiconheader{
+    font-size: 9px;
+    margin-left: 6px;
+    position: relative;
+    bottom: 1px;
+}
+.circleicontitle{
+
+    font-size: 13px;
+    position: relative;
+    bottom: 2.25px;
+    margin-right: 8px;
+
+}
+
+.green{
+    color:green;
+}
+.red{
+    color:#dc3545;
+}
+.yellow{
+    color: #ffc107;
+}
+.DownloadAttempt{
+    color: #31af36;
+}
+
+.DownloadAttempt:hover{
+    cursor: pointer;
+    color: #0088ff;
+}

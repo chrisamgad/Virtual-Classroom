@@ -23,7 +23,7 @@ class StudentService {
     getProfile(){
       
       return axios.get(
-        API_URL+'/myprofile',
+        process.env.REACT_APP_BACKEND_DOMAIN+'/myprofile',
         {
           headers: authHeader()
         }
@@ -40,7 +40,7 @@ class StudentService {
       if(AuthService.getCurrentUser().role==='student')
       {
         const response=await axios.get(
-          API_URL +'/student/getmycourses',
+          process.env.REACT_APP_BACKEND_DOMAIN +'/student/getmycourses',
           {
             headers: authHeader()
           }
@@ -51,7 +51,7 @@ class StudentService {
       else if (AuthService.getCurrentUser().role==='teacher')
       {
         const response= await axios.get(
-          API_URL +'/teacher/getmycourses',           
+          process.env.REACT_APP_BACKEND_DOMAIN +'/teacher/getmycourses',           
           {
             headers: authHeader()
           }
@@ -65,7 +65,7 @@ class StudentService {
     uploadAvatar(data){
       console.log(data)
       return axios.post(
-        API_URL+'/uploadavatar',
+        process.env.REACT_APP_BACKEND_DOMAIN+'/uploadavatar',
         
           data
         ,
@@ -88,14 +88,14 @@ class StudentService {
       else if(AuthService.getCurrentUser().role==='teacher')
         user_id=AuthService.getCurrentUser().user.teacher._id;
 
-      const ImageURL= API_URL + '/getavatar/' +user_id
+      const ImageURL= process.env.REACT_APP_BACKEND_DOMAIN + '/getavatar/' +user_id
       
       //console.log(response)
       return ImageURL;
     }
 
     DeleteCourses(newcoursesarr){
-     return axios.patch( API_URL + '/teacher/updatecourses'
+     return axios.patch( process.env.REACT_APP_BACKEND_DOMAIN + '/teacher/updatecourses'
       ,{courses: newcoursesarr}, {headers: authHeader()})
             .then((res)=>res)
             .catch((e)=>{throw new Error(e)}) 
@@ -103,7 +103,7 @@ class StudentService {
 
     AddCourse(course_name,course_description){
       return axios.post(
-        API_URL+'/teacher/createcourse',
+        process.env.REACT_APP_BACKEND_DOMAIN+'/teacher/createcourse',
         {
           coursename:course_name,
           description:course_description
@@ -116,7 +116,7 @@ class StudentService {
 
     getCurrentStudents(courseID,limit,skip){
       return axios.get(
-        `${API_URL}/teacher/${courseID}/getstudentslist?limit=${limit}&skip=${skip}`,
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/teacher/${courseID}/getstudentslist?limit=${limit}&skip=${skip}`,
         {
           headers:authHeader()
         }
@@ -127,7 +127,7 @@ class StudentService {
 
     RemoveStudent(student,courseID){
       return axios.patch(
-        `${API_URL}/teacher/removestudent`,
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/teacher/removestudent`,
         {
           email:student.email,
           course_id:courseID
@@ -142,7 +142,7 @@ class StudentService {
 
     AddStudent(student_email,courseID){
       return axios.post(
-        `${API_URL}/teacher/addstudent`,
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/teacher/addstudent`,
         {
           email:student_email,
           course_id:courseID
@@ -160,7 +160,7 @@ class StudentService {
     {
       console.log('sdfsdfsdds')
       return axios.get(
-        `${API_URL}/teacher/${courseID}/getassignments`,
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/teacher/${courseID}/getassignments`,
         {
           headers:authHeader()
         }
@@ -170,7 +170,7 @@ class StudentService {
 
       else if (role==='student')
         return axios.get(
-          `${API_URL}/student/${courseID}/getassignments`,
+          `${process.env.REACT_APP_BACKEND_DOMAIN}/student/${courseID}/getassignments`,
           {
             headers:authHeader()
           }
@@ -178,11 +178,11 @@ class StudentService {
           .catch((e)=>{throw new Error(e)})
     }
 
-    // `${API_URL}/teacher/${courseID}/createassignment`
+    // `${process.env.REACT_APP_BACKEND_DOMAIN}/teacher/${courseID}/createassignment`
     CreateAndUploadAssignment(courseID,formdata){
 
       return axios.post(
-        `${API_URL}/teacher/${courseID}/createassignment`,
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/teacher/${courseID}/createassignment`,
         formdata,
         { 
           headers:authHeader()
@@ -193,7 +193,7 @@ class StudentService {
 
     DeleteAssignment(courseID,assignmentID){
       return axios.patch(
-        `${API_URL}/teacher/${courseID}/deleteassignment/${assignmentID}`,undefined,{
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/teacher/${courseID}/deleteassignment/${assignmentID}`,undefined,{
           headers:authHeader()
         })
         .then(res=>res)
@@ -202,7 +202,7 @@ class StudentService {
 
     SubmitAttempt(courseID,assignmentID,formdata){
       return axios.post(
-        `${API_URL}/student/${courseID}/submitassignment/${assignmentID}`,
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/student/${courseID}/submitassignment/${assignmentID}`,
         formdata,
         {
           headers:authHeader()
@@ -213,7 +213,18 @@ class StudentService {
 
     GetAttempt(courseID,assignmentID){
       return axios.get(
-        `${API_URL}/student/${courseID}/getattempt/${assignmentID}`,
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/student/${courseID}/getattempt/${assignmentID}`,
+        {
+          headers:authHeader()
+        }
+        ).then((res)=>res)
+        .catch((e)=>{throw new Error(e)})
+
+    }
+
+    GetAttempt_Teacher(courseID,assignmentID){
+      return axios.get(
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/teacher/${courseID}/assignment/${assignmentID}/getattempts`,
         {
           headers:authHeader()
         }
