@@ -184,7 +184,7 @@ router.patch('/teacher/updatecourses', TeacherAuth,async(req,res)=>{
     
     //2. remove any courses from Course model with filtered IDs
      CoursesIDsToBeRemoved=FindDifferanceInBothArrs(CurrentTeachersCoursesIDs,ReceivedcoursesIDsArr);
-     console.log(CoursesIDsToBeRemoved)
+     //console.log(CoursesIDsToBeRemoved)
      if(CoursesIDsToBeRemoved.length >0)
         CoursesIDsToBeRemoved.forEach(courseID => {
           Course.findByIdAndDelete(courseID).then((res)=>console.log(res)).catch(e=>console.log(e))

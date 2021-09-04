@@ -1,17 +1,23 @@
+//Libraries
 const express = require('express')
 const mongoose=require('mongoose')
-const Student = require('../Models/student')// requiring student model
+const fs =require('fs')
+const multer = require('multer') //for uploading images
+const sharp =require('sharp')
+
+//Middlewares and global methods
 const StudentAuth=require('../middleware/StudentAuth')
 const encrypt = require('../GlobalMethods/encrypt')
+
+//Models
+const Student = require('../Models/student')// requiring student model
 const Teacher = require('../Models/teacher')
 const Course = require('../Models/course')
 const File=require('../Models/file')
 const Assignment=require('../Models/assignment')
 const AssignmentAttempt=require('../Models/student-assignment-attempt')
 
-const fs =require('fs')
-const multer = require('multer') //for uploading images
-const sharp =require('sharp')
+
 
 var router = express.Router()
 
