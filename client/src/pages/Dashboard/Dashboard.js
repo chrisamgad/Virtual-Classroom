@@ -13,6 +13,7 @@ import AddCourseForm from '../../components/MyCourses/AddCourseForm/AddCourseFor
 import Assignments from "../../components/Assignments/Assignments";
 import ViewStudents from '../../components/ViewStudents/ViewStudents'
 import AssignmentDetails from "../../components/AssignmentDetails/AssignmentDetails";
+import MyProfile from '../../pages/Profile/Profile'
 import './dashboard.css'
 
 
@@ -65,6 +66,9 @@ const Dashboard = (props) => {
                                     </Route>
                                     <Route exact path={`/dashboard/mygrades`}>
                                         My Grades
+                                    </Route>
+                                    <Route exact path={`/dashboard/myprofile`}>
+                                        <MyProfile/>
                                     </Route>
                                 </Switch>        
                             

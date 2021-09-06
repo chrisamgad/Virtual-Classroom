@@ -4,6 +4,9 @@ import {Link} from 'react-router-dom'
 import styles from './Sidebar.module.css'
 import CourseContext from "../../Contexts/CourseContext";
 import studentDataService from "../../services/student-data-service";
+import axios from 'axios'
+import Generic_profilepic from '../../pages/Profile/defaultavatar.png'
+import authService from '../../services/auth.service'
 
 const Sidebar = () => {
  
@@ -39,7 +42,11 @@ const Sidebar = () => {
                 ...componentstyles,
                 announcmentsComp:true
             });
-        
+        else if (window.location.pathname === '/dashboard/myprofile')
+            setcomponentstyles({
+                ...componentstyles,
+                profileComp:true
+            });
         else if (pathArray[2]==="mycourses" && pathArray[4]==="coursesummary")
             setcomponentstyles({
                 ...componentstyles,
@@ -52,6 +59,7 @@ const Sidebar = () => {
                 coursesummaryComp:false,
                 assignmentsComp:true
             });
+        
 
 
             //console.log(window.location.pathname)
@@ -62,8 +70,29 @@ const Sidebar = () => {
         //         coursesummaryComp:true
         //     });
 
-        
-        setuserimage(studentDataService.getUserImage())
+        const user=authService.getCurrentUser()
+        if(user.role==='student') 
+        {
+            axios.get(`http://localhost:4000/getavatar/${user.user.student._id}`).then((response)=>{
+                setuserimage(`http://localhost:4000/getavatar/${user.user.student._id}`)
+            }).catch((e)=>{
+                console.log(e)
+                setuserimage(Generic_profilepic)
+            })
+            //setuserimage(studentDataService.getUserImage())
+        }
+           
+        else if (user.role ==='teacher')
+        {
+            axios.get(`http://localhost:4000/getavatar/${user.user.teacher._id}`).then((response)=>{
+                setuserimage(`http://localhost:4000/getavatar/${user.user.teacher._id}`)
+            }).catch((e)=>{
+                console.log(e)
+                setuserimage(Generic_profilepic)
+            })
+            //setuserimage(studentDataService.getUserImage())
+        }
+            
               
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[courseCtx.WentInsideCourse])
