@@ -38,6 +38,14 @@
     margin-right: 8px;
 
 }
+.late_heading{
+    margin: 0;
+    margin-bottom: 6px;
+    color: #ffc107;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
 
 .green{
     color:green;

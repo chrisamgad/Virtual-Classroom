@@ -19,7 +19,7 @@ const Attempt = (props) => {
                 return `fas fa-circle ${styles.circleiconheader} ${styles.green}`
             
             else if (props.attempt.status==='Submitted-Late')
-                return `fas fa-circle ${styles.circleiconheader}  ${styles.yrllow}`
+                return `fas fa-circle ${styles.circleiconheader}  ${styles.yellow}`
             }
         else
             return `fas fa-circle ${styles.circleiconheader}  ${styles.red}`
@@ -47,6 +47,7 @@ const Attempt = (props) => {
                 <Card className={styles.CardContainer}>
                     <Card.Header className={styles.cardheader} style={{position:'relative'}} onClick={()=>sethidden((prev)=>!prev)}>{props.attempt.student.email} <i className={circleheader()} ></i><i className={`fas fa-angle-double-right ${styles.arrowsicon}`}></i></Card.Header>
                     <Card.Body className={hidden ? styles.hidden: null} >
+                        {props.attempt.status ==='Submitted-Late' ?  <p className={styles.late_heading}>LATE!</p> : null}
                         <Card.Title><i className={circletitle()} ></i>{props.attempt.student.fullname} </Card.Title>
                         <Card.Text style={{marginBottom:'3px'}}>
                         <span style={{fontWeight:'400'}}>Submit Time:</span> <span style={{color: '#0088ff', fontWeight:'400'}}>{moment(props.attempt.createdAt).format('LLL')}</span>
@@ -65,7 +66,7 @@ const Attempt = (props) => {
                     <Card.Header className={styles.cardheader} style={{position:'relative'}} onClick={()=>sethidden((prev)=>!prev)}>{props.student.email} <i className={circleheader()} ></i><i className={`fas fa-angle-double-right ${styles.arrowsicon}`}></i></Card.Header>
                     <Card.Body className={hidden ? styles.hidden: null} >
                         <Card.Title><i className={circletitle()} ></i>{props.student.fullname} </Card.Title>
-                        <Card.Text style={{marginBottom:'3px' , color: '#dc3545', fontWeight: '400'}}>
+                        <Card.Text style={{marginBottom:'3px' , color: '#dc3545'}}>
                         Not Attempted
                         </Card.Text>
                     </Card.Body>
@@ -81,5 +82,5 @@ const Attempt = (props) => {
 
     );
 }
- 
+
 export default Attempt;
