@@ -82,8 +82,10 @@ const ViewStudents = ()=>{
                 {studentsincourse.CurrentstudentsDisplayed.map((student,index)=><Student key={index} index={index+1} student={student}/>) }
            </div>
            
-                
-            <i className={`fas fa-caret-square-down ${styles.showmore}`} style={NoMoreStudents? {display:'none'} : null} onClick={showmorestudents}></i>
+            <div className={styles.showmorecontainer} style={NoMoreStudents? {display:'none'} : null} onClick={showmorestudents}>
+                <div>Show More</div>
+                {/* <i className={`fas fa-caret-square-down ${styles.showmore}`} style={NoMoreStudents? {display:'none'} : null} onClick={showmorestudents}></i> */}
+            </div>
            
         </div>
     )
