@@ -172,7 +172,7 @@ router.get('/', (req, res) => {
         res.set('Content-Type','image/png') //sets the Content-type header in the response as image/jpg 
         res.send(student.avatar) //send the avatar
     }catch(e){
-        res.status(404).send()
+        res.status(404).send(e)
     }
 })
 
@@ -305,8 +305,8 @@ router.post('/student/:courseid/submitassignment/:assignmentid',StudentAuth(fals
   try{
     // console.log(req.attempt)
     const AttemptSubmissionTime=req.attempt.createdAt;
-   
-    //const testdate=new Date(2021,9,30,5,00)
+   //const AttemptSubmissionTime=new Date(2021,10,30,5,00)
+    
     const assignment=await Assignment.findById(req.params.assignmentid)
     assignment.attempts.push(req.attempt._id)
     
@@ -411,14 +411,32 @@ router.get('/student/:studentid/:courseid/assignments/:assignmentid/downloadatte
        
         // console.log('fileController.download: started')
 
-      
-     
-
   }catch(e){
     res.status(500).send(e.message)
     console.log(e)
   }
   
+})
+
+router.delete('/student/deletestudent/:studentid', async(req,res)=>{
+  try{
+
+    await Student.findByIdAndDelete(req.params.studentid)
+    const courses= await Course.find()
+    courses.forEach((course)=>{
+      course.studentsList=course.studentsList.filter((studentid)=> studentid.toString() !== req.params.studentid) //remove student id from course studentList
+      console.log(course)
+      course.save().then().catch((e)=>{throw new Error(e)})
+    })
+
+    res.status(200).send('Student Deleted')
+
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e.message)
+  }
+
+
 })
 
 module.exports=router
