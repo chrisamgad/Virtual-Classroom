@@ -38,6 +38,17 @@
     margin-right: 8px;
 
 }
+
+.DownloadAttempt{
+    color: #31af36;
+    margin-bottom: 8px;
+}
+
+.DownloadAttempt:hover{
+    cursor: pointer;
+    color: #0088ff;
+}
+
 .late_heading{
     margin: 0;
     margin-bottom: 6px;
@@ -45,6 +56,33 @@
     font-size: 18px;
     font-weight: 400;
     letter-spacing: 1px;
+}
+
+.setgradelabel{
+    font-weight: 400;
+    color: #00800c;
+    margin-bottom: 5px !important;
+    margin-top: 5px;
+}
+.gradeinput{
+    width: 41% !important;
+}
+
+.writecomment{
+    font-weight: 400;
+    color: #00800c;
+}
+
+.submitgrade{
+    margin-top: 15px;
+    background: #0088ff;
+    border: 1px solid #f8f8f8;
+}
+
+.linebreak{
+    width:100%;
+    border-top:1px solid #e8e3e3;
+    border-radius: 5px;
 }
 
 .green{
@@ -55,12 +93,4 @@
 }
 .yellow{
     color: #ffc107;
-}
-.DownloadAttempt{
-    color: #31af36;
-}
-
-.DownloadAttempt:hover{
-    cursor: pointer;
-    color: #0088ff;
 }

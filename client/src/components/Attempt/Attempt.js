@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import {Card} from 'react-bootstrap'
+import {Card,Form,InputGroup,FormControl,Button} from 'react-bootstrap'
 import styles from './Attempt.module.css'
 import moment from 'moment'
 
@@ -55,6 +55,17 @@ const Attempt = (props) => {
                         <Card.Text className={styles.DownloadAttempt}>
                         Download Student Attempt
                         </Card.Text>
+                        <div className={styles.linebreak}></div>
+                        <Form>
+                            <Form.Label className={styles.setgradelabel}>Set Grade</Form.Label>
+                            <InputGroup  className={`mb-2 ${styles.gradeinput}`}>
+                                <FormControl id="inlineFormInputGroup" placeholder="Grade" />
+                                <InputGroup.Text>/100</InputGroup.Text>
+                            </InputGroup>
+                            <Form.Label className={styles.writecomment}>Comment <span style={{fontWeight:300}}>(Optional)</span></Form.Label>
+                            <Form.Control type="text" placeholder="Enter comment" />
+                            <Button className={styles.submitgrade}>Submit Grade</Button>
+                        </Form>
                     </Card.Body>
                 </Card>
             </div> 
@@ -69,6 +80,17 @@ const Attempt = (props) => {
                         <Card.Text style={{marginBottom:'3px' , color: '#dc3545'}}>
                         Not Attempted
                         </Card.Text>
+                        <div className={styles.linebreak}></div>
+                        <Form>
+                            <Form.Label className={styles.setgradelabel}>Set Grade</Form.Label>
+                            <InputGroup  className={`mb-2 ${styles.gradeinput}`}>
+                                <FormControl id="inlineFormInputGroup" placeholder="Grade" />
+                                <InputGroup.Text>/100</InputGroup.Text>
+                            </InputGroup>
+                            <Form.Label className={styles.writecomment}>Comment <span style={{fontWeight:300}}>(Optional)</span></Form.Label>
+                            <Form.Control type="text" placeholder="Enter comment" />
+                            <Button className={styles.submitgrade}>Submit Grade</Button>
+                        </Form>
                     </Card.Body>
                 </Card>
             </div> 
