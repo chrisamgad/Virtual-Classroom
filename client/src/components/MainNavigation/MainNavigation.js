@@ -4,16 +4,25 @@ import './MainNavigation.css'
 import {Link} from 'react-router-dom'
 import React,{useEffect, useState,useContext} from 'react'
 import AuthenticatedContext from '../../Contexts/AuthenticatedContext'
+import CourseContext from '../../Contexts/CourseContext'
 import authService from '../../services/auth.service'
 
 
 const MainNavigation = () =>{
-    
-  const authenticateduserCtx= useContext(AuthenticatedContext)
+  
+  var pathArray = window.location.pathname.split('/');
+  const authenticateduserCtx = useContext(AuthenticatedContext)
+  const coursectx = useContext(CourseContext)
   const [userdetails,setuserdetails]=useState({
     name:''
   })
-  
+  const [activelink,setactivelink]=useState({
+    home:false,
+    our_story:false,
+    contact_us:false,
+    dashboard:false
+  })
+
   useEffect(()=>{
     //console.log('test')
     // authenticateduserCtx.SetAuthenticatedUser()
@@ -24,23 +33,61 @@ const MainNavigation = () =>{
         {
           setuserdetails({
           name:authenticateduserCtx.AuthenticatedUser.teacher.fullname
-        })
+          })
         }
       else if(authenticateduserCtx.AuthenticatedUserRole ==='student')
         {
           setuserdetails({
           name:authenticateduserCtx.AuthenticatedUser.student.fullname
-        })}
+        })
+      }
     }
     else{
       setuserdetails({
         name:''
       })
     }
-    
 
+
+    if(pathArray[1]==='dashboard')
+    {
+      setactivelink({
+        home:false,
+        our_story:false,
+        contact_us:false,
+        dashboard:true
+      })
+    }
+    else if(pathArray[1]==='')
+    {
+      setactivelink({
+        home:true,
+        our_story:false,
+        contact_us:false,
+        dashboard:false
+      })
+    }
+    else if(pathArray[1]==='ourstory')
+    {
+      setactivelink({
+        home:false,
+        our_story:true,
+        contact_us:false,
+        dashboard:false
+      })
+    }
+    else if(pathArray[1]==='contactus')
+    {
+      setactivelink({
+        home:false,
+        our_story:false,
+        contact_us:true,
+        dashboard:false
+      })
+    }
     
-  },[authenticateduserCtx])
+  console.log(pathArray)
+  },[ authenticateduserCtx])
 
   const LogoutHandler =()=>{
     authService.logout().then((res)=>{
@@ -64,19 +111,48 @@ const MainNavigation = () =>{
       </Navbar.Brand>
         <Nav className="me-auto">
             <Nav.Item>
-                <Link className={styles.navlinkstyle} to="/" >HOME</Link>
+                <Link className={ activelink.home ? styles.active :styles.navlinkstyle} onClick={()=>
+                  setactivelink({        
+                    home:true,
+                    our_story:false,
+                    contact_us:false,
+                    dashboard:false })}
+                to="/" >HOME</Link>
             </Nav.Item>
             <Nav.Item>
-                <Link className={styles.navlinkstyle}  to="/ourstory">OUR STORY</Link>
+                <Link className={activelink.our_story ? styles.active :styles.navlinkstyle}  onClick={()=>
+                  setactivelink({        
+                    home:false,
+                    our_story:true,
+                    contact_us:false,
+                    dashboard:false })}
+                to="/ourstory">OUR STORY</Link>
             </Nav.Item>
             <Nav.Item>
-                <Link className={styles.navlinkstyle}   to="/contactus">CONTACT US</Link>
+                <Link className={activelink.contact_us ? styles.active :styles.navlinkstyle}   onClick={()=>
+                  setactivelink({        
+                    home:false,
+                    our_story:false,
+                    contact_us:true,
+                    dashboard:false })}
+                to="/contactus">CONTACT US</Link>
             </Nav.Item>
             {
               (authenticateduserCtx.AuthenticatedUser) ?               
               <div>
                 <Nav.Item>
-                  <Link className={styles.navlinkstyle}   to="/dashboard/home">DASHBOARD </Link>
+                  <Link className={activelink.dashboard ? styles.active :styles.navlinkstyle}  
+                      onClick={()=>{
+                      setactivelink({        
+                        home:false,
+                        our_story:false,
+                        contact_us:false,
+                        dashboard:true })
+                        
+                        coursectx.SetWentInsideCourse(false) //when user chooses another nav link, then returns back to dashboard, the sidebar of dashboard will shop the home options
+                        }      
+                      }
+                  to="/dashboard/home">DASHBOARD </Link>
                 </Nav.Item>
             </div> 
             : 
