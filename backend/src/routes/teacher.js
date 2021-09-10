@@ -665,4 +665,45 @@ router.get('/teacher/:courseid/assignment/:assignmentid/getattempts',TeacherAuth
   }
 })
 
+
+router.post('/teacher/:courseid/assignment/:assignmentid/gradestudentattempt/:attemptid',TeacherAuth,async (req,res)=>{
+  
+  try{
+
+    const course=await Course.findById(req.params.courseid);
+    if(!course)
+      throw new Error('No course with this courseid')
+    if(course.instructor.toString() !== req.teacher._id.toString()) 
+      throw new Error('This is not your course!!')
+
+    const assignment=await Assignment.findById(req.params.assignmentid)
+    if(!assignment)
+      throw new Error('No assignment with this ID')
+
+    const attempt = await Attempt.findById(req.params.attemptid)
+    if(!attempt)
+       throw new Error('No attempt with this id is found')
+
+    //check if attempt is of an assignment of this teacher's   
+    const assignment_2 = await Assignment.findById(attempt.assignment)
+    if(assignment_2.course.toString() !== course._id.toString())
+      throw new Error('This is an attempt of a student for another teacher!')
+
+    attempt.gradestatus='done-grading'
+    attempt.grade=req.body.grade
+    if(req.body.comment)
+      attempt.gradecomment=req.body.comment
+    
+    // console.log(attempt)
+    await attempt.save()
+    
+    res.status(200).send(attempt)
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e.message)
+  }
+  
+  
+})
+
 module.exports=router

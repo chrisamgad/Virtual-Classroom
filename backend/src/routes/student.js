@@ -162,7 +162,7 @@ router.get('/', (req, res) => {
 
   router.get('/getavatar/:id', async (req,res)=>{
     try{
-        console.log('TEST')
+        //console.log('TEST')
         const student =await Student.findById(req.params.id) //find user by id provided
 
         if(!student || !student.avatar) // if no user or his avatar found, produce an error
@@ -249,6 +249,7 @@ const multerStorage = multer.diskStorage({
     const attempt = new AssignmentAttempt({
       course:req.params.courseid,
       assignment:req.params.assignmentid,
+      gradestatus:"to-be-graded",
       student:req.student._id
       })
     
@@ -319,8 +320,8 @@ router.post('/student/:courseid/submitassignment/:assignmentid',StudentAuth(fals
       req.attempt.status='Submitted-On-Time'
 
     await req.attempt.save()
-    console.log('Assignment Deadline is '  +AssignmentDeadline)
-    console.log('AttemptSubmissionTime is ' + AttemptSubmissionTime)
+    // console.log('Assignment Deadline is '  +AssignmentDeadline)
+    // console.log('AttemptSubmissionTime is ' + AttemptSubmissionTime)
     //console.log(testdate)
 
     res.status(200).send(req.attempt)
@@ -400,7 +401,7 @@ router.get('/student/:studentid/:courseid/assignments/:assignmentid/downloadatte
                 attemptID=attempt. _id    
                   
               }
-            console.log(attemptID)
+            //console.log(attemptID)
          })
 
          var filePath =`public/files/attempts/attempt-${attemptID}.${ext}`
@@ -425,7 +426,7 @@ router.delete('/student/deletestudent/:studentid', async(req,res)=>{
     const courses= await Course.find()
     courses.forEach((course)=>{
       course.studentsList=course.studentsList.filter((studentid)=> studentid.toString() !== req.params.studentid) //remove student id from course studentList
-      console.log(course)
+      //console.log(course)
       course.save().then().catch((e)=>{throw new Error(e)})
     })
 
@@ -435,7 +436,6 @@ router.delete('/student/deletestudent/:studentid', async(req,res)=>{
     console.log(e)
     res.status(500).send(e.message)
   }
-
 
 })
 

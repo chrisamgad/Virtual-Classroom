@@ -25,9 +25,6 @@ const assignmentSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'student-assignment-attempt'
     }],
-    grade:{
-        type: Number
-    },
     students:[{
         type: mongoose.Schema.Types.ObjectId,
         ref:'student'

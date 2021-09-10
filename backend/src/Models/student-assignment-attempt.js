@@ -11,6 +11,15 @@ const student_assignment_attempt_Schema = new mongoose.Schema({
     status:{
         type:String  //2 states-> Submitted-On-Time, AND Submitted-Late
     },
+    gradestatus:{
+        type:String //2 states --> to-be-graded, done-grading
+    },
+    grade:{
+        type: Number
+    },
+    gradecomment:{
+        type: String
+    },
     assignment:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'assignment'
