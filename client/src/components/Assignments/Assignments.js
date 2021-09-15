@@ -80,7 +80,7 @@ const  Assignments= () => {
         ShowDeleteButton={ShowDeleteButton} setShowDeleteButton={setShowDeleteButton} setShowCancelButton={setShowCancelButton} assignemnttoberemoved={assignemnttoberemoved} />
 
         <div className={styles.header}>
-        <div className={styles.heading}>Assignments</div>
+        <div className={styles.heading}>ASSIGNMENTS</div>
             {
                 returnDisplayedButtons()
             }

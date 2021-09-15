@@ -14,6 +14,7 @@ import Assignments from "../../components/Assignments/Assignments";
 import ViewStudents from '../../components/ViewStudents/ViewStudents'
 import AssignmentDetails from "../../components/AssignmentDetails/AssignmentDetails";
 import MyProfile from '../../pages/Profile/Profile'
+import Grades from '../Grades/Grades'
 import './dashboard.css'
 
 
@@ -61,11 +62,11 @@ const Dashboard = (props) => {
                                     <Route exact path={`/dashboard/mycourses/:courseid/assignments/:assignmentid`}>
                                         <AssignmentDetails />
                                     </Route>
+                                    <Route exact path={`/dashboard/mycourses/:courseid/mygrades`}>
+                                       <Grades/>
+                                    </Route>
                                     <Route exact path={`/dashboard/announcments`}>
                                         Announcments
-                                    </Route>
-                                    <Route exact path={`/dashboard/mygrades`}>
-                                        My Grades
                                     </Route>
                                     <Route exact path={`/dashboard/myprofile`}>
                                         <MyProfile/>

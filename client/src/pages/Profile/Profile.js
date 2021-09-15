@@ -43,7 +43,7 @@ const Profile =()=>{
         <div>
             { userdetails ? 
             <div>
-                <div className={styles.heading}>My Profile</div>
+                <div className={styles.heading}>MY PROFILE</div>
                 <div className={styles.bodyContainer}>
                     <img height="175" width="175" alt="Profile" src={userimage} className={styles.profilepicture}/>
                     <div className={styles.pieceofinfo}><span className={styles.key}>Full Name:</span> {userdetails.fullname}</div>  

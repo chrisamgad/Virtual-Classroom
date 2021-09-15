@@ -332,6 +332,31 @@ router.post('/student/:courseid/submitassignment/:assignmentid',StudentAuth(fals
   }
 })
 
+router.get('/student/getallattempsincourse/:courseid',StudentAuth(false),async(req,res)=>{
+
+  try{
+    const course=await Course.findById(req.params.courseid)
+    if(!course)
+      throw new Error('No course with this courseid')
+
+    const StudentInCourseFlag=course.studentsList.includes(mongoose.Types.ObjectId(req.student._id))
+    if(!StudentInCourseFlag) 
+      throw new Error('Student is not in this course!!')
+    
+    const AllattemptsInDB=await AssignmentAttempt.find()
+    const studentattempts=[]
+    AllattemptsInDB.forEach((attempt)=>{
+      if(attempt.course.toString()===req.params.courseid)
+        studentattempts.push(attempt)
+    })
+
+    res.status(200).send(studentattempts)
+  }catch(e){
+    console.log(e)
+    res.status(500).send(e)
+  }
+})
+
 router.get('/student/:courseid/getattempt/:assignmentid',StudentAuth(false),async(req,res,next)=>{
 
   try{

@@ -26,6 +26,7 @@ const Sidebar = () => {
     
     useEffect(()=>{
 
+
         var pathArray = window.location.pathname.split('/');
         if(window.location.pathname === '/dashboard/home')
             setcomponentstyles({
@@ -51,14 +52,25 @@ const Sidebar = () => {
             setcomponentstyles({
                 ...componentstyles,
                 assignmentsComp:false,
+                gradesComp:false,
                 coursesummaryComp:true
             });
         else if (pathArray[2]==="mycourses" && pathArray[4]==="assignments")
             setcomponentstyles({
                 ...componentstyles,
                 coursesummaryComp:false,
+                gradesComp:false,
                 assignmentsComp:true
             });
+        else if (pathArray[2]==="mycourses" && pathArray[4]==="mygrades")
+            setcomponentstyles({
+                ...componentstyles,
+                coursesummaryComp:false,
+                gradesComp:true,
+                assignmentsComp:false
+            });
+        
+
         
 
 
@@ -207,8 +219,9 @@ const Sidebar = () => {
 
         const studentSidebar=
         <div>
-        <Nav.Link className={`${styles.NavLink}  ${componentstyles.assignmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to={`/dashboard/mycourses/${JSON.parse(localStorage.getItem("current_course_chosen"))._id}/assignments`} onClick={()=>setCurrentLink('assignments')}><i style={{marginRight:'9px',fontSize:'17px'}} className="fas fa-tasks"></i>Assignments</Nav.Link>
-        <Nav.Link className={`${styles.NavLink}  ${componentstyles.back ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses" onClick={()=>setCurrentLink('back')}><i style={{marginRight:'9px'}} className="fas fa-backward"></i>Back</Nav.Link>
+            <Nav.Link className={`${styles.NavLink}  ${componentstyles.assignmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to={`/dashboard/mycourses/${JSON.parse(localStorage.getItem("current_course_chosen"))._id}/assignments`} onClick={()=>setCurrentLink('assignments')}><i style={{marginRight:'9px',fontSize:'17px'}} className="fas fa-tasks"></i>Assignments</Nav.Link>
+            <Nav.Link className={`${styles.NavLink}  ${componentstyles.gradesComp ? styles.onClickLinkStyle : null}` } as={Link} to={`/dashboard/mycourses/${JSON.parse(localStorage.getItem("current_course_chosen"))._id}/mygrades`} onClick={()=>setCurrentLink('grades')} ><i style={{marginRight:'6px'}} className="fas fa-star-half-alt"></i>Grades</Nav.Link>
+            <Nav.Link className={`${styles.NavLink}  ${componentstyles.back ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses" onClick={()=>setCurrentLink('back')}><i style={{marginRight:'9px'}} className="fas fa-backward"></i>Back</Nav.Link>
         </div>
 
         const Role=JSON.parse(localStorage.getItem("role"))
@@ -241,7 +254,6 @@ const Sidebar = () => {
                     <Nav.Link className={`${styles.NavLink}  ${componentstyles.homeComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/home" onClick={()=>setCurrentLink('home')}><i style={{marginRight:'6px'}} className="fas fa-home"></i>Home</Nav.Link>
                     <Nav.Link className={`${styles.NavLink}  ${componentstyles.coursesComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mycourses" onClick={()=>setCurrentLink('courses')}><i style={{marginRight:'6px'}} className="fas fa-book"></i>Courses</Nav.Link>
                     <Nav.Link className={`${styles.NavLink}  ${componentstyles.announcmentsComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/announcments" onClick={()=>setCurrentLink('announcments')}><i style={{marginRight:'6px'}} className="fas fa-bullhorn"></i>Announcments</Nav.Link>
-                    <Nav.Link className={`${styles.NavLink}  ${componentstyles.gradesComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/mygrades" onClick={()=>setCurrentLink('grades')} ><i style={{marginRight:'6px'}} className="fas fa-star-half-alt"></i>Grades</Nav.Link>
                     <Nav.Link className={`${styles.NavLink}  ${componentstyles.profileComp ? styles.onClickLinkStyle : null}` } as={Link} to="/dashboard/myprofile" onClick={()=>setCurrentLink('profile')} ><i style={{marginRight:'6px', fontSize:'20px'}} className="fas fa-male"></i>My Profile</Nav.Link>
                     <Nav.Link className={`${styles.NavLink}  ${componentstyles.settingsComp ? styles.onClickLinkStyle : null}` }  as={Link} to="/dashboard/settings" onClick={()=>setCurrentLink('settings')} ><i style={{marginRight:'8px'}} className="fas fa-cogs"></i>Settings</Nav.Link>  
                 </div>

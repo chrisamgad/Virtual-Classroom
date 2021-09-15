@@ -4,7 +4,7 @@ import {Form,Button} from 'react-bootstrap'
 import styles from './AssignmentDetails.module.css'
 import studentDataService from '../../services/student-data-service';
 import { useParams } from 'react-router-dom';
-import Attempt from '../Attempt/Attempt'
+import Attempt from './Attempt/Attempt'
 
 const AssignmentDetails = () => {
 
